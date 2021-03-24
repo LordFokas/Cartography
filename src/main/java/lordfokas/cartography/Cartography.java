@@ -1,7 +1,7 @@
 package lordfokas.cartography;
 
+import lordfokas.cartography.modules.meteorology.Meteorology;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -19,24 +19,16 @@ public class Cartography {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public Cartography(){
-        // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-
-        // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void setup(final FMLCommonSetupEvent event){
-        // some preinit code
-        LOGGER.info("HELLO FROM PREINIT");
-        LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+        Meteorology.init();
     }
 
     @SubscribeEvent
-    public void onServerStarting(FMLServerStartingEvent event){
-        // do something when the server starts
-        LOGGER.info("HELLO from server starting");
-    }
+    public void onServerStarting(FMLServerStartingEvent event){ }
 
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {

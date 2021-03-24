@@ -1,0 +1,10 @@
+{
+  "required": true,
+  "package": "lordfokas.cartography.blackmagic",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "cartography.refmap.json",
+  "mixins": [
+    "ChunkRenderControllerMixin"
+  ],
+  "minVersion": "0.8"
+}
