@@ -6,15 +6,15 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.0', changing: false
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.spongepowered.mixin'
 
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'idea'
-apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'maven-publish'
 
 version = '0.0.1'
@@ -76,8 +76,8 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    implementation fg.deobf('jm:journeymap-1.16.5-5.7.1')
-    implementation fg.deobf('tfc:TerraFirmaCraft-Forge:1.16.5-dev')
+    implementation fg.deobf('_:journeymap-1.16.5:5.7.1')
+    implementation fg.deobf('_:TerraFirmaCraft-Forge:1.16.5-dev')
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
