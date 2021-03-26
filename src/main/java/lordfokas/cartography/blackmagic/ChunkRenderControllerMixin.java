@@ -17,7 +17,7 @@ public class ChunkRenderControllerMixin {
         try{
             Field topo = ChunkRenderController.class.getDeclaredField("topoRenderer");
             topo.setAccessible(true);
-            topo.set(this, TFCMaps.RAINFALL);
+            topo.set(this, TFCMaps.TEMPERATURE);
         } catch(ReflectiveOperationException e){
             e.printStackTrace();
         }

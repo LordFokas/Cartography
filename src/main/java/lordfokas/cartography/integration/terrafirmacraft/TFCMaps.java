@@ -15,9 +15,11 @@ public class TFCMaps {
 
     static {
         IDataSource topography = new TerrainHeightDataSource();
+        IDataSource isohyetal  = new TFCRainfallSource();
+        IDataSource isothermal = new TFCTemperatureSource();
 
-        RAINFALL = new IsoplethChunkRenderer(new IsoplethDataCompiler(RAIN_COLOR), new TFCRainfallSource(), topography);
-        TEMPERATURE = null;
+        RAINFALL    = new IsoplethChunkRenderer(new IsoplethDataCompiler(RAIN_COLOR, HEAT_COLOR), isohyetal, topography, isothermal);
+        TEMPERATURE = new IsoplethChunkRenderer(new IsoplethDataCompiler(HEAT_COLOR, RAIN_COLOR), isothermal, topography, isohyetal);
 
         BIOGEOGRAPHY = null;
         GEOLOGY = null;
