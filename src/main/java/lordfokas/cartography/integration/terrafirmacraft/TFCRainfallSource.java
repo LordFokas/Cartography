@@ -2,11 +2,11 @@ package lordfokas.cartography.integration.terrafirmacraft;
 
 import lordfokas.cartography.integration.journeymap.DataType;
 import lordfokas.cartography.integration.journeymap.IChunkData;
-import lordfokas.cartography.integration.journeymap.continuous.Datum;
-import lordfokas.cartography.integration.journeymap.continuous.IDataSource;
+import lordfokas.cartography.integration.journeymap.continuous.ContinuousDatum;
+import lordfokas.cartography.integration.journeymap.continuous.IContinuousDataSource;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
-public class TFCRainfallSource implements IDataSource {
+public class TFCRainfallSource implements IContinuousDataSource {
     private static final float MAX_RAINFALL = 500F;
 
     @Override
@@ -15,7 +15,7 @@ public class TFCRainfallSource implements IDataSource {
     }
 
     @Override
-    public Datum getDatum(IChunkData chunk, int x, int y) {
+    public ContinuousDatum getDatum(IChunkData chunk, int x, int y) {
         int h = rainfall(chunk, x, y);
         float value = ((float)h) / MAX_RAINFALL;
 
@@ -25,7 +25,7 @@ public class TFCRainfallSource implements IDataSource {
         float d = rainfall(chunk, x, y-1);
         boolean boundary = a<h || b<h || c<h || d<h;
 
-        return new Datum(value, boundary);
+        return new ContinuousDatum(value, boundary);
     }
 
     private int rainfall(IChunkData c, int x, int y){

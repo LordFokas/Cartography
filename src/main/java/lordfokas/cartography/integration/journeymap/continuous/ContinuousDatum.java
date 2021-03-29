@@ -1,14 +1,14 @@
 package lordfokas.cartography.integration.journeymap.continuous;
 
-public class Datum {
+public class ContinuousDatum {
     public final float value;
     public final boolean boundary;
 
-    public Datum(float value){
+    public ContinuousDatum(float value){
         this(value, false);
     }
 
-    public Datum(float value, boolean boundary){
+    public ContinuousDatum(float value, boolean boundary){
         this.value = value;
         this.boundary = boundary;
     }

@@ -2,7 +2,7 @@ package lordfokas.cartography.integration.journeymap.wrapper;
 
 import journeymap.client.model.ChunkMD;
 import lordfokas.cartography.integration.journeymap.IChunkData;
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -10,7 +10,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.Heightmap;
 
-import java.util.Map;
 
 public class ChunkWrapper implements IChunkData {
     private final CustomChunkRenderer source;
@@ -58,11 +57,8 @@ public class ChunkWrapper implements IChunkData {
         int wz = master.toWorldZ(z);
 
         BlockPos pos = master.getWorld().getHeightmapPos(Heightmap.Type.MOTION_BLOCKING, new BlockPos(wx, 0, wz));
-        int h = pos.getY();
 
-        System.err.println("World height: "+h);
-
-        return h;
+        return pos.getY();
     }
 
     @Override
@@ -70,13 +66,10 @@ public class ChunkWrapper implements IChunkData {
         int wx = master.toWorldX(x);
         int wz = master.toWorldZ(z);
 
-        World w = master.getWorld();
-
-        BlockPos pos = w.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING, new BlockPos(wx, 0, wz));
-        int h = pos.getY();
+        int h = getTerrainHeight(x, z);
         if(h == 0) return 0;
 
-
+        World w = master.getWorld();
         if(!w.isWaterAt(new BlockPos(wx, --h, wz))) return 0;
         int d = 1;
 
@@ -88,26 +81,21 @@ public class ChunkWrapper implements IChunkData {
     }
 
     @Override
-    public float getTemperature(int x, int z) {
-        ChunkMD chunk = getActualChunk(x, z);
-        x = clamp(x);
-        z = clamp(z);
-
-        return 0;
-    }
-
-    @Override
-    public float getRainfall(int x, int z) {
-        ChunkMD chunk = getActualChunk(x, z);
-        x = clamp(x);
-        z = clamp(z);
-
-        return 0;
-    }
-
-    @Override
     public Biome getBiome(int x, int z) {
         int s = getSeaLevel();
         return master.getBiome(master.getBlockPos(x, s, z));
+    }
+
+    @Override
+    public void traverseColumn(int x, int z, IColumnVisitor visitor) {
+        int wx = master.toWorldX(x);
+        int wz = master.toWorldZ(z);
+        int y = getTerrainHeight(x, z);
+        World w = master.getWorld();
+        boolean loop = true;
+        while(loop && y > 0){
+            BlockState state = w.getBlockState(new BlockPos(wx, --y, wz));
+            loop = visitor.visit(y, state);
+        }
     }
 }

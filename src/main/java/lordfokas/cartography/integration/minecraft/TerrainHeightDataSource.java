@@ -2,10 +2,14 @@ package lordfokas.cartography.integration.minecraft;
 
 import lordfokas.cartography.integration.journeymap.DataType;
 import lordfokas.cartography.integration.journeymap.IChunkData;
-import lordfokas.cartography.integration.journeymap.continuous.IDataSource;
+import lordfokas.cartography.integration.journeymap.continuous.IContinuousDataSource;
 
-public class TerrainHeightDataSource implements IDataSource {
-    private static final int STEP = 4;
+public class TerrainHeightDataSource implements IContinuousDataSource {
+    private final int step;
+
+    public TerrainHeightDataSource(int step){
+        this.step = step;
+    }
 
     @Override
     public DataType getDataType() {
@@ -23,7 +27,7 @@ public class TerrainHeightDataSource implements IDataSource {
         if(depth > 0){
             water = true;
         }else{
-            h = h - (h % STEP);
+            h = h - (h % this.step);
             int a = chunk.getTerrainHeight(x+1, y);
             int b = chunk.getTerrainHeight(x-1, y);
             int c = chunk.getTerrainHeight(x, y+1);

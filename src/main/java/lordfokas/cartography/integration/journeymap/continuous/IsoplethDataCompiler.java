@@ -3,7 +3,7 @@ package lordfokas.cartography.integration.journeymap.continuous;
 import lordfokas.cartography.integration.journeymap.Colors;
 import lordfokas.cartography.integration.minecraft.TerrainDatum;
 
-public class IsoplethDataCompiler implements IDataCompiler{
+public class IsoplethDataCompiler implements IContinuousDataCompiler {
     protected final ColorScale[] scales;
 
     public IsoplethDataCompiler(ColorScale ... scales){
@@ -11,9 +11,9 @@ public class IsoplethDataCompiler implements IDataCompiler{
     }
 
     @Override
-    public int compile(Datum[] data) {
+    public int compile(ContinuousDatum[] data) {
         // Map main data
-        Datum main = data[0];
+        ContinuousDatum main = data[0];
         float h = Colors.normalizeHue(scales[0].interpolate(main.value));
         float s = main.boundary ? 1F : 0.65F;
         float b = main.boundary ? 0.65F : 1F;
@@ -31,7 +31,7 @@ public class IsoplethDataCompiler implements IDataCompiler{
         }
 
         // Map secondary data
-        Datum secondary = data[2];
+        ContinuousDatum secondary = data[2];
         if(!main.boundary && secondary.boundary){
             h = Colors.normalizeHue(scales[1].interpolate(1.0F));
             s = 1F;

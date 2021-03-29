@@ -1,6 +1,6 @@
 package lordfokas.cartography.integration.journeymap;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class Colors {
 
