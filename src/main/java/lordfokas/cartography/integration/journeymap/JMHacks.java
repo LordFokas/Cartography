@@ -4,11 +4,15 @@ import journeymap.client.api.display.Context.MapType;
 import journeymap.client.model.MapType.Name;
 import lordfokas.cartography.EnumBuster;
 
-import java.util.EnumMap;
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 public class JMHacks {
-    private static final EnumMap<Name, MapType> INTERNAL_API = new EnumMap<>(Name.class);
-    private static final EnumMap<MapType, Name> API_INTERNAL = new EnumMap<>(MapType.class);
+    private static Name[] names;
+    private static final HashMap<Name, MapType> INTERNAL_API = new HashMap<>();
+    private static final HashMap<MapType, Name> API_INTERNAL = new HashMap<>();
     private static final EnumBuster<Name> NAMES = new EnumBuster<>(Name.class);
     private static final EnumBuster<MapType> TYPES = new EnumBuster<>(MapType.class);
 
@@ -26,6 +30,10 @@ public class JMHacks {
         return INTERNAL_API.get(name);
     }
 
+    public static boolean isCustom(Name name){
+        return name == ISOHYETAL || name == ISOTHERMAL || name == GEOLOGICAL;
+    }
+
     public static void init(){
         System.out.println("Created new instances of MapType.Name");
         System.out.println(ISOHYETAL);
@@ -40,10 +48,43 @@ public class JMHacks {
         BIOGEOGRAPHICAL = make("biogeographical");
         GEOLOGICAL = make("geological");
 
+        performDisgustingHackery();
+
         map(Name.day, MapType.Day);
         map(Name.night, MapType.Night);
         map(Name.topo, MapType.Topo);
         map(Name.underground, MapType.Underground);
+
+        for(Name name : Name.values()){
+            System.err.println(name);
+            System.err.println(Name.valueOf(name.name()));
+            System.err.println("-----------------------");
+        }
+    }
+
+
+    private static void performDisgustingHackery(){
+        try{
+            Field field = Name.class.getDeclaredField("$VALUES");
+            field.setAccessible(true);
+            Name[] values = (Name[]) field.get(null);
+            LinkedList<Name> list = new LinkedList<>(Arrays.asList(values));
+            list.add(ISOHYETAL);
+            list.add(ISOTHERMAL);
+            list.add(GEOLOGICAL);
+            JMHacks.names = list.toArray(values);
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public static Name[] getAllNames(){
+        if(names == null) return new Name[]{};
+        Name[] buffer = new Name[names.length];
+        System.arraycopy(names, 0, buffer, 0, names.length);
+        return buffer;
     }
 
     private static Name make(String str){

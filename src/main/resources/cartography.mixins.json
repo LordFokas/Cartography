@@ -5,7 +5,12 @@
   "refmap": "cartography.refmap.json",
   "mixins": [
     "ChunkRenderControllerMixin",
-    "MapTypeMixin"
+    "ConstantsMixin",
+    "FullscreenMixin",
+    "MapPlayerTaskMixin",
+    "MapStateMixin",
+    "MapTypeMixin",
+    "MapTypeNameMixin"
   ],
   "minVersion": "0.8"
 }

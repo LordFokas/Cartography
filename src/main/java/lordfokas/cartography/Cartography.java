@@ -20,12 +20,15 @@ public class Cartography {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public Cartography(){
+        JMHacks.init();
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
+    public static Logger logger(){ return LOGGER; }
+
     private void setup(final FMLCommonSetupEvent event){
-        JMHacks.init();
+
 
         Meteorology.init();
         Biology.init();
