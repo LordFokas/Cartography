@@ -63,9 +63,9 @@ public class MapPlayerTaskMixin {
                     tasks.add(newMapPlayerTask(chunkRenderController, playerEntity.level, MapType.topo(player), new ArrayList<>()));
                 }
 
-                tasks.add(newMapPlayerTask(chunkRenderController, playerEntity.level, MapType.from(JMHacks.ISOHYETAL, null, player.dimension), new ArrayList<>()));
-                tasks.add(newMapPlayerTask(chunkRenderController, playerEntity.level, MapType.from(JMHacks.ISOTHERMAL, null, player.dimension), new ArrayList<>()));
-                tasks.add(newMapPlayerTask(chunkRenderController, playerEntity.level, MapType.from(JMHacks.GEOLOGICAL, null, player.dimension), new ArrayList<>()));
+                for(MapType.Name name : JMHacks.getCustomNames()){
+                    tasks.add(newMapPlayerTask(chunkRenderController, playerEntity.level, MapType.from(name, null, player.dimension), new ArrayList<>()));
+                }
 
                 return new MapPlayerTask.MapPlayerTaskBatch(tasks);
             }

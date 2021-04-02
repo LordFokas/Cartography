@@ -1,9 +1,9 @@
 package lordfokas.cartography.integration.terrafirmacraft;
 
-import lordfokas.cartography.integration.journeymap.DataType;
-import lordfokas.cartography.integration.journeymap.IChunkData;
-import lordfokas.cartography.integration.journeymap.discrete.DiscreteDatum;
-import lordfokas.cartography.integration.journeymap.discrete.IDiscreteDataSource;
+import lordfokas.cartography.core.DataType;
+import lordfokas.cartography.core.IChunkData;
+import lordfokas.cartography.core.discrete.DiscreteDatum;
+import lordfokas.cartography.core.discrete.IDiscreteDataSource;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.types.Ore;
 import net.dries007.tfc.common.types.Rock;

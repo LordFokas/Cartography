@@ -1,10 +1,9 @@
 package lordfokas.cartography.integration.terrafirmacraft;
 
-import journeymap.client.render.ComparableBufferedImage;
-import lordfokas.cartography.integration.journeymap.Colors;
-import lordfokas.cartography.integration.journeymap.IChunkData;
-import lordfokas.cartography.integration.journeymap.discrete.DiscreteDatum;
-import lordfokas.cartography.integration.journeymap.wrapper.CustomChunkRenderer;
+import lordfokas.cartography.core.Colors;
+import lordfokas.cartography.core.IChunkData;
+import lordfokas.cartography.core.IMapRenderer;
+import lordfokas.cartography.core.discrete.DiscreteDatum;
 import lordfokas.cartography.integration.minecraft.TerrainDatum;
 import lordfokas.cartography.integration.minecraft.TerrainHeightDataSource;
 import net.minecraft.client.Minecraft;
@@ -16,7 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class RockLayerChunkRenderer extends CustomChunkRenderer {
+public class RockLayerChunkRenderer implements IMapRenderer {
     private final TFCRockLayerSource source;
     private final TerrainHeightDataSource topo;
 
@@ -26,7 +25,7 @@ public class RockLayerChunkRenderer extends CustomChunkRenderer {
     }
 
     @Override
-    protected boolean render(ComparableBufferedImage image, IChunkData chunk) {
+    public boolean render(BufferedImage image, IChunkData chunk) {
         for(int x = 0; x < 16; x++)
         for(int y = 0; y < 16; y++){
             DiscreteDatum datum = source.getDatum(chunk, x, y);

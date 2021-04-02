@@ -1,4 +1,4 @@
-package lordfokas.cartography.integration.journeymap;
+package lordfokas.cartography.core;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.world.biome.Biome;

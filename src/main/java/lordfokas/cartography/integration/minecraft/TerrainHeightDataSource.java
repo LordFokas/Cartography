@@ -1,8 +1,8 @@
 package lordfokas.cartography.integration.minecraft;
 
-import lordfokas.cartography.integration.journeymap.DataType;
-import lordfokas.cartography.integration.journeymap.IChunkData;
-import lordfokas.cartography.integration.journeymap.continuous.IContinuousDataSource;
+import lordfokas.cartography.core.DataType;
+import lordfokas.cartography.core.IChunkData;
+import lordfokas.cartography.core.continuous.IContinuousDataSource;
 
 public class TerrainHeightDataSource implements IContinuousDataSource {
     private final int step;

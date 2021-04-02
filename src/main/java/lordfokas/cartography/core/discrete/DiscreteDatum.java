@@ -1,4 +1,4 @@
-package lordfokas.cartography.integration.journeymap.discrete;
+package lordfokas.cartography.core.discrete;
 
 public class DiscreteDatum {
     public final String value;

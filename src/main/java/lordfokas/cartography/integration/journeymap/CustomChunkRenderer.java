@@ -1,22 +1,27 @@
-package lordfokas.cartography.integration.journeymap.wrapper;
+package lordfokas.cartography.integration.journeymap;
 
 import journeymap.client.cartography.Stratum;
 import journeymap.client.cartography.render.BaseRenderer;
 import journeymap.client.model.ChunkMD;
 import journeymap.client.render.ComparableBufferedImage;
-import lordfokas.cartography.integration.journeymap.IChunkData;
+import lordfokas.cartography.core.IChunkData;
+import lordfokas.cartography.core.IMapRenderer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 
-public abstract class CustomChunkRenderer extends BaseRenderer {
+class CustomChunkRenderer extends BaseRenderer {
+
+    private final IMapRenderer renderer;
+
+    public CustomChunkRenderer(IMapRenderer renderer){
+        this.renderer = renderer;
+    }
 
     @Override
     public final boolean render(ComparableBufferedImage image, ChunkMD chunkMD, Integer vslice) {
         IChunkData chunk = new ChunkWrapper(this, chunkMD);
-        return this.render(image, chunk);
+        return this.renderer.render(image, chunk);
     }
-
-    protected abstract boolean render(ComparableBufferedImage image, IChunkData chunk);
 
     public ChunkMD getChunkAt(ChunkPos pos){
         return dataCache.getChunkMD(pos);

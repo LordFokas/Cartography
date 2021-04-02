@@ -1,6 +1,6 @@
 package lordfokas.cartography.integration.minecraft;
 
-import lordfokas.cartography.integration.journeymap.continuous.ContinuousDatum;
+import lordfokas.cartography.core.continuous.ContinuousDatum;
 
 public class TerrainDatum extends ContinuousDatum {
     public final boolean water;

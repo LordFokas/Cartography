@@ -1,6 +1,6 @@
-package lordfokas.cartography.integration.journeymap.continuous;
+package lordfokas.cartography.core.continuous;
 
-import lordfokas.cartography.integration.journeymap.Colors;
+import lordfokas.cartography.core.Colors;
 import lordfokas.cartography.integration.minecraft.TerrainDatum;
 
 public class IsoplethDataCompiler implements IContinuousDataCompiler {

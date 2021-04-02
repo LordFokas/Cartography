@@ -1,12 +1,13 @@
 package lordfokas.cartography.blackmagic;
 
 import journeymap.client.cartography.ChunkRenderController;
+import journeymap.client.cartography.render.BaseRenderer;
 import journeymap.client.model.*;
 import journeymap.client.render.ComparableBufferedImage;
 import journeymap.common.Journeymap;
 import journeymap.common.log.LogFormatter;
 import lordfokas.cartography.integration.journeymap.JMHacks;
-import lordfokas.cartography.integration.terrafirmacraft.TFCMaps;
+import lordfokas.cartography.integration.journeymap.JMIntegration;
 import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,13 +28,8 @@ public class ChunkRenderControllerMixin {
                 RegionImageSet regionImageSet = RegionImageCache.INSTANCE.getRegionImageSet(rCoord);
                 MapType type = MapType.from(mapType.name, null, rCoord.dimension);
                 ComparableBufferedImage chunkSliceImage = regionImageSet.getChunkImage(chunkMd, type);
-                if (mapType.name == JMHacks.ISOHYETAL) {
-                    renderOkay = TFCMaps.RAINFALL.render(chunkSliceImage, chunkMd, null);
-                }else if (mapType.name == JMHacks.ISOTHERMAL) {
-                    renderOkay = TFCMaps.TEMPERATURE.render(chunkSliceImage, chunkMd, null);
-                }else if (mapType.name == JMHacks.GEOLOGICAL) {
-                    renderOkay = TFCMaps.GEOLOGY.render(chunkSliceImage, chunkMd, null);
-                }
+                BaseRenderer renderer = JMIntegration.getRenderer(JMHacks.getCustom(mapType.name));
+                renderOkay = renderer.render(chunkSliceImage, chunkMd, null);
                 if (renderOkay) regionImageSet.setChunkImage(chunkMd, type, chunkSliceImage);
             } catch (ArrayIndexOutOfBoundsException var9) {
                 Journeymap.getLogger().log(Level.WARN, LogFormatter.toString(var9));
@@ -41,6 +37,7 @@ public class ChunkRenderControllerMixin {
             } catch (Throwable var10) {
                 Journeymap.getLogger().error("Unexpected error in ChunkRenderController: " + LogFormatter.toString(var10));
             }
+
             if (!renderOkay && Journeymap.getLogger().isDebugEnabled()) {
                 Journeymap.getLogger().debug(String.format("Chunk %s render failed for %s", chunkMd.getCoord(), mapType));
             }

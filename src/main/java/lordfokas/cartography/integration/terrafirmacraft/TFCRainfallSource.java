@@ -1,9 +1,9 @@
 package lordfokas.cartography.integration.terrafirmacraft;
 
-import lordfokas.cartography.integration.journeymap.DataType;
-import lordfokas.cartography.integration.journeymap.IChunkData;
-import lordfokas.cartography.integration.journeymap.continuous.ContinuousDatum;
-import lordfokas.cartography.integration.journeymap.continuous.IContinuousDataSource;
+import lordfokas.cartography.core.DataType;
+import lordfokas.cartography.core.IChunkData;
+import lordfokas.cartography.core.continuous.ContinuousDatum;
+import lordfokas.cartography.core.continuous.IContinuousDataSource;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class TFCRainfallSource implements IContinuousDataSource {

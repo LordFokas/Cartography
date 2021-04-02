@@ -17,6 +17,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import javax.xml.ws.Holder;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 
 @Mixin(value = Fullscreen.class, remap = false)
 public abstract class FullscreenMixin extends JmUI {
@@ -26,48 +30,42 @@ public abstract class FullscreenMixin extends JmUI {
     @Shadow private ThemeButton buttonTopo;
     @Shadow private ThemeButton buttonLayers;
     @Shadow private ThemeToolbar mapTypeToolbar;
-    protected ThemeButton isohyetal, isothermal, geological;
+
+    protected HashMap<MapType.Name, ThemeButton> buttonMap = new HashMap<>();
+    protected int size = -1;
 
     private FullscreenMixin(String title, Void __) { super(title); }
 
     @Inject(method = "initButtons()V", at = @At("RETURN"))
     private void interceptInitButtons(CallbackInfo ci){
-        if(this.isohyetal == null){
+        if(this.buttonMap.size() == 0 || this.getButtonList().size() <= size){
+            size = this.getButtonList().size();
             Theme _theme = ThemeLoader.getCurrentTheme();
             MapType _type = state.getMapType();
 
-            this.isohyetal = this.addButton(new ThemeToggle(_theme, "cartography.fullscreen.map_isohyetal", "isohyetal", (button) -> {
-                if (this.isohyetal.isEnabled()) {
-                    this.updateMapType(new MapType(JMHacks.ISOHYETAL, null, state.getDimension()));
-                }
-            }));
-            this.isohyetal.setDrawButton(true);
-            this.isohyetal.setToggled(_type.name == JMHacks.ISOHYETAL, false);
-            this.isohyetal.setStaysOn(true);
+            for(MapType.Name name : JMHacks.getCustomNames()){
+                Holder<ThemeButton> holder = new Holder<>();
+                ThemeButton button = holder.value = this.addButton(new ThemeToggle(_theme, "cartography.fullscreen.map_"+name.name(), name.name(), (b) -> {
+                    if (holder.value.isEnabled()) {
+                        this.updateMapType(new MapType(name, null, state.getDimension()));
+                    }
+                }));
+                button.setDrawButton(true);
+                button.setToggled(_type.name == name, false);
+                button.setStaysOn(true);
+                buttonMap.put(name, button);
+            }
 
-
-            this.isothermal = this.addButton(new ThemeToggle(_theme, "cartography.fullscreen.map_isothermal", "isothermal", (button) -> {
-                if (this.isothermal.isEnabled()) {
-                    this.updateMapType(new MapType(JMHacks.ISOTHERMAL, null, state.getDimension()));
-                }
-            }));
-            this.isothermal.setDrawButton(true);
-            this.isothermal.setToggled(_type.name == JMHacks.ISOTHERMAL, false);
-            this.isothermal.setStaysOn(true);
-
-
-            this.geological = this.addButton(new ThemeToggle(_theme, "cartography.fullscreen.map_geological", "geological", (button) -> {
-                if (this.geological.isEnabled()) {
-                    this.updateMapType(new MapType(JMHacks.GEOLOGICAL, null, state.getDimension()));
-                }
-            }));
-            this.geological.setDrawButton(true);
-            this.geological.setToggled(_type.name == JMHacks.GEOLOGICAL, false);
-            this.geological.setStaysOn(true);
-
-
+            ArrayList<ThemeButton> list = new ArrayList<>(4 + buttonMap.size());
+            list.add(this.buttonLayers);
+            list.add(this.buttonTopo);
+            list.add(this.buttonNight);
+            list.add(this.buttonDay);
+            for(MapType.Name name : JMHacks.getCustomNames()) { // make sure buttons are ordered
+                list.add(buttonMap.get(name));
+            }
             this.getButtonList().remove(this.mapTypeToolbar);
-            this.mapTypeToolbar = new ThemeToolbar(_theme, this.buttonLayers, this.buttonTopo, this.buttonNight, this.buttonDay, this.isohyetal, this.isothermal, this.geological);
+            this.mapTypeToolbar = new ThemeToolbar(_theme, list.toArray(new ThemeButton[]{}));
             this.mapTypeToolbar.addAllButtons(this);
         }
     }
@@ -76,12 +74,9 @@ public abstract class FullscreenMixin extends JmUI {
 
     @Inject(method = "updateMapType(Ljourneymap/client/model/MapType;)V", at = @At("HEAD"))
     private void interceptUpdateMapType(MapType type, CallbackInfo ci){
-        if (!type.isAllowed()) {
+        if(!type.isAllowed())
             type = state.getMapType();
-        }
-
-        isohyetal.setToggled(type.name == JMHacks.ISOHYETAL, false);
-        isothermal.setToggled(type.name == JMHacks.ISOTHERMAL, false);
-        geological.setToggled(type.name == JMHacks.GEOLOGICAL, false);
+        final MapType.Name _name = type.name;
+        buttonMap.forEach((name, button) -> button.setToggled(_name == name, false));
     }
 }

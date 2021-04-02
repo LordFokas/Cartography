@@ -32,9 +32,7 @@ public class MapStateMixin {
             if (this.surfaceMappingAllowed) { types.add(MapType.Name.day); types.add(MapType.Name.night); }
             if (this.caveMappingAllowed && (player.underground || name == MapType.Name.underground)) { types.add(MapType.Name.underground); }
             if (this.topoMappingAllowed) { types.add(MapType.Name.topo); }
-            types.add(JMHacks.ISOHYETAL);
-            types.add(JMHacks.ISOTHERMAL);
-            types.add(JMHacks.GEOLOGICAL);
+            types.addAll(JMHacks.getCustomNames());
 
             if (name == MapType.Name.none && !types.isEmpty()) {
                 return types.get(0);

@@ -1,4 +1,4 @@
-package lordfokas.cartography.integration.journeymap.continuous;
+package lordfokas.cartography.core.continuous;
 
 public class ColorScale {
     protected final float low, high, delta;

@@ -1,10 +1,11 @@
-package lordfokas.cartography.integration.journeymap.continuous;
+package lordfokas.cartography.core.continuous;
 
-import journeymap.client.render.ComparableBufferedImage;
-import lordfokas.cartography.integration.journeymap.IChunkData;
-import lordfokas.cartography.integration.journeymap.wrapper.CustomChunkRenderer;
+import lordfokas.cartography.core.IChunkData;
+import lordfokas.cartography.core.IMapRenderer;
 
-public class IsoplethChunkRenderer extends CustomChunkRenderer {
+import java.awt.image.BufferedImage;
+
+public class IsoplethChunkRenderer implements IMapRenderer {
     protected final IContinuousDataCompiler compiler;
     protected final IContinuousDataSource[] sources;
 
@@ -14,7 +15,7 @@ public class IsoplethChunkRenderer extends CustomChunkRenderer {
     }
 
     @Override
-    public boolean render(ComparableBufferedImage image, IChunkData chunk) {
+    public boolean render(BufferedImage image, IChunkData chunk) {
         for(int x = 0; x < 16; x++)
         for(int y = 0; y < 16; y++){
             ContinuousDatum[] data = new ContinuousDatum[sources.length];

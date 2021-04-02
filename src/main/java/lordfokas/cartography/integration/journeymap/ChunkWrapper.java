@@ -1,7 +1,7 @@
-package lordfokas.cartography.integration.journeymap.wrapper;
+package lordfokas.cartography.integration.journeymap;
 
 import journeymap.client.model.ChunkMD;
-import lordfokas.cartography.integration.journeymap.IChunkData;
+import lordfokas.cartography.core.IChunkData;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -11,7 +11,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.Heightmap;
 
 
-public class ChunkWrapper implements IChunkData {
+class ChunkWrapper implements IChunkData {
     private final CustomChunkRenderer source;
     private final ChunkMD master;
 
@@ -34,12 +34,6 @@ public class ChunkWrapper implements IChunkData {
     @Override
     public Chunk getChunk(int x, int z){
         return getActualChunk(x, z).getChunk();
-    }
-
-    private int clamp(int v){
-        if(v <  0) return v+16;
-        if(v > 15) return v-16;
-        return v;
     }
 
     @Override

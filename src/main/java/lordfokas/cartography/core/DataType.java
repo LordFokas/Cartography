@@ -1,8 +1,8 @@
-package lordfokas.cartography.integration.journeymap;
+package lordfokas.cartography.core;
 
 public enum DataType {
     TERRAIN_HEIGHT,
     TEMPERATURE,
     RAINFALL,
-    BIOME
+    ROCKLAYER
 }
