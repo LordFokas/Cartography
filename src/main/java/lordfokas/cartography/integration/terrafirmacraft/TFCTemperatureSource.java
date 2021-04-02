@@ -17,21 +17,22 @@ public class TFCTemperatureSource implements IContinuousDataSource {
 
     @Override
     public ContinuousDatum getDatum(IChunkData chunk, int x, int y) {
-        int h = temperature(chunk, x, y);
-        float v = Math.max(Math.min(MAX_TEMPERATURE, h), MIN_TEMPERATURE);
+        float t = temperature(chunk, x, y);
+        float v = Math.max(Math.min(MAX_TEMPERATURE, t), MIN_TEMPERATURE);
         float value = (v - MIN_TEMPERATURE) / (MAX_TEMPERATURE - MIN_TEMPERATURE);
 
+        float h = (float) Math.floor(t);
         float a = temperature(chunk, x+1, y);
         float b = temperature(chunk, x-1, y);
         float c = temperature(chunk, x, y+1);
         float d = temperature(chunk, x, y-1);
-        boolean boundary = a<h || b<h || c<h || d<h;
+        boolean boundary = (a<h || b<h || c<h || d<h) && Math.abs(t-h)<0.025;
 
         return new ContinuousDatum(value, boundary);
     }
 
-    private int temperature(IChunkData c, int x, int y){
+    private float temperature(IChunkData c, int x, int y){
         ChunkData data = TFCHelper.getChunkData(c.getChunk(x, y));
-        return (int) Math.floor(data.getAverageTemp(x, y));
+        return data.getAverageTemp(x, y);
     }
 }

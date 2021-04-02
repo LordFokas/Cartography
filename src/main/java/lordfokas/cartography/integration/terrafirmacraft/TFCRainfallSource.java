@@ -16,20 +16,21 @@ public class TFCRainfallSource implements IContinuousDataSource {
 
     @Override
     public ContinuousDatum getDatum(IChunkData chunk, int x, int y) {
-        int h = rainfall(chunk, x, y);
-        float value = ((float)h) / MAX_RAINFALL;
+        float r = rainfall(chunk, x, y);
+        float value = r / MAX_RAINFALL;
 
+        float h = (float) Math.floor(r);
         float a = rainfall(chunk, x+1, y);
         float b = rainfall(chunk, x-1, y);
         float c = rainfall(chunk, x, y+1);
         float d = rainfall(chunk, x, y-1);
-        boolean boundary = a<h || b<h || c<h || d<h;
+        boolean boundary = (a<h || b<h || c<h || d<h) && Math.abs(r-h)<0.025;
 
         return new ContinuousDatum(value, boundary);
     }
 
-    private int rainfall(IChunkData c, int x, int y){
+    private float rainfall(IChunkData c, int x, int y){
         ChunkData data = TFCHelper.getChunkData(c.getChunk(x, y));
-        return (int) Math.floor(data.getRainfall(x, y));
+        return data.getRainfall(x, y);
     }
 }
