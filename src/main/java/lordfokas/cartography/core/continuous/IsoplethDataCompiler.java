@@ -40,4 +40,8 @@ public class IsoplethDataCompiler implements IContinuousDataCompiler {
 
         return Colors.HSB2ARGB(h, s, b);
     }
+
+    public ColorScale getMaster(){
+        return scales[0];
+    }
 }

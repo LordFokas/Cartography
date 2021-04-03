@@ -9,8 +9,10 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod("cartography")
+@Mod(Cartography.MOD_ID)
 public class Cartography {
+    public static final String MOD_ID = "cartography";
+
     private static final Logger LOGGER = LogManager.getLogger();
     public static Logger logger(){ return LOGGER; }
 

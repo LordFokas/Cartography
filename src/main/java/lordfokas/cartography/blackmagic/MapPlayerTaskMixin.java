@@ -1,5 +1,6 @@
 package lordfokas.cartography.blackmagic;
 
+import journeymap.client.JourneymapClient;
 import journeymap.client.cartography.ChunkRenderController;
 import journeymap.client.feature.Feature;
 import journeymap.client.feature.FeatureManager;
@@ -52,14 +53,14 @@ public class MapPlayerTaskMixin {
                 List<ITask> tasks = new ArrayList<>(2);
                 tasks.add(newMapPlayerTask(chunkRenderController, playerEntity.level, mapType, new ArrayList<>()));
                 if (underground) {
-                    if (surfaceAllowed && Journeymap.getClient().getCoreProperties().alwaysMapSurface.get()) {
+                    if (surfaceAllowed && JourneymapClient.getInstance().getCoreProperties().alwaysMapSurface.get()) {
                         tasks.add(newMapPlayerTask(chunkRenderController, playerEntity.level, MapType.day(player), new ArrayList<>()));
                     }
-                } else if (cavesAllowed && Journeymap.getClient().getCoreProperties().alwaysMapCaves.get()) {
+                } else if (cavesAllowed && JourneymapClient.getInstance().getCoreProperties().alwaysMapCaves.get()) {
                     tasks.add(newMapPlayerTask(chunkRenderController, playerEntity.level, MapType.underground(player), new ArrayList<>()));
                 }
 
-                if (topoAllowed && Journeymap.getClient().getCoreProperties().mapTopography.get()) {
+                if (topoAllowed && JourneymapClient.getInstance().getCoreProperties().mapTopography.get()) {
                     tasks.add(newMapPlayerTask(chunkRenderController, playerEntity.level, MapType.topo(player), new ArrayList<>()));
                 }
 

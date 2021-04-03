@@ -28,7 +28,7 @@ public class TFCTemperatureSource implements IContinuousDataSource {
         float d = temperature(chunk, x, y-1);
         boolean boundary = (a<h || b<h || c<h || d<h) && Math.abs(t-h)<0.025;
 
-        return new ContinuousDatum(value, boundary);
+        return new ContinuousDatum(value, boundary, (int)h);
     }
 
     private float temperature(IChunkData c, int x, int y){

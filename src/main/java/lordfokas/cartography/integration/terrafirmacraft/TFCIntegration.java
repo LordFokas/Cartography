@@ -4,7 +4,7 @@ import lordfokas.cartography.core.IMapRenderer;
 import lordfokas.cartography.core.MapType;
 import lordfokas.cartography.core.continuous.ColorScale;
 import lordfokas.cartography.core.continuous.IContinuousDataSource;
-import lordfokas.cartography.core.continuous.IsoplethChunkRenderer;
+import lordfokas.cartography.core.continuous.IsoplethMapRenderer;
 import lordfokas.cartography.core.continuous.IsoplethDataCompiler;
 import lordfokas.cartography.integration.minecraft.TerrainHeightDataSource;
 import lordfokas.cartography.modules.geology.Geology;
@@ -20,10 +20,10 @@ public class TFCIntegration {
         IContinuousDataSource isohyets  = new TFCRainfallSource();
         IContinuousDataSource isotherms = new TFCTemperatureSource();
 
-        IMapRenderer isohyetal  = new IsoplethChunkRenderer(new IsoplethDataCompiler(RAIN_COLOR, HEAT_COLOR), isohyets, terrain, isotherms);
-        IMapRenderer isothermal = new IsoplethChunkRenderer(new IsoplethDataCompiler(HEAT_COLOR, RAIN_COLOR), isotherms, terrain, isohyets);
+        IMapRenderer isohyetal  = new IsoplethMapRenderer(new IsoplethDataCompiler(RAIN_COLOR, HEAT_COLOR), isohyets, terrain, isotherms);
+        IMapRenderer isothermal = new IsoplethMapRenderer(new IsoplethDataCompiler(HEAT_COLOR, RAIN_COLOR), isotherms, terrain, isohyets);
         // IMapRenderer biogeographical = null;
-        IMapRenderer geological = new RockLayerChunkRenderer(new TFCRockLayerSource(RockCategory.Layer.TOP), new TerrainHeightDataSource(8));
+        IMapRenderer geological = new RockLayerMapRenderer(new TFCRockLayerSource(RockCategory.Layer.TOP), new TerrainHeightDataSource(8));
 
         Meteorology.MAP_TYPE_REGISTRY.register(MapType.ISOHYETAL, isohyetal);
         Meteorology.MAP_TYPE_REGISTRY.register(MapType.ISOTHERMAL, isothermal);

@@ -5,7 +5,7 @@ import java.awt.Color;
 public class Colors {
 
     public static int HSB2ARGB(float h, float s, float b){
-        return Color.getHSBColor(h, s, b).getRGB();
+        return 0xFF000000|Color.getHSBColor(h, s, b).getRGB();
     }
 
     public static float normalizeHue(float hue){

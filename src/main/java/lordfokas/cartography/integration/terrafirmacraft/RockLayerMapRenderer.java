@@ -1,31 +1,24 @@
 package lordfokas.cartography.integration.terrafirmacraft;
 
-import lordfokas.cartography.core.Colors;
-import lordfokas.cartography.core.IChunkData;
-import lordfokas.cartography.core.IMapRenderer;
+import lordfokas.cartography.core.*;
 import lordfokas.cartography.core.discrete.DiscreteDatum;
 import lordfokas.cartography.integration.minecraft.TerrainDatum;
 import lordfokas.cartography.integration.minecraft.TerrainHeightDataSource;
-import net.minecraft.client.Minecraft;
-import net.minecraft.resources.IResource;
 import net.minecraft.util.ResourceLocation;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.HashMap;
 
-public class RockLayerChunkRenderer implements IMapRenderer {
+public class RockLayerMapRenderer implements IMapRenderer {
     private final TFCRockLayerSource source;
     private final TerrainHeightDataSource topo;
 
-    public RockLayerChunkRenderer(TFCRockLayerSource source, TerrainHeightDataSource topo){
+    public RockLayerMapRenderer(TFCRockLayerSource source, TerrainHeightDataSource topo){
         this.source = source;
         this.topo = topo;
     }
 
     @Override
-    public boolean render(BufferedImage image, IChunkData chunk) {
+    public boolean render(BufferedImage image, IChunkData chunk, ILabelPlacer placer) {
         for(int x = 0; x < 16; x++)
         for(int y = 0; y < 16; y++){
             DiscreteDatum datum = source.getDatum(chunk, x, y);
@@ -49,18 +42,7 @@ public class RockLayerChunkRenderer implements IMapRenderer {
         return true;
     }
 
-    private static final HashMap<String, BufferedImage> CACHE = new HashMap<>();
     private BufferedImage getImage(String rock){
-        if(CACHE.containsKey(rock)) return CACHE.get(rock);
-        try{
-            ResourceLocation tex = new ResourceLocation("tfc", "textures/block/rock/raw/"+rock+".png");
-            IResource res = Minecraft.getInstance().getResourceManager().getResource(tex);
-            BufferedImage image = ImageIO.read(res.getInputStream());
-            CACHE.put(rock, image);
-            return image;
-        }catch(IOException e){
-            e.printStackTrace();
-            return null;
-        }
+        return ImageHandler.getImage(new ResourceLocation("tfc", "textures/block/rock/raw/"+rock+".png"));
     }
 }

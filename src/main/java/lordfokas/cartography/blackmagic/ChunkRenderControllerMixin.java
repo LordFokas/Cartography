@@ -1,5 +1,6 @@
 package lordfokas.cartography.blackmagic;
 
+import journeymap.client.JourneymapClient;
 import journeymap.client.cartography.ChunkRenderController;
 import journeymap.client.cartography.render.BaseRenderer;
 import journeymap.client.model.*;
@@ -21,7 +22,7 @@ public class ChunkRenderControllerMixin {
 
     @Inject(method = renderChunk, at = @At("HEAD"), cancellable = true)
     public void interceptRenderChunk(RegionCoord rCoord, MapType mapType, ChunkMD chunkMd, CallbackInfoReturnable<Boolean> ret){
-        if(Journeymap.getClient().isMapping() && JMHacks.isCustom(mapType.name)){
+        if(JourneymapClient.getInstance().isMapping() && JMHacks.isCustom(mapType.name)){
             boolean renderOkay = false;
 
             try {
