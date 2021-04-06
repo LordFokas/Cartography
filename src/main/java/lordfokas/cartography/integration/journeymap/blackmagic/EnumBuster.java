@@ -1,4 +1,4 @@
-package lordfokas.cartography.integration.journeymap;
+package lordfokas.cartography.integration.journeymap.blackmagic;
 
 import sun.reflect.*;
 

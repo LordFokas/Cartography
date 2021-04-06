@@ -1,4 +1,4 @@
-package lordfokas.cartography.integration.minecraft;
+package lordfokas.cartography.integration.terrafirmacraft;
 
 import lordfokas.cartography.core.continuous.ContinuousDatum;
 

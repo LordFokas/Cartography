@@ -2,7 +2,7 @@ package lordfokas.cartography.blackmagic;
 
 import journeymap.client.api.display.Context;
 import journeymap.client.model.MapType;
-import lordfokas.cartography.integration.journeymap.JMHacks;
+import lordfokas.cartography.integration.journeymap.blackmagic.JMHacks;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;

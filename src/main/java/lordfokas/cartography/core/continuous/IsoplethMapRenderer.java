@@ -1,6 +1,7 @@
 package lordfokas.cartography.core.continuous;
 
 import lordfokas.cartography.core.*;
+import lordfokas.cartography.core.markers.IMarkerPlacer;
 import net.minecraft.util.math.ChunkPos;
 
 import java.awt.image.BufferedImage;
@@ -15,7 +16,7 @@ public class IsoplethMapRenderer implements IMapRenderer {
     }
 
     @Override
-    public boolean render(BufferedImage image, IChunkData chunk, ILabelPlacer labels) {
+    public boolean render(BufferedImage image, IChunkData chunk, IMarkerPlacer labels) {
         DataType type = sources[0].getDataType();
         int x1 = -1, y1 = -1, x2 = -1, y2 = -1;
         boolean boundary = false;
@@ -51,7 +52,7 @@ public class IsoplethMapRenderer implements IMapRenderer {
             float hue = Colors.normalizeHue(((IsoplethDataCompiler)compiler).getMaster().interpolate(normal));
             int color = Colors.HSB2ARGB(hue, 1, 1);
             int angle = (x1==x2) ? 90 : (int) Math.round(Math.toDegrees(Math.atan(((double)y2-y1)/((double)x2-x1))));
-            labels.place(chunk.getDimension(), ck.getMinBlockX()+lx, ck.getMinBlockZ()+lz, value+type.unit, color, type, value, angle);
+            labels.place(chunk.getDimension(), ck.getMinBlockX()+lx, ck.getMinBlockZ()+lz, value+type.unit, color, type, value, angle, MapType.ISOHYETAL, MapType.ISOTHERMAL);
         }
 
         return true;

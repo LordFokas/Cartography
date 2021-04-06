@@ -2,6 +2,7 @@ package lordfokas.cartography.core;
 
 import lordfokas.cartography.Cartography;
 import lordfokas.cartography.modules.Module;
+import net.minecraft.client.GameSettings;
 
 import java.util.EnumMap;
 import java.util.Set;

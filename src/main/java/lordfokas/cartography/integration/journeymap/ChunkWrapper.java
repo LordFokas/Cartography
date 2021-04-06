@@ -95,7 +95,7 @@ class ChunkWrapper implements IChunkData {
         boolean loop = true;
         while(loop && y > 0){
             BlockState state = w.getBlockState(new BlockPos(wx, --y, wz));
-            loop = visitor.visit(y, state);
+            loop = !visitor.visit(y, state);
         }
     }
 }

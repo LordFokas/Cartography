@@ -16,6 +16,9 @@ public class ConstantsMixin {
                 case "cartography.fullscreen.map_geological":
                     ret.setReturnValue("Geological");
                     return;
+                case "cartography.fullscreen.map_biogeographical":
+                    ret.setReturnValue("Biogeographical");
+                    return;
                 case "cartography.fullscreen.map_isohyetal":
                     ret.setReturnValue("Isohyetal");
                     return;

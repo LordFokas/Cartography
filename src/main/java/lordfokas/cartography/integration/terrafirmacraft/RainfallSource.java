@@ -5,8 +5,9 @@ import lordfokas.cartography.core.IChunkData;
 import lordfokas.cartography.core.continuous.ContinuousDatum;
 import lordfokas.cartography.core.continuous.IContinuousDataSource;
 import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 
-public class TFCRainfallSource implements IContinuousDataSource {
+public class RainfallSource implements IContinuousDataSource {
     private static final float MAX_RAINFALL = 500F;
 
     @Override
@@ -30,7 +31,7 @@ public class TFCRainfallSource implements IContinuousDataSource {
     }
 
     private float rainfall(IChunkData c, int x, int y){
-        ChunkData data = TFCHelper.getChunkData(c.getChunk(x, y));
+        ChunkData data = c.getChunk(x,y).getCapability(ChunkDataCapability.CAPABILITY).orElse(null);
         return data.getRainfall(x, y);
     }
 }

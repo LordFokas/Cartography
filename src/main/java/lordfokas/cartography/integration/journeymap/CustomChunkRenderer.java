@@ -5,7 +5,7 @@ import journeymap.client.cartography.render.BaseRenderer;
 import journeymap.client.model.ChunkMD;
 import journeymap.client.render.ComparableBufferedImage;
 import lordfokas.cartography.core.IChunkData;
-import lordfokas.cartography.core.ILabelPlacer;
+import lordfokas.cartography.core.markers.IMarkerPlacer;
 import lordfokas.cartography.core.IMapRenderer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -13,7 +13,7 @@ import net.minecraft.util.math.ChunkPos;
 class CustomChunkRenderer extends BaseRenderer {
 
     private final IMapRenderer renderer;
-    private final ILabelPlacer labels;
+    private final IMarkerPlacer labels;
 
     public CustomChunkRenderer(IMapRenderer renderer){
         this.renderer = renderer;

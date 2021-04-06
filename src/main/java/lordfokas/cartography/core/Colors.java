@@ -13,4 +13,10 @@ public class Colors {
         while(hue > 360F) hue -= 360F;
         return hue / 360F;
     }
+
+    public static int darken(int color){
+        int alpha = color & 0xFF000000;
+        color = (color >> 1) & 0x7F7F7F;
+        return color | alpha;
+    }
 }

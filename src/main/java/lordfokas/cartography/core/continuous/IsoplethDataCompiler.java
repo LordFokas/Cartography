@@ -1,7 +1,7 @@
 package lordfokas.cartography.core.continuous;
 
 import lordfokas.cartography.core.Colors;
-import lordfokas.cartography.integration.minecraft.TerrainDatum;
+import lordfokas.cartography.integration.terrafirmacraft.TerrainDatum;
 
 public class IsoplethDataCompiler implements IContinuousDataCompiler {
     protected final ColorScale[] scales;

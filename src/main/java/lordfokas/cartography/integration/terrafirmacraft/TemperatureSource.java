@@ -5,8 +5,9 @@ import lordfokas.cartography.core.IChunkData;
 import lordfokas.cartography.core.continuous.ContinuousDatum;
 import lordfokas.cartography.core.continuous.IContinuousDataSource;
 import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 
-public class TFCTemperatureSource implements IContinuousDataSource {
+public class TemperatureSource implements IContinuousDataSource {
     private static final float MIN_TEMPERATURE = -20F;
     private static final float MAX_TEMPERATURE = 40F;
 
@@ -32,7 +33,7 @@ public class TFCTemperatureSource implements IContinuousDataSource {
     }
 
     private float temperature(IChunkData c, int x, int y){
-        ChunkData data = TFCHelper.getChunkData(c.getChunk(x, y));
+        ChunkData data = c.getChunk(x,y).getCapability(ChunkDataCapability.CAPABILITY).orElse(null);
         return data.getAverageTemp(x, y);
     }
 }

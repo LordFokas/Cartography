@@ -9,7 +9,7 @@ import journeymap.client.ui.theme.Theme;
 import journeymap.client.ui.theme.ThemeButton;
 import journeymap.client.ui.theme.ThemeToggle;
 import journeymap.client.ui.theme.ThemeToolbar;
-import lordfokas.cartography.integration.journeymap.JMHacks;
+import lordfokas.cartography.integration.journeymap.blackmagic.JMHacks;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

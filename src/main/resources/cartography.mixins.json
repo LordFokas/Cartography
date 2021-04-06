@@ -9,8 +9,7 @@
     "FullscreenMixin",
     "MapPlayerTaskMixin",
     "MapStateMixin",
-    "MapTypeMixin",
-    "MapTypeNameMixin"
+    "MapTypeMixin"
   ],
   "minVersion": "0.8"
 }

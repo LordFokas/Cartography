@@ -5,7 +5,7 @@ import journeymap.client.data.DataCache;
 import journeymap.client.model.EntityDTO;
 import journeymap.client.model.MapState;
 import journeymap.client.model.MapType;
-import lordfokas.cartography.integration.journeymap.JMHacks;
+import lordfokas.cartography.integration.journeymap.blackmagic.JMHacks;
 import net.minecraft.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;

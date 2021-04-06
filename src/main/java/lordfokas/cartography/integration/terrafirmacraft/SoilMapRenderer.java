@@ -8,11 +8,11 @@ import net.minecraft.util.ResourceLocation;
 
 import java.awt.image.BufferedImage;
 
-public class RockLayerMapRenderer implements IMapRenderer {
-    private final IDiscreteDataSource source;
+public class SoilMapRenderer implements IMapRenderer {
     private final TerrainHeightSource topo;
+    private final IDiscreteDataSource source;
 
-    public RockLayerMapRenderer(IDiscreteDataSource source, TerrainHeightSource topo){
+    public SoilMapRenderer(IDiscreteDataSource source, TerrainHeightSource topo){
         this.source = source;
         this.topo = topo;
     }
@@ -28,19 +28,15 @@ public class RockLayerMapRenderer implements IMapRenderer {
             if(texture == null) continue;
             int pixel = 0xFF000000 | texture.getRGB(x, y);
 
-            if(datum.boundary){
+            TerrainDatum terrain = topo.getDatum(chunk, x, y);
+            if(terrain.water) {
+                float d = ((float) Math.min(12, Math.max(0, terrain.depth - 3)) / 12F);
+                float h = 0.69F, s = 1F, b = (1F - (d / 2.5F));
+                image.setRGB(x, y, 0xFF000000 | Colors.HSB2ARGB(h, s, b));
+            }else if(terrain.boundary){
                 image.setRGB(x, y, Colors.darken(pixel));
             }else{
-                TerrainDatum terrain = topo.getDatum(chunk, x, y);
-                if(terrain.water) {
-                    float d = ((float) Math.min(12, Math.max(0, terrain.depth - 3)) / 12F);
-                    float h = 0.69F, s = 1F, b = (1F - (d / 2.5F));
-                    image.setRGB(x, y, 0xFF000000 | Colors.HSB2ARGB(h, s, b));
-                }else if(terrain.boundary){
-                    image.setRGB(x, y, Colors.darken(pixel));
-                }else{
-                    image.setRGB(x, y, pixel);
-                }
+                image.setRGB(x, y, pixel);
             }
         }
         return true;

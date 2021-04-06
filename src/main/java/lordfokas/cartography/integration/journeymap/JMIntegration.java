@@ -3,6 +3,7 @@ package lordfokas.cartography.integration.journeymap;
 import journeymap.client.cartography.render.BaseRenderer;
 import lordfokas.cartography.core.MapType;
 import lordfokas.cartography.core.MapTypeRegistry;
+import lordfokas.cartography.integration.journeymap.blackmagic.JMHacks;
 
 import java.util.HashMap;
 

@@ -4,6 +4,7 @@ public enum DataType {
     TERRAIN_HEIGHT("m", 8),
     TEMPERATURE("*C", 1),
     RAINFALL("mm", 5),
+    SOIL,
     ROCKLAYER;
 
     public final String unit;
