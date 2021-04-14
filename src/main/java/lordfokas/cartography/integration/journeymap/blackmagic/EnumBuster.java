@@ -347,6 +347,7 @@ class EnumBuster<E extends Enum<E>> {
         private final Map<Field, int[]> savedSwitchFieldValues =
                 new HashMap<Field, int[]>();
 
+        @SuppressWarnings("RedundantThrows")
         private Memento() throws IllegalAccessException {
             try {
                 values = values().clone();

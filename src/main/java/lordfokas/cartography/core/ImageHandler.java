@@ -1,7 +1,6 @@
 package lordfokas.cartography.core;
 
 import lordfokas.cartography.Cartography;
-import lordfokas.cartography.core.data.ThreadHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.IResource;
 import net.minecraft.util.ResourceLocation;
@@ -53,24 +52,24 @@ public class ImageHandler {
             return LABELS.get(key);
         }
         char[] chars = ("^"+text+"$").toCharArray();
-        BufferedImage[] imgs = new BufferedImage[chars.length];
+        BufferedImage[] images = new BufferedImage[chars.length];
         int width = 0;
         for(int i = 0; i < chars.length; i++){
             char c = chars[i];
             BufferedImage b = CHARS.get(c);
             width += b.getWidth();
-            imgs[i] = b;
+            images[i] = b;
         }
-        int height = imgs[0].getHeight();
-        BufferedImage label = new BufferedImage(width, height, imgs[0].getType());
-        int choff = 0;
-        for(BufferedImage ch : imgs){
+        int height = images[0].getHeight();
+        BufferedImage label = new BufferedImage(width, height, images[0].getType());
+        int offset = 0;
+        for(BufferedImage ch : images){
             for(int x = 0; x < ch.getWidth(); x++){
                 for(int y = 0; y < height; y++){
-                    label.setRGB(x+choff, y, ch.getRGB(x, y));
+                    label.setRGB(x+offset, y, ch.getRGB(x, y));
                 }
             }
-            choff += ch.getWidth();
+            offset += ch.getWidth();
         }
         if(scale > 1) label = upscale(label, scale);
         LABELS.put(key, label);

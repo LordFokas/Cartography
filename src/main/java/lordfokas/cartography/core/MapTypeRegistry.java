@@ -6,7 +6,6 @@ import lordfokas.cartography.modules.Module;
 
 import java.util.EnumMap;
 import java.util.Set;
-import java.util.function.BiConsumer;
 
 public class MapTypeRegistry {
     public static final MapTypeRegistry MASTER = new MapTypeRegistry();
@@ -36,14 +35,6 @@ public class MapTypeRegistry {
         if(this.owner == null)
             throw new IllegalStateException("This is already the master MapTypeRegistry, you dumbass!");
         MASTER.renderers.putAll(renderers);
-    }
-
-    public void forEach(BiConsumer<MapType, IMapRenderer> visitor){
-        for(MapType type : MapType.values()){
-            if(renderers.containsKey(type)){
-                visitor.accept(type, renderers.get(type));
-            }
-        }
     }
 
     public Set<MapType> getTypes(){

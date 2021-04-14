@@ -11,7 +11,6 @@ import lordfokas.cartography.Cartography;
 import lordfokas.cartography.core.markers.IMarkerHandler;
 import lordfokas.cartography.core.markers.Marker;
 import lordfokas.cartography.integration.journeymap.blackmagic.JMHacks;
-import net.minecraft.client.Minecraft;
 
 import java.util.HashMap;
 

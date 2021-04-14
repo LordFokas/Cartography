@@ -1,11 +1,10 @@
 package lordfokas.cartography.core.mapping.continuous;
 
 public class ColorScale {
-    protected final float low, high, delta;
+    protected final float low, delta;
 
     public ColorScale(float low, float high){
         this.low = low;
-        this.high = high;
         this.delta = high - low;
     }
 

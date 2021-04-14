@@ -86,12 +86,6 @@ class ChunkWrapper implements IChunkData {
     }
 
     @Override
-    public Biome getBiome(int x, int z) {
-        int s = getSeaLevel();
-        return master.getBiome(master.getBlockPos(x, s, z));
-    }
-
-    @Override
     public void traverseColumn(int x, int z, IColumnVisitor visitor) {
         int wx = master.toWorldX(x);
         int wz = master.toWorldZ(z);

@@ -1,7 +1,6 @@
 package lordfokas.cartography.core.mapping.continuous;
 
 import lordfokas.cartography.core.*;
-import lordfokas.cartography.core.DataType;
 import lordfokas.cartography.core.mapping.Colors;
 import lordfokas.cartography.core.mapping.IChunkData;
 import lordfokas.cartography.core.mapping.IMapRenderer;
@@ -43,7 +42,7 @@ public class IsoplethMapRenderer implements IMapRenderer {
             if(!boundary && data[0].boundary){
                 boundary = true;
                 normal = data[0].value;
-                value = data[0].absolute;
+                value = data[0].truncated;
                 lx = x1 = x;
                 lz = y1 = y;
             }

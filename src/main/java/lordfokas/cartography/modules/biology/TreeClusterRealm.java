@@ -1,7 +1,6 @@
 package lordfokas.cartography.modules.biology;
 
 import lordfokas.cartography.core.AsyncImageProxy;
-import lordfokas.cartography.core.ImageHandler;
 import lordfokas.cartography.core.MapType;
 import lordfokas.cartography.core.data.ClusterRealm;
 import lordfokas.cartography.core.data.ThreadHandler;

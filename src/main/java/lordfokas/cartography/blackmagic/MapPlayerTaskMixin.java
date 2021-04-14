@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Mixin(value = MapPlayerTask.class, remap = false)
 public class MapPlayerTaskMixin {
 

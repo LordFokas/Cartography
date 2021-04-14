@@ -31,7 +31,7 @@ public abstract class FullscreenMixin extends JmUI {
     @Shadow private ThemeButton buttonLayers;
     @Shadow private ThemeToolbar mapTypeToolbar;
 
-    protected HashMap<MapType.Name, ThemeButton> buttonMap = new HashMap<>();
+    protected final HashMap<MapType.Name, ThemeButton> buttonMap = new HashMap<>();
     protected int size = -1;
 
     private FullscreenMixin(String title, Void __) { super(title); }
@@ -70,6 +70,7 @@ public abstract class FullscreenMixin extends JmUI {
         }
     }
 
+    @SuppressWarnings("EmptyMethod")
     @Shadow private void updateMapType(MapType type){}
 
     @Inject(method = "updateMapType(Ljourneymap/client/model/MapType;)V", at = @At("HEAD"))

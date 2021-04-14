@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = MapType.class, remap = false)
 public abstract class MapTypeMixin {
+    @SuppressWarnings("unused")
     @Shadow public abstract boolean isAllowed();
 
     @Shadow @Final public MapType.Name name;
