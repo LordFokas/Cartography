@@ -1,8 +1,8 @@
 package lordfokas.cartography.integration.terrafirmacraft;
 
 import lordfokas.cartography.core.DataType;
-import lordfokas.cartography.core.IChunkData;
-import lordfokas.cartography.core.continuous.IContinuousDataSource;
+import lordfokas.cartography.core.mapping.IChunkData;
+import lordfokas.cartography.core.mapping.continuous.IContinuousDataSource;
 import net.minecraft.util.Tuple;
 
 import javax.xml.ws.Holder;
@@ -16,7 +16,7 @@ public class TerrainHeightSource implements IContinuousDataSource {
 
     @Override
     public DataType getDataType() {
-        return null;
+        return DataType.TERRAIN_HEIGHT;
     }
 
     @Override

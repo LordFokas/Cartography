@@ -1,7 +1,7 @@
 package lordfokas.cartography.integration.journeymap;
 
 import journeymap.client.model.ChunkMD;
-import lordfokas.cartography.core.IChunkData;
+import lordfokas.cartography.core.mapping.IChunkData;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.BlockPos;
@@ -40,6 +40,11 @@ class ChunkWrapper implements IChunkData {
     @Override
     public RegistryKey<World> getDimension(){
         return master.getDimension();
+    }
+
+    @Override
+    public ChunkPos getPos(){
+        return master.getCoord();
     }
 
     @Override

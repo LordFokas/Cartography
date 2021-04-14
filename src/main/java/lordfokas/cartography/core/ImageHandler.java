@@ -1,10 +1,12 @@
 package lordfokas.cartography.core;
 
 import lordfokas.cartography.Cartography;
+import lordfokas.cartography.core.data.ThreadHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.IResource;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nonnull;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -14,24 +16,36 @@ public class ImageHandler {
     private static final ResourceLocation ISOPLETH_LABELS = new ResourceLocation(Cartography.MOD_ID, "textures/isopleth.png");
     private static final int WIDTH_ENDS = 3, WIDTH_CHARS = 7;
     private static final String CHAR_ORDER = "0123456789m*C-";
+    private static final BufferedImage NOT_FOUND;
 
-    private static final HashMap<ResourceLocation, BufferedImage> CACHE = new HashMap<>();
+    private static final HashMap<Integer, HashMap<ResourceLocation, BufferedImage>> SCALED = new HashMap<>();
+    private static final HashMap<ResourceLocation, BufferedImage> BASE = new HashMap<>();
     private static final HashMap<Character, BufferedImage> CHARS = new HashMap<>();
     private static final HashMap<String, BufferedImage> LABELS = new HashMap<>();
 
-    public static BufferedImage getImage(ResourceLocation tex){
-        if(CACHE.containsKey(tex)) return CACHE.get(tex);
-        try{
-            IResource res = Minecraft.getInstance().getResourceManager().getResource(tex);
-            BufferedImage image = ImageIO.read(res.getInputStream());
-            CACHE.put(tex, image);
-            return image;
-        }catch(IOException e){
-            e.printStackTrace();
-            return null;
-        }
+    @Nonnull
+    public static BufferedImage getImage(ResourceLocation texture){
+        return BASE.computeIfAbsent(texture, $ -> {
+            try{
+                IResource res = Minecraft.getInstance().getResourceManager().getResource(texture);
+                return ImageIO.read(res.getInputStream());
+            }catch(IOException e){
+                e.printStackTrace();
+                return NOT_FOUND;
+            }
+        });
     }
 
+    @Nonnull
+    public static BufferedImage getImage(ResourceLocation texture, int scale){
+        if(scale < 1) throw new IllegalArgumentException("Image scale has to be >= 1");
+        if(scale == 1) return getImage(texture);
+
+        HashMap<ResourceLocation, BufferedImage> cache = SCALED.computeIfAbsent(scale, $ -> new HashMap<>());
+        return cache.computeIfAbsent(texture, $ -> upscale(getImage(texture), scale));
+    }
+
+    @Nonnull
     public static BufferedImage getLabel(String text, int scale){
         if(scale < 1) throw new IllegalArgumentException("Scale must be >= 1");
         String key = text+":"+scale;
@@ -63,6 +77,7 @@ public class ImageHandler {
         return label;
     }
 
+    @Nonnull
     public static BufferedImage upscale(BufferedImage input, int factor){
         int w = input.getWidth() * factor, h = input.getHeight() * factor;
         BufferedImage output = new BufferedImage(w, h, input.getType());
@@ -76,13 +91,16 @@ public class ImageHandler {
 
     static{
         BufferedImage source = getImage(ISOPLETH_LABELS);
-        if(source == null) throw new NullPointerException("Isopleth labels image not found");
         char[] chars = CHAR_ORDER.toCharArray();
         int offset = makeChar(source, '^', WIDTH_ENDS, 0);
         for(char c : chars){
             offset = makeChar(source, c, WIDTH_CHARS, offset);
         }
         makeChar(source, '$', WIDTH_ENDS, offset);
+
+        BufferedImage pink = new BufferedImage(1, 1, source.getType());
+        pink.setRGB(0,0, 0xFFFF00FF);
+        NOT_FOUND = upscale(pink, 16);
     }
 
     private static int makeChar(BufferedImage source, char c, int width, int offset){

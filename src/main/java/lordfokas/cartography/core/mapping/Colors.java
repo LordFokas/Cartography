@@ -1,4 +1,4 @@
-package lordfokas.cartography.core;
+package lordfokas.cartography.core.mapping;
 
 import java.awt.Color;
 

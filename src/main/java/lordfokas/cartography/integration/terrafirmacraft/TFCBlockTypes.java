@@ -5,6 +5,7 @@ import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.types.Ore;
 import net.dries007.tfc.common.types.Rock;
+import net.dries007.tfc.common.types.Wood;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.ResourceLocation;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 public class TFCBlockTypes {
     private static final Rock.BlockType[] STONE_TYPES = new Rock.BlockType[]{ Rock.BlockType.RAW, Rock.BlockType.HARDENED};
+    private static final Wood.BlockType[] LOG_TYPES = new Wood.BlockType[]{ Wood.BlockType.LOG, Wood.BlockType.STRIPPED_LOG };
 
     private static final Map<Block, Type> TYPES = new HashMap<>();
     private static final Map<Classification, Map<Block, String>> BLOCKS = new EnumMap<>(Classification.class);
@@ -65,6 +67,8 @@ public class TFCBlockTypes {
                 return new ResourceLocation("tfc", "textures/block/clay/" + variant + ".png");
             case "SAND":
                 return new ResourceLocation("tfc", "textures/block/sand/" + variant + ".png");
+            case "SAPLING":
+                return new ResourceLocation("tfc", "textures/block/wood/sapling/" + variant + ".png");
             default: return null;
         }
     }
@@ -72,7 +76,8 @@ public class TFCBlockTypes {
     public enum Classification {
         ROCK,
         SEDIMENT,
-        FLUID
+        FLUID,
+        TREE
     }
 
     public enum Type {
@@ -82,6 +87,9 @@ public class TFCBlockTypes {
         DIRT(Classification.SEDIMENT),
         CLAY(Classification.SEDIMENT),
         SAND(Classification.SEDIMENT),
+        LOG(Classification.TREE),
+        LEAVES(Classification.TREE),
+        SAPLING(Classification.TREE),
         WATER(Classification.FLUID);
 
         public final Classification classification;
@@ -89,6 +97,7 @@ public class TFCBlockTypes {
     }
 
     static {
+        // ROCKS  ======================================================================================================
         for(Rock.Default rock : Rock.Default.values()){
             String name = rock.name().toLowerCase();
             for(Rock.BlockType type : STONE_TYPES){
@@ -105,7 +114,7 @@ public class TFCBlockTypes {
             }
         }
 
-
+        // SOILS  ======================================================================================================
         for(SoilBlockType.Variant var : SoilBlockType.Variant.values()){
             String name = var.name().toLowerCase();
             for(SoilBlockType type : SoilBlockType.values()){
@@ -124,7 +133,17 @@ public class TFCBlockTypes {
             put(Type.SAND, TFCBlocks.SAND.get(sand).get(), name);
         }
 
+        // WOODS  ======================================================================================================
+        for(Wood.Default wood : Wood.Default.values()){
+            String name = wood.name().toLowerCase();
+            for(Wood.BlockType log : LOG_TYPES){
+                put(Type.LOG, TFCBlocks.WOODS.get(wood).get(log).get(), name);
+            }
+            put(Type.LEAVES, TFCBlocks.WOODS.get(wood).get(Wood.BlockType.LEAVES).get(), name);
+            put(Type.SAPLING, TFCBlocks.WOODS.get(wood).get(Wood.BlockType.SAPLING).get(), name);
+        }
 
+        // WATER  ======================================================================================================
         put(Type.WATER, TFCBlocks.SALT_WATER.get(), "salt_water");
         put(Type.WATER, TFCBlocks.SPRING_WATER.get(), "spring_water");
         put(Type.WATER, Blocks.WATER.getBlock(), "fresh_water");

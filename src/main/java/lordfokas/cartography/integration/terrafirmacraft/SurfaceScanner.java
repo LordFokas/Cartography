@@ -1,9 +1,9 @@
 package lordfokas.cartography.integration.terrafirmacraft;
 
 import lordfokas.cartography.core.DataType;
-import lordfokas.cartography.core.IChunkData;
-import lordfokas.cartography.core.discrete.DiscreteDatum;
-import lordfokas.cartography.core.discrete.IDiscreteDataSource;
+import lordfokas.cartography.core.mapping.IChunkData;
+import lordfokas.cartography.core.mapping.discrete.DiscreteDatum;
+import lordfokas.cartography.core.mapping.discrete.IDiscreteDataSource;
 import net.minecraft.block.Block;
 import net.minecraft.util.Tuple;
 

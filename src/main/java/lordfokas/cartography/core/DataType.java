@@ -5,7 +5,8 @@ public enum DataType {
     TEMPERATURE("*C", 1),
     RAINFALL("mm", 5),
     SOIL,
-    ROCKLAYER;
+    ROCKLAYER,
+    FOREST;
 
     public final String unit;
     public final int interval;

@@ -1,6 +1,6 @@
-package lordfokas.cartography.core.continuous;
+package lordfokas.cartography.core.mapping.continuous;
 
-import lordfokas.cartography.core.Colors;
+import lordfokas.cartography.core.mapping.Colors;
 import lordfokas.cartography.integration.terrafirmacraft.TerrainDatum;
 
 public class IsoplethDataCompiler implements IContinuousDataCompiler {

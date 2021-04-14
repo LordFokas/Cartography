@@ -1,5 +1,6 @@
 package lordfokas.cartography;
 
+import lordfokas.cartography.core.data.AsyncDataCruncher;
 import lordfokas.cartography.integration.ModIntegration;
 import lordfokas.cartography.modules.Module;
 import net.minecraftforge.common.MinecraftForge;
@@ -22,6 +23,8 @@ public class Cartography {
     }
 
     private void setup(final FMLCommonSetupEvent event){
+        AsyncDataCruncher.start();
+
         for(ModIntegration integration : ModIntegration.values()){
             integration.load(ModIntegration.LoadPhase.PRE);
         }

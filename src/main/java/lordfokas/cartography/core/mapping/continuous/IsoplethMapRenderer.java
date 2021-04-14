@@ -1,8 +1,15 @@
-package lordfokas.cartography.core.continuous;
+package lordfokas.cartography.core.mapping.continuous;
 
 import lordfokas.cartography.core.*;
-import lordfokas.cartography.core.markers.IMarkerPlacer;
+import lordfokas.cartography.core.DataType;
+import lordfokas.cartography.core.mapping.Colors;
+import lordfokas.cartography.core.mapping.IChunkData;
+import lordfokas.cartography.core.mapping.IMapRenderer;
+import lordfokas.cartography.core.markers.IMarkerHandler;
+import lordfokas.cartography.core.markers.Marker;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.World;
 
 import java.awt.image.BufferedImage;
 
@@ -16,7 +23,7 @@ public class IsoplethMapRenderer implements IMapRenderer {
     }
 
     @Override
-    public boolean render(BufferedImage image, IChunkData chunk, IMarkerPlacer labels) {
+    public boolean render(BufferedImage image, IChunkData chunk, IMarkerHandler labels) {
         DataType type = sources[0].getDataType();
         int x1 = -1, y1 = -1, x2 = -1, y2 = -1;
         boolean boundary = false;
@@ -52,9 +59,14 @@ public class IsoplethMapRenderer implements IMapRenderer {
             float hue = Colors.normalizeHue(((IsoplethDataCompiler)compiler).getMaster().interpolate(normal));
             int color = Colors.HSB2ARGB(hue, 1, 1);
             int angle = (x1==x2) ? 90 : (int) Math.round(Math.toDegrees(Math.atan(((double)y2-y1)/((double)x2-x1))));
-            labels.place(chunk.getDimension(), ck.getMinBlockX()+lx, ck.getMinBlockZ()+lz, value+type.unit, color, type, value, angle, MapType.ISOHYETAL, MapType.ISOTHERMAL);
+            labels.place(marker(chunk.getDimension(), ck.getMinBlockX()+lx, ck.getMinBlockZ()+lz, value+type.unit, color, type, value, angle, MapType.ISOHYETAL, MapType.ISOTHERMAL));
         }
 
         return true;
+    }
+
+    private static Marker marker(RegistryKey<World> dim, int wx, int wz, String text, int tint, DataType type, int abs, int angle, MapType ... types){
+        String key = type.name() +"-"+abs+"-"+ (wx>>6) +"-"+ (wz>>6);
+        return new Marker(key, dim, wx, wz, text, tint, 4, 2, angle, types);
     }
 }

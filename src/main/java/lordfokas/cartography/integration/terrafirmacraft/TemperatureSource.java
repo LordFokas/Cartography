@@ -1,9 +1,9 @@
 package lordfokas.cartography.integration.terrafirmacraft;
 
 import lordfokas.cartography.core.DataType;
-import lordfokas.cartography.core.IChunkData;
-import lordfokas.cartography.core.continuous.ContinuousDatum;
-import lordfokas.cartography.core.continuous.IContinuousDataSource;
+import lordfokas.cartography.core.mapping.IChunkData;
+import lordfokas.cartography.core.mapping.continuous.ContinuousDatum;
+import lordfokas.cartography.core.mapping.continuous.IContinuousDataSource;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 

@@ -1,4 +1,4 @@
-package lordfokas.cartography.core.continuous;
+package lordfokas.cartography.core.mapping.continuous;
 
 public class ContinuousDatum {
     public final float value;

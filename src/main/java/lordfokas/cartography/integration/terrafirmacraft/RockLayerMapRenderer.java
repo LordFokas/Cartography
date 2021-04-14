@@ -1,9 +1,12 @@
 package lordfokas.cartography.integration.terrafirmacraft;
 
 import lordfokas.cartography.core.*;
-import lordfokas.cartography.core.discrete.DiscreteDatum;
-import lordfokas.cartography.core.discrete.IDiscreteDataSource;
-import lordfokas.cartography.core.markers.IMarkerPlacer;
+import lordfokas.cartography.core.mapping.Colors;
+import lordfokas.cartography.core.mapping.IChunkData;
+import lordfokas.cartography.core.mapping.discrete.DiscreteDatum;
+import lordfokas.cartography.core.mapping.discrete.IDiscreteDataSource;
+import lordfokas.cartography.core.mapping.IMapRenderer;
+import lordfokas.cartography.core.markers.IMarkerHandler;
 import net.minecraft.util.ResourceLocation;
 
 import java.awt.image.BufferedImage;
@@ -18,7 +21,7 @@ public class RockLayerMapRenderer implements IMapRenderer {
     }
 
     @Override
-    public boolean render(BufferedImage image, IChunkData chunk, IMarkerPlacer placer) {
+    public boolean render(BufferedImage image, IChunkData chunk, IMarkerHandler placer) {
         for(int x = 0; x < 16; x++)
         for(int y = 0; y < 16; y++){
             DiscreteDatum datum = source.getDatum(chunk, x, y);

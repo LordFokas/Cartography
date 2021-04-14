@@ -1,6 +1,6 @@
 package lordfokas.cartography.integration.terrafirmacraft;
 
-import lordfokas.cartography.core.continuous.ContinuousDatum;
+import lordfokas.cartography.core.mapping.continuous.ContinuousDatum;
 
 public class TerrainDatum extends ContinuousDatum {
     public final boolean water;
