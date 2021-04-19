@@ -27,10 +27,10 @@ public class TreeClusterRealm extends ClusterRealm<ChunkPos, Collection<ITreeDat
 
     @Override
     protected boolean isInRange(ChunkPos coordinate, Collection<ChunkPos> cluster) {
-        int x = coordinate.x / 16;
-        int z = coordinate.z / 16;
+        int x = coordinate.x >> 4;
+        int z = coordinate.z >> 4;
         ChunkPos pos = cluster.iterator().next();
-        return pos.x / 16 == x && pos.z / 16 == z;
+        return pos.x >> 4 == x && pos.z >> 4 == z;
     }
 
     @Override
@@ -98,7 +98,7 @@ public class TreeClusterRealm extends ClusterRealm<ChunkPos, Collection<ITreeDat
         BlockPos center = calculateCenterOfMass(cluster);
 
         int SCALE = 4;
-        int s = (data.size()-1)*13;
+        int s = (data.size()-1)*7;
         int o = 0;
         for(ITreeDataHandler.TreeSummary summary : data){
             String tree = summary.tree.replace("SAPLING:", "");
@@ -110,20 +110,12 @@ public class TreeClusterRealm extends ClusterRealm<ChunkPos, Collection<ITreeDat
 
             String marker_key = "TreeCluster_"+tree+"_"+center.getX()+"_"+center.getZ();
             BlockPos marker_pos = center.offset(0, 0, s-o);
-            Marker marker = new Marker(marker_key, dim, marker_pos.getX(), marker_pos.getZ(), image, SCALE, 1, MapType.BIOGEOGRAPHICAL);
+            Marker marker = new Marker(marker_key, dim, marker_pos.getX(), marker_pos.getZ(), image, SCALE, 2, MapType.BIOGEOGRAPHICAL);
             cluster.getKeys().add(marker_key);
 
-            /*String label_key = "Label"+marker_key;
-            BlockPos label_pos = marker_pos.offset(0, 0, 12);
-            Marker label = new Marker(label_key, dim, label_pos.getX(), label_pos.getZ(), String.valueOf(summary.count), 0x00A000, SCALE, 2, 0, MapType.BIOGEOGRAPHICAL);
-            cluster.getKeys().add(label_key);*/
+            ThreadHandler.runOnGameThreadBlocking(() -> handler.place(marker));
 
-            ThreadHandler.runOnGameThreadBlocking(() -> {
-                handler.place(marker);
-                //handler.place(label);
-            });
-
-            o += 26;
+            o += 14;
         }
     }
 
@@ -144,8 +136,8 @@ public class TreeClusterRealm extends ClusterRealm<ChunkPos, Collection<ITreeDat
 
     private BlockPos calculateCenterOfMass(TreeCluster cluster){
         ChunkPos pos = cluster.getCoordinates().iterator().next();
-        int x = pos.x / 16;
-        int z = pos.z / 16;
-        return new BlockPos((x*256)+128, 0, (z*256)+128);
+        int x = pos.x >> 4;
+        int z = pos.z >> 4;
+        return new BlockPos((x<<8)+128, 0, (z<<8)+128);
     }
 }

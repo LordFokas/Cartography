@@ -2,11 +2,19 @@ package lordfokas.cartography.modules.biology;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
 public class TreeCounter {
     private final HashMap<String, Counter> counters = new HashMap<>();
+
+    private static final Comparator<ITreeDataHandler.TreeSummary> COMPARATOR = new Comparator<ITreeDataHandler.TreeSummary>() {
+        @Override
+        public int compare(ITreeDataHandler.TreeSummary o1, ITreeDataHandler.TreeSummary o2) {
+            return o1.count - o2.count;
+        }
+    };
 
     public void add(Iterable<ITreeDataHandler.TreeSummary> summaries){
         for(ITreeDataHandler.TreeSummary summary : summaries){
@@ -38,6 +46,7 @@ public class TreeCounter {
         return counters.entrySet()
             .stream()
             .map(e -> new ITreeDataHandler.TreeSummary(e.getKey(), e.getValue().value))
+            .sorted(COMPARATOR)
             .collect(Collectors.toCollection(() -> new ArrayList<>(8)));
     }
 
