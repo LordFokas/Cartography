@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-class TreeDataHandler implements ITreeDataHandler {
+public class TreeDataHandler implements ITreeDataHandler {
     private final HashMap<RegistryKey<World>, HashMap<ChunkPos, Collection<TreeSummary>>> summaries = new HashMap<>();
     private final HashMap<RegistryKey<World>, TreeClusterRealm> clusters = new HashMap<>();
     private volatile boolean visible = true;
@@ -96,7 +96,7 @@ class TreeDataHandler implements ITreeDataHandler {
         return true;
     }
 
-    static class Dummy implements ITreeDataHandler {
+    public static class Dummy implements ITreeDataHandler {
         @Override public void setTreesInChunk(IChunkData chunk, Collection<TreeSummary> summaries){}
         @Override public void setMarkersVisible(boolean visible){}
         @Override public boolean getMarkersVisible(){ return false; }

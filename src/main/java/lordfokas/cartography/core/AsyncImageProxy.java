@@ -13,7 +13,8 @@ public class AsyncImageProxy {
 
     @Nonnull
     public static BufferedImage getImage(ResourceLocation texture){
-        return BASE.computeIfAbsent(texture, $ -> ThreadHandler.getOnGameThreadBlocking($$ -> ImageHandler.getImage(texture)));
+        throw new RuntimeException("This class is cursed, no touching until the exorcist arrives");
+        //return BASE.computeIfAbsent(texture, $ -> ThreadHandler.getOnGameThreadBlocking($$ -> ImageHandler.getImage(texture)));
     }
 
     @Nonnull

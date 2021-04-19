@@ -9,6 +9,7 @@ import java.util.Collection;
 
 public class Biology {
     public static final MapTypeRegistry MAP_TYPE_REGISTRY = new MapTypeRegistry(Module.BIOLOGY);
+    private static final ITreeDataHandler.Async ASYNC_TREE_DATA_PROXY = new AsyncTreeDataProxy();
     private static ITreeDataHandler treeDataHandler = new TreeDataHandler.Dummy();
 
     public static ITreeDataHandler.Async getAsyncTreeDataHandler(){
@@ -20,7 +21,7 @@ public class Biology {
         treeDataHandler = new TreeDataHandler();
     }
 
-    private static final ITreeDataHandler.Async ASYNC_TREE_DATA_PROXY = new ITreeDataHandler.Async() {
+    private static class AsyncTreeDataProxy implements ITreeDataHandler.Async {
         @Override
         public ThreadHandler<Void, Void> setTreesInChunkAsyncChain(IChunkData chunk, Collection<TreeSummary> summaries) {
             return ThreadHandler.startOnDataThread(v -> {

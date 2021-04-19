@@ -17,7 +17,7 @@ public class Cluster<C, D, R>{
         return coordinates;
     }
 
-    void setData(D data){
+    public void setData(D data){
         this.data = data;
     }
 

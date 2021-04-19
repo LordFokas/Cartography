@@ -7,9 +7,11 @@ import lordfokas.cartography.core.mapping.discrete.DiscreteDatum;
 import lordfokas.cartography.core.mapping.discrete.IDiscreteDataSource;
 import lordfokas.cartography.core.mapping.IMapRenderer;
 import lordfokas.cartography.core.markers.IMarkerHandler;
+import lordfokas.cartography.modules.geology.Geology;
 import net.minecraft.util.ResourceLocation;
 
 import java.awt.image.BufferedImage;
+import java.util.HashSet;
 
 public class RockLayerMapRenderer implements IMapRenderer {
     private final IDiscreteDataSource source;
@@ -22,13 +24,15 @@ public class RockLayerMapRenderer implements IMapRenderer {
 
     @Override
     public boolean render(BufferedImage image, IChunkData chunk, IMarkerHandler placer) {
+        HashSet<String> rocks = new HashSet<>();
+
         for(int x = 0; x < 16; x++)
         for(int y = 0; y < 16; y++){
             DiscreteDatum datum = source.getDatum(chunk, x, y);
+            rocks.add(datum.value);
             ResourceLocation path = TFCBlockTypes.getTexturePath(datum.value);
             if(path == null) continue;
             BufferedImage texture = ImageHandler.getImage(path);
-            if(texture == null) continue;
             int pixel = 0xFF000000 | texture.getRGB(x, y);
 
             if(datum.boundary){
@@ -46,6 +50,9 @@ public class RockLayerMapRenderer implements IMapRenderer {
                 }
             }
         }
+
+        Geology.getAsyncRockDataHandler().setRocksInChunk(chunk, rocks);
+
         return true;
     }
 }

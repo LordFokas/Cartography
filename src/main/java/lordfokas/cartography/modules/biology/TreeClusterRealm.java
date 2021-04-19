@@ -1,6 +1,6 @@
 package lordfokas.cartography.modules.biology;
 
-import lordfokas.cartography.core.AsyncImageProxy;
+import lordfokas.cartography.core.ImageHandler;
 import lordfokas.cartography.core.MapType;
 import lordfokas.cartography.core.data.ClusterRealm;
 import lordfokas.cartography.core.data.ThreadHandler;
@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import java.awt.image.BufferedImage;
 import java.util.*;
 
-class TreeClusterRealm extends ClusterRealm<ChunkPos, Collection<ITreeDataHandler.TreeSummary>, String, TreeCluster> {
+public class TreeClusterRealm extends ClusterRealm<ChunkPos, Collection<ITreeDataHandler.TreeSummary>, String, TreeCluster> {
     private final HashMap<ChunkPos, Collection<ITreeDataHandler.TreeSummary>> data;
     private final RegistryKey<World> dim;
 
@@ -82,9 +82,11 @@ class TreeClusterRealm extends ClusterRealm<ChunkPos, Collection<ITreeDataHandle
     @Override
     protected void undeploy(TreeCluster cluster) {
         IMarkerHandler markers = JMPlugin.instance();
-        for(String key : cluster.getKeys()){
-            markers.delete(key);
-        }
+        ThreadHandler.runOnGameThreadBlocking(() -> {
+            for(String key : cluster.getKeys()){
+                markers.delete(key);
+            }
+        });
         cluster.getKeys().clear();
     }
 
@@ -96,29 +98,32 @@ class TreeClusterRealm extends ClusterRealm<ChunkPos, Collection<ITreeDataHandle
         BlockPos center = calculateCenterOfMass(cluster);
 
         int SCALE = 4;
-        int s = (data.size()-1)*10;
+        int s = (data.size()-1)*13;
         int o = 0;
         for(ITreeDataHandler.TreeSummary summary : data){
-            final int offset = o;
+            String tree = summary.tree.replace("SAPLING:", "");
+            String text = tree + " x" + summary.count;
 
-            BufferedImage image = AsyncImageProxy.getImage(TFCBlockTypes.getTexturePath(summary.tree), SCALE);
+            // TODO: exorcise cursed code
+            // BufferedImage image = AsyncImageProxy.getImage(TFCBlockTypes.getTexturePath(summary.tree), SCALE);
+            BufferedImage image = ThreadHandler.getOnGameThreadBlocking($ -> ImageHandler.getLabel(text, TFCBlockTypes.getTexturePath(summary.tree), SCALE));
 
-            String marker_key = "TreeCluster_"+summary.tree.replace("SAPLING:", "")+"_"+center.getX()+"_"+center.getZ();
-            BlockPos marker_pos = center.offset(s-offset, 0, 0);
+            String marker_key = "TreeCluster_"+tree+"_"+center.getX()+"_"+center.getZ();
+            BlockPos marker_pos = center.offset(0, 0, s-o);
             Marker marker = new Marker(marker_key, dim, marker_pos.getX(), marker_pos.getZ(), image, SCALE, 1, MapType.BIOGEOGRAPHICAL);
             cluster.getKeys().add(marker_key);
 
-            String label_key = "Label"+marker_key;
+            /*String label_key = "Label"+marker_key;
             BlockPos label_pos = marker_pos.offset(0, 0, 12);
             Marker label = new Marker(label_key, dim, label_pos.getX(), label_pos.getZ(), String.valueOf(summary.count), 0x00A000, SCALE, 2, 0, MapType.BIOGEOGRAPHICAL);
-            cluster.getKeys().add(label_key);
+            cluster.getKeys().add(label_key);*/
 
             ThreadHandler.runOnGameThreadBlocking(() -> {
                 handler.place(marker);
-                handler.place(label);
+                //handler.place(label);
             });
 
-            o += 20;
+            o += 26;
         }
     }
 

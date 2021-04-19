@@ -1,5 +1,6 @@
 package lordfokas.cartography;
 
+import lordfokas.cartography.core.ImageHandler;
 import lordfokas.cartography.core.data.AsyncDataCruncher;
 import lordfokas.cartography.integration.ModIntegration;
 import lordfokas.cartography.modules.Module;
@@ -23,6 +24,7 @@ public class Cartography {
     }
 
     private void setup(final FMLCommonSetupEvent event){
+        ImageHandler.init();
         AsyncDataCruncher.start();
 
         for(ModIntegration integration : ModIntegration.values()){
