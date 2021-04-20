@@ -73,6 +73,10 @@ public class TFCBlockTypes {
         }
     }
 
+    public static ResourceLocation getLooseRockTexturePath(String rock){
+        return new ResourceLocation("tfc", "textures/item/loose_rock/" + rock + ".png");
+    }
+
     public enum Classification {
         ROCK,
         SEDIMENT,

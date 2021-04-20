@@ -5,8 +5,6 @@ import lordfokas.cartography.core.data.ThreadHandler;
 import lordfokas.cartography.core.mapping.IChunkData;
 import lordfokas.cartography.modules.Module;
 
-import java.util.Set;
-
 public class Geology {
     public static final MapTypeRegistry MAP_TYPE_REGISTRY = new MapTypeRegistry(Module.GEOLOGY);
     private static final IRockDataHandler.Async ASYNC_ROCK_DATA_PROXY = new AsyncRockDataProxy();
@@ -23,7 +21,7 @@ public class Geology {
 
     private static class AsyncRockDataProxy implements IRockDataHandler.Async{
         @Override
-        public ThreadHandler<Void, Void> setRocksInChunkAsyncChain(IChunkData chunk, Set<String> rocks) {
+        public ThreadHandler<Void, Void> setRocksInChunkAsyncChain(IChunkData chunk, String rocks) {
             return ThreadHandler.startOnDataThread(v -> {
                 rockDataHandler.setRocksInChunk(chunk, rocks);
                 return null;
@@ -39,7 +37,7 @@ public class Geology {
         }
 
         @Override
-        public void setRocksInChunk(IChunkData chunk, Set<String> rocks) {
+        public void setRocksInChunk(IChunkData chunk, String rocks) {
             ThreadHandler.runOnDataThread(() -> rockDataHandler.setRocksInChunk(chunk, rocks));
         }
 
