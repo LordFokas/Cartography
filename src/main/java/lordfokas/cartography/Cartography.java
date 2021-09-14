@@ -1,10 +1,12 @@
 package lordfokas.cartography;
 
+import lordfokas.cartography.core.GameContainerClient;
+import lordfokas.cartography.core.GameContainerServer;
 import lordfokas.cartography.core.ImageHandler;
-import lordfokas.cartography.core.data.AsyncDataCruncher;
 import lordfokas.cartography.integration.ModIntegration;
 import lordfokas.cartography.modules.Module;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -19,13 +21,15 @@ public class Cartography {
     public static Logger logger(){ return LOGGER; }
 
     public Cartography(){
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        FMLJavaModLoadingContext.get().getModEventBus().register(this);
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new GameContainerClient.EventHandler());
+        MinecraftForge.EVENT_BUS.register(new GameContainerServer.EventHandler());
     }
 
-    private void setup(final FMLCommonSetupEvent event){
+    @SubscribeEvent
+    public void setup(final FMLCommonSetupEvent evt){
         ImageHandler.init();
-        AsyncDataCruncher.start();
 
         for(ModIntegration integration : ModIntegration.values()){
             integration.load(ModIntegration.LoadPhase.PRE);

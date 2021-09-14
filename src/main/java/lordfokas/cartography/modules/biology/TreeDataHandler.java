@@ -1,22 +1,36 @@
 package lordfokas.cartography.modules.biology;
 
+import lordfokas.cartography.Cartography;
+import lordfokas.cartography.core.GameContainer;
+import lordfokas.cartography.core.data.SerializableDataPool;
 import lordfokas.cartography.core.mapping.IChunkData;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 
 public class TreeDataHandler implements ITreeDataHandler {
-    private final HashMap<RegistryKey<World>, HashMap<ChunkPos, Collection<TreeSummary>>> summaries = new HashMap<>();
+    private static final TreeDataSerializer CODEC = new TreeDataSerializer();
+    private static final UUID UUID_ZERO = new UUID(0L,0L);
+
+    private final HashMap<RegistryKey<World>, SerializableDataPool<ChunkPos, Collection<TreeSummary>>> summaries = new HashMap<>();
     private final HashMap<RegistryKey<World>, TreeClusterRealm> clusters = new HashMap<>();
+    private final HashMap<RegistryKey<World>, TreeClusterViewer> viewers = new HashMap<>();
+    private final GameContainer container;
     private volatile boolean visible = true;
+
+    public TreeDataHandler(GameContainer container){
+        this.container = container;
+    }
 
     @Override
     public void setTreesInChunk(IChunkData chunk, Collection<TreeSummary> summaries) {
-        Collection<TreeSummary> current = getSummaryFor(chunk);
+        SerializableDataPool<ChunkPos, Collection<TreeSummary>> pool = getDataPool(chunk);
+        pool.addData(chunk.getPos(), summaries);
+        pool.save();
+
+        /*Collection<TreeSummary> current = getSummaryFor(chunk);
         if(!areSummariesEqual(current, summaries)){
             if(current.isEmpty()){
                 current.addAll(summaries);
@@ -32,13 +46,13 @@ public class TreeDataHandler implements ITreeDataHandler {
                     updateCluster(chunk);
                 }
             }
-        }
+        }*/
     }
 
     @Override
     public void setMarkersVisible(boolean visible){
-        for(TreeClusterRealm realm : clusters.values()){
-            realm.setDeployStatus(visible);
+        for(TreeClusterViewer viewer : viewers.values()){
+            viewer.setVisible(visible);
         }
         this.visible = visible;
     }
@@ -62,20 +76,26 @@ public class TreeDataHandler implements ITreeDataHandler {
         getClusterRealm(chunk).refreshClusterAt(chunk.getPos());
     }
 
+    private TreeClusterViewer getClusterViewer(IChunkData chunk){
+        return viewers.computeIfAbsent(chunk.getDimension(), w -> new TreeClusterViewer(w));
+    }
+
     private TreeClusterRealm getClusterRealm(IChunkData chunk){
-        return this.clusters.computeIfAbsent(chunk.getDimension(), w -> {
-            TreeClusterRealm realm = new TreeClusterRealm(w, getWorldData(chunk));
-            realm.setDeployStatus(this.visible);
-            return realm;
+        return this.clusters.computeIfAbsent(chunk.getDimension(), w -> new TreeClusterRealm(container.getAsyncDataCruncher().getThreadAsserter(), getClusterViewer(chunk), getDataPool(chunk)));
+    }
+
+    private SerializableDataPool<ChunkPos, Collection<TreeSummary>> getDataPool(IChunkData chunk){
+        return summaries.computeIfAbsent(chunk.getDimension(), $ -> {
+            SerializableDataPool<ChunkPos, Collection<TreeSummary>> pool = new SerializableDataPool<>(CODEC, container.getDataStoreManager().getDataStore(UUID_ZERO, Cartography.MOD_ID), "trees.bin");
+            TreeClusterRealm clusters = this.clusters.computeIfAbsent(chunk.getDimension(), w -> new TreeClusterRealm(container.getAsyncDataCruncher().getThreadAsserter(), getClusterViewer(chunk), pool));
+            pool.addConsumer(clusters);
+            pool.load();
+            return pool;
         });
     }
 
-    private HashMap<ChunkPos, Collection<TreeSummary>> getWorldData(IChunkData chunk){
-        return summaries.computeIfAbsent(chunk.getDimension(), w -> new HashMap<>());
-    }
-
     private Collection<TreeSummary> getSummaryFor(IChunkData chunk){
-       return getWorldData(chunk).computeIfAbsent(chunk.getPos(), p -> new ArrayList<>(8));
+       return getDataPool(chunk).computeIfAbsent(chunk.getPos(), () -> new ArrayList<>(8));
     }
 
     private boolean areSummariesEqual(Collection<TreeSummary> a, Collection<TreeSummary> b){

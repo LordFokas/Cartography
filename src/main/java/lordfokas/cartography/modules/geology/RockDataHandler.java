@@ -1,5 +1,6 @@
 package lordfokas.cartography.modules.geology;
 
+import lordfokas.cartography.core.GameContainer;
 import lordfokas.cartography.core.mapping.IChunkData;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.ChunkPos;
@@ -10,7 +11,13 @@ import java.util.HashMap;
 public class RockDataHandler implements IRockDataHandler{
     private final HashMap<RegistryKey<World>, HashMap<ChunkPos, String>> data = new HashMap<>();
     private final HashMap<RegistryKey<World>, HashMap<String, RockClusterRealm>> clusters = new HashMap<>();
+    private final HashMap<RegistryKey<World>, RockClusterViewer> viewers = new HashMap<>();
+    private final GameContainer container;
     private volatile boolean visible = true;
+
+    public RockDataHandler(GameContainer container){
+        this.container = container;
+    }
 
     @Override
     public void setRocksInChunk(IChunkData chunk, String rock) {
@@ -23,10 +30,8 @@ public class RockDataHandler implements IRockDataHandler{
 
     @Override
     public void setMarkersVisible(boolean visible) {
-        for(HashMap<String, RockClusterRealm> realms : clusters.values()){
-            for(RockClusterRealm realm : realms.values()){
-                realm.setDeployStatus(visible);
-            }
+        for(RockClusterViewer viewer : viewers.values()){
+            viewer.setVisible(visible);
         }
         this.visible = visible;
     }
@@ -36,14 +41,14 @@ public class RockDataHandler implements IRockDataHandler{
         return visible;
     }
 
+    private RockClusterViewer getClusterViewer(IChunkData chunk){
+        return viewers.computeIfAbsent(chunk.getDimension(), RockClusterViewer::new);
+    }
+
     private RockClusterRealm getClusterRealm(IChunkData chunk, String rock){
         return clusters
-                .computeIfAbsent(chunk.getDimension(), $ -> new HashMap<>())
-                .computeIfAbsent(rock, $ -> {
-                    RockClusterRealm realm = new RockClusterRealm(chunk.getDimension(), rock);
-                    realm.setDeployStatus(visible);
-                    return realm;
-                });
+            .computeIfAbsent(chunk.getDimension(), $ -> new HashMap<>())
+            .computeIfAbsent(rock, $ -> new RockClusterRealm(container.getAsyncDataCruncher().getThreadAsserter(), getClusterViewer(chunk), rock));
     }
 
     private HashMap<ChunkPos, String> getWorldData(IChunkData chunk){

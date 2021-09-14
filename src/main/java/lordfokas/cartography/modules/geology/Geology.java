@@ -1,14 +1,20 @@
 package lordfokas.cartography.modules.geology;
 
+import lordfokas.cartography.core.GameContainerClient;
 import lordfokas.cartography.core.MapTypeRegistry;
 import lordfokas.cartography.core.data.ThreadHandler;
 import lordfokas.cartography.core.mapping.IChunkData;
 import lordfokas.cartography.modules.Module;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class Geology {
     public static final MapTypeRegistry MAP_TYPE_REGISTRY = new MapTypeRegistry(Module.GEOLOGY);
     private static final IRockDataHandler.Async ASYNC_ROCK_DATA_PROXY = new AsyncRockDataProxy();
-    private static IRockDataHandler rockDataHandler = new RockDataHandler.Dummy();
+    private static final IRockDataHandler DUMMY = new RockDataHandler.Dummy();
+
+    private static GameContainerClient clientContainer = null;
+    private static IRockDataHandler rockDataHandler = DUMMY;
 
     public static IRockDataHandler.Async getAsyncRockDataHandler(){
         return ASYNC_ROCK_DATA_PROXY;
@@ -16,13 +22,25 @@ public class Geology {
 
     public static void init(){
         MAP_TYPE_REGISTRY.dumpToMaster();
-        rockDataHandler = new RockDataHandler();
+        MinecraftForge.EVENT_BUS.register(Geology.class);
+    }
+
+    @SubscribeEvent
+    public static void onClientContainerLoad(final GameContainerClient.LoadEvent evt) {
+        clientContainer = evt.getContainer();
+        rockDataHandler = new RockDataHandler(clientContainer);
+    }
+
+    @SubscribeEvent
+    public static void onClientContainerUnload(final GameContainerClient.UnloadEvent evt) {
+        clientContainer = null;
+        rockDataHandler = DUMMY;
     }
 
     private static class AsyncRockDataProxy implements IRockDataHandler.Async{
         @Override
         public ThreadHandler<Void, Void> setRocksInChunkAsyncChain(IChunkData chunk, String rocks) {
-            return ThreadHandler.startOnDataThread(v -> {
+            return clientContainer.getThreadHandler().startOnDataThread(v -> {
                 rockDataHandler.setRocksInChunk(chunk, rocks);
                 return null;
             });
@@ -30,7 +48,7 @@ public class Geology {
 
         @Override
         public ThreadHandler<Void, Boolean> setMarkersVisibleAsyncChain(boolean visible) {
-            return ThreadHandler.startOnDataThread(v -> {
+            return clientContainer.getThreadHandler().startOnDataThread(v -> {
                 rockDataHandler.setMarkersVisible(visible);
                 return rockDataHandler.getMarkersVisible();
             });
@@ -38,12 +56,12 @@ public class Geology {
 
         @Override
         public void setRocksInChunk(IChunkData chunk, String rocks) {
-            ThreadHandler.runOnDataThread(() -> rockDataHandler.setRocksInChunk(chunk, rocks));
+            clientContainer.getThreadHandler().runOnDataThread(() -> rockDataHandler.setRocksInChunk(chunk, rocks));
         }
 
         @Override
         public void setMarkersVisible(boolean visible) {
-            ThreadHandler.runOnDataThread(() -> rockDataHandler.setMarkersVisible(visible));
+            clientContainer.getThreadHandler().runOnDataThread(() -> rockDataHandler.setMarkersVisible(visible));
         }
 
         @Override

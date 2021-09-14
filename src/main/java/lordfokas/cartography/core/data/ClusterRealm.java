@@ -3,17 +3,22 @@ package lordfokas.cartography.core.data;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Map;
 
-public abstract class ClusterRealm<C, D, R, K extends Cluster<C, D, R>>{
+public abstract class ClusterRealm<C, D, R, K extends Cluster<C, D, R>> implements DataFlow.IDataConsumer<C, D> {
     private final Collection<K> clusters = new ArrayList<>(64);
-    private boolean deploy = false;
+    private final AsyncDataCruncher.IThreadAsserter dataCruncherThread;
+    private final IClusterConsumer<K> consumer;
+
+    protected ClusterRealm(AsyncDataCruncher.IThreadAsserter dataCruncherThread, IClusterConsumer<K> consumer){
+        this.dataCruncherThread = dataCruncherThread;
+        this.consumer = consumer;
+    }
 
     protected abstract boolean isInRange(C coordinate, Collection<C> cluster);
     protected abstract boolean isIncluded(C coordinate, Collection<C> cluster);
     protected abstract K merge(K added, Iterable<K> existing);
     protected abstract K split(K removed, K existing);
-    protected abstract void undeploy(K cluster);
-    protected abstract void deploy(K cluster);
     protected abstract D summarize(Collection<C> cluster);
     protected abstract K make(C coordinate, D data);
 
@@ -26,24 +31,7 @@ public abstract class ClusterRealm<C, D, R, K extends Cluster<C, D, R>>{
         return null;
     }
 
-    public void setDeployStatus(boolean deploy){
-        AsyncDataCruncher.assertIsOnDataCruncherThread();
-        if(this.deploy == deploy) return;
-        else this.deploy = deploy;
-
-        if(this.deploy){
-            for(K cluster : clusters){
-                deploy(cluster);
-            }
-        }else{
-            for(K cluster : clusters){
-                undeploy(cluster);
-            }
-        }
-    }
-
-    public void addData(C coordinate, D data){
-        AsyncDataCruncher.assertIsOnDataCruncherThread();
+    public void add(C coordinate, D data, boolean notify){
         K cluster = make(coordinate, data);
         Collection<K> neighbors = new LinkedList<>();
         for(K target : clusters) {
@@ -52,36 +40,49 @@ public abstract class ClusterRealm<C, D, R, K extends Cluster<C, D, R>>{
             }
         }
         if(!neighbors.isEmpty()){
-            if(deploy){
-                for(K target : neighbors){
-                    undeploy(target);
-                }
-            }
+            if(notify) consumer.dropClusters(neighbors);
             clusters.removeAll(neighbors);
             cluster = merge(cluster, neighbors);
         }
         clusters.add(cluster);
-        if(deploy) deploy(cluster);
+        if(notify) consumer.pushCluster(cluster);
     }
 
+    @Override
+    public void addData(C coordinate, D data){
+        dataCruncherThread.assertCurrentThread();
+        add(coordinate, data, true);
+    }
+
+    @Override
     public void removeData(C coordinate, D data){
-        AsyncDataCruncher.assertIsOnDataCruncherThread();
+        dataCruncherThread.assertCurrentThread();
         K cluster = getClusterAt(coordinate);
         if(cluster == null) return;
         K removed = make(coordinate, data);
-        if(deploy) undeploy(cluster);
+        consumer.dropCluster(cluster);
         clusters.remove(cluster);
         cluster = split(removed, cluster);
         if(cluster == null) return;
         clusters.add(cluster);
-        if(deploy) deploy(cluster);
+        consumer.pushCluster(cluster);
+    }
+
+    @Override
+    public void setData(Map<C, D> pool){
+        dataCruncherThread.assertCurrentThread();
+        consumer.dropClusters(clusters);
+        clusters.clear();
+        for(Map.Entry<C, D> datum : pool.entrySet()){
+            add(datum.getKey(), datum.getValue(), false);
+        }
+        consumer.pushClusters(clusters);
     }
 
     public void refreshClusterAt(C coordinate){
-        AsyncDataCruncher.assertIsOnDataCruncherThread();
+        dataCruncherThread.assertCurrentThread();
         K cluster = getClusterAt(coordinate);
-        if(deploy) undeploy(cluster);
         cluster.setData(summarize(cluster.getCoordinates()));
-        if(deploy) deploy(cluster);
+        consumer.pushCluster(cluster);
     }
 }

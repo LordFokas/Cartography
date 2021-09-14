@@ -7,7 +7,7 @@ import lordfokas.cartography.modules.meteorology.Meteorology;
 
 public enum Module {
     BIOLOGY(Biology::init),
-    GEOLOGY(Geology::init),
+    GEOLOGY(() -> {}), //Geology::init),
     METEOROLOGY(Meteorology::init);
 
     private final IModuleInitializer initializer;

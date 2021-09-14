@@ -33,7 +33,7 @@ public class TemperatureSource implements IContinuousDataSource {
     }
 
     private float temperature(IChunkData c, int x, int y){
-        ChunkData data = c.getChunk(x,y).getCapability(ChunkDataCapability.CAPABILITY).orElse(null);
+        ChunkData data = c.getChunk(x,y).getCapability(ChunkDataCapability.CAPABILITY).orElseThrow(NullPointerException::new);
         return data.getAverageTemp(x, y);
     }
 }

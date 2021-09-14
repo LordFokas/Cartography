@@ -6,40 +6,40 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public final class AsyncDataCruncher {
-    private static final AsyncDataCruncher INSTANCE = new AsyncDataCruncher();
-    private AsyncDataCruncher(){}
+    private final Queue<Runnable> tasks = new ConcurrentLinkedQueue<>();
+    private final Thread thread = new Thread(this::loop);
+    private volatile boolean running = true;
 
-    static void submitDataTask(Runnable r){
-        INSTANCE.enqueue(r);
-    }
-
-    public static void start(){
-        Cartography.logger().info("Starting AsyncDataCruncher Thread");
-        Thread thread = INSTANCE.thread;
-        thread.setName("Cartography AsyncDataCruncher");
+    public AsyncDataCruncher(String side){
+        Cartography.logger().info("Starting {}-side AsyncDataCruncher Thread", side);
+        thread.setName("Cartography "+side+" AsyncDataCruncher");
         thread.setDaemon(true);
         thread.start();
-        Cartography.logger().info("Started AsyncDataCruncher Thread");
+        Cartography.logger().info("Started {}-side AsyncDataCruncher Thread", side);
     }
 
-    public static void assertIsOnDataCruncherThread(){
-        Thread current = Thread.currentThread();
-        if(current != INSTANCE.thread){
+    public void assertIsOnDataCruncherThread(){
+        if(Thread.currentThread() != thread){
             throw new IllegalStateException("Operation can only be performed in the AsyncDataCruncher thread");
         }
     }
 
-    private final Queue<Runnable> tasks = new ConcurrentLinkedQueue<>();
-    private final Thread thread = new Thread(this::loop);
+    public IThreadAsserter getThreadAsserter(){
+        return this::assertIsOnDataCruncherThread;
+    }
 
-    private void enqueue(Runnable r){
+    public void stop(){
+        running = false;
+    }
+
+    public void submit(Runnable r){
         tasks.add(r);
         thread.interrupt();
     }
 
     @SuppressWarnings("BusyWait") // the thread is dedicated to this loop
     private void loop(){
-        while(true){
+        while(running){
             this.work();
             try{ Thread.sleep(30_000L); }
             catch(InterruptedException ignored){}
@@ -52,5 +52,10 @@ public final class AsyncDataCruncher {
             try{ task.run(); }
             catch(Throwable t){ t.printStackTrace(); }
         }
+    }
+
+    @FunctionalInterface
+    public interface IThreadAsserter{
+        void assertCurrentThread();
     }
 }
