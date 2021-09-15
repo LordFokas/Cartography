@@ -4,9 +4,10 @@ import lordfokas.cartography.core.data.AsyncDataCruncher;
 import lordfokas.cartography.core.data.ClusterRealm;
 import lordfokas.cartography.core.data.DataPool;
 import lordfokas.cartography.core.data.IClusterConsumer;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.level.ChunkPos;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class TreeClusterRealm extends ClusterRealm<ChunkPos, Collection<ITreeDataHandler.TreeSummary>, String, TreeCluster> {
     private final DataPool<ChunkPos, Collection<ITreeDataHandler.TreeSummary>> data;

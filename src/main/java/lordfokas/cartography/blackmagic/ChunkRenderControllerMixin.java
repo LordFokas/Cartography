@@ -7,7 +7,7 @@ import journeymap.client.model.*;
 import journeymap.client.render.ComparableBufferedImage;
 import journeymap.common.Journeymap;
 import journeymap.common.log.LogFormatter;
-import lordfokas.cartography.integration.journeymap.blackmagic.JMHacks;
+import lordfokas.cartography.integration.journeymap.JMHacks;
 import lordfokas.cartography.integration.journeymap.JMIntegration;
 import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Mixin;

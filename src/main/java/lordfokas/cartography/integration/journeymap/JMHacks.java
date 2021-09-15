@@ -1,16 +1,16 @@
-package lordfokas.cartography.integration.journeymap.blackmagic;
+package lordfokas.cartography.integration.journeymap;
 
 import journeymap.client.api.display.Context;
 import journeymap.client.model.MapType.Name;
 import lordfokas.cartography.Cartography;
 import lordfokas.cartography.core.MapType;
+import net.minecraftforge.fml.unsafe.UnsafeHacks;
 import org.apache.logging.log4j.Logger;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class JMHacks {
-    private static final EnumBuster<Name> NAMES = new EnumBuster<>(Name.class);
-    private static final EnumBuster<Context.MapType> TYPES = new EnumBuster<>(Context.MapType.class);
     private static final HashMap<Name, Context.MapType> INTERNAL_API = new HashMap<>();
     private static final HashMap<Context.MapType, Name> API_INTERNAL = new HashMap<>();
     private static final HashMap<Name, MapType> JM_LOCAL = new HashMap<>();
@@ -87,10 +87,8 @@ public class JMHacks {
     }
 
     private static Name make(String str){
-        Name name = NAMES.make(str);
-        NAMES.addByValue(name);
-        Context.MapType type = TYPES.make(str);
-        TYPES.addByValue(type);
+        Name name = make(Name.class, str, names++);
+        Context.MapType type = make(Context.MapType.class, str, types++);
         map(name, type);
         return name;
     }
@@ -98,5 +96,30 @@ public class JMHacks {
     private static void map(Name name, Context.MapType type){
         INTERNAL_API.put(name, type);
         API_INTERNAL.put(type, name);
+    }
+
+
+    // HIC SUNT DRACONES //
+    private static int names = Name.values().length, types = Context.MapType.values().length;
+    private static final Field $ordinal, $name;
+
+    static {
+        try {
+            $ordinal = Enum.class.getDeclaredField("ordinal");
+            $name = Enum.class.getDeclaredField("name");
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static <T extends Enum<?>> T make(Class<T> cls, String name, int ordinal){
+        try {
+            T entry = UnsafeHacks.newInstance(cls);
+            UnsafeHacks.setField($ordinal, entry, ordinal);
+            UnsafeHacks.setField($name, entry, name);
+            return entry;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

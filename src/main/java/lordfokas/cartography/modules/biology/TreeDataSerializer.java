@@ -1,7 +1,7 @@
 package lordfokas.cartography.modules.biology;
 
 import lordfokas.cartography.core.data.DataFlow;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.level.ChunkPos;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

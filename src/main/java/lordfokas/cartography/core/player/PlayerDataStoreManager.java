@@ -19,6 +19,6 @@ public class PlayerDataStoreManager {
     }
 
     private File getPlayerModDir(UUID player, String modid){
-        return new File(base, player + File.pathSeparator + modid);
+        return new File(base, player + File.separator + modid);
     }
 }

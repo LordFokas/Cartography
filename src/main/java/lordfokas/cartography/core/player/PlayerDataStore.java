@@ -21,7 +21,10 @@ public class PlayerDataStore implements IPlayerDataStore {
 
     @Override
     public DataOutputStream getOutputStream(String node) throws IOException {
-        return new DataOutputStream(new FileOutputStream(getFile(node)));
+        File file = getFile(node);
+        File dir = file.getParentFile();
+        if(!dir.exists()) dir.mkdirs();
+        return new DataOutputStream(new FileOutputStream(file));
     }
 
     private File getFile(String node){

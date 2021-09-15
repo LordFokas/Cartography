@@ -1,14 +1,14 @@
 package lordfokas.cartography.core.mapping;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
 
 public interface IChunkData {
-    Chunk getChunk(int x, int z);
-    RegistryKey<World> getDimension();
+    LevelChunk getChunk(int x, int z);
+    ResourceKey<Level> getDimension();
     ChunkPos getPos();
 
     int getWorldHeight();

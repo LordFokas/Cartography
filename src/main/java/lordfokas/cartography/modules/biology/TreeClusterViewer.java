@@ -8,18 +8,18 @@ import lordfokas.cartography.core.markers.IMarkerHandler;
 import lordfokas.cartography.core.markers.Marker;
 import lordfokas.cartography.integration.journeymap.JMPlugin;
 import lordfokas.cartography.integration.terrafirmacraft.TFCBlockTypes;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 
 import java.awt.image.BufferedImage;
 import java.util.Collection;
 
 public class TreeClusterViewer implements IClusterViewer<TreeCluster> {
-    private final RegistryKey<World> dim;
+    private final ResourceKey<Level> dim;
 
-    public TreeClusterViewer(RegistryKey<World> dim){
+    public TreeClusterViewer(ResourceKey<Level> dim){
         this.dim = dim;
     }
 

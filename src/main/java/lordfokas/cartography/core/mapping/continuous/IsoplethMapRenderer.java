@@ -6,9 +6,9 @@ import lordfokas.cartography.core.mapping.IChunkData;
 import lordfokas.cartography.core.mapping.IMapRenderer;
 import lordfokas.cartography.core.markers.IMarkerHandler;
 import lordfokas.cartography.core.markers.Marker;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 
 import java.awt.image.BufferedImage;
 
@@ -64,7 +64,7 @@ public class IsoplethMapRenderer implements IMapRenderer {
         return true;
     }
 
-    private static Marker marker(RegistryKey<World> dim, int wx, int wz, String text, int tint, DataType type, int abs, int angle, MapType ... types){
+    private static Marker marker(ResourceKey<Level> dim, int wx, int wz, String text, int tint, DataType type, int abs, int angle, MapType ... types){
         String key = type.name() +"-"+abs+"-"+ (wx>>6) +"-"+ (wz>>6);
         return new Marker(key, dim, wx, wz, text, tint, 4, 2, angle, types);
     }
