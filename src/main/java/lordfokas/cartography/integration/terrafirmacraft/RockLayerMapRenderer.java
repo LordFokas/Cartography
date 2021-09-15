@@ -1,15 +1,15 @@
 package lordfokas.cartography.integration.terrafirmacraft;
 
-import lordfokas.cartography.core.*;
+import lordfokas.cartography.core.ImageHandler;
 import lordfokas.cartography.core.mapping.Colors;
 import lordfokas.cartography.core.mapping.IChunkData;
+import lordfokas.cartography.core.mapping.IMapRenderer;
 import lordfokas.cartography.core.mapping.discrete.DiscreteDatum;
 import lordfokas.cartography.core.mapping.discrete.IDiscreteDataSource;
-import lordfokas.cartography.core.mapping.IMapRenderer;
 import lordfokas.cartography.core.markers.IMarkerHandler;
 import lordfokas.cartography.modules.geology.Geology;
 import lordfokas.cartography.modules.geology.RockCounter;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 import java.awt.image.BufferedImage;
 

@@ -9,8 +9,8 @@ import lordfokas.cartography.core.mapping.IMapRenderer;
 import lordfokas.cartography.core.markers.IMarkerHandler;
 import lordfokas.cartography.modules.biology.Biology;
 import lordfokas.cartography.modules.biology.TreeCounter;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ChunkPos;
 
 import java.awt.image.BufferedImage;
 

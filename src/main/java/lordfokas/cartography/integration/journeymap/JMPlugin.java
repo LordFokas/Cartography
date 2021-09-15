@@ -10,7 +10,6 @@ import journeymap.client.api.model.MapImage;
 import lordfokas.cartography.Cartography;
 import lordfokas.cartography.core.markers.IMarkerHandler;
 import lordfokas.cartography.core.markers.Marker;
-import lordfokas.cartography.integration.journeymap.blackmagic.JMHacks;
 
 import java.util.HashMap;
 

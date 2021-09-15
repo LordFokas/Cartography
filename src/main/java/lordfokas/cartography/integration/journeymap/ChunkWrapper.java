@@ -2,14 +2,13 @@ package lordfokas.cartography.integration.journeymap;
 
 import journeymap.client.model.ChunkMD;
 import lordfokas.cartography.core.mapping.IChunkData;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.Heightmap;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.levelgen.Heightmap;
 
 
 class ChunkWrapper implements IChunkData {
@@ -33,12 +32,12 @@ class ChunkWrapper implements IChunkData {
     }
 
     @Override
-    public Chunk getChunk(int x, int z){
+    public LevelChunk getChunk(int x, int z){
         return getActualChunk(x, z).getChunk();
     }
 
     @Override
-    public RegistryKey<World> getDimension(){
+    public ResourceKey<Level> getDimension(){
         return master.getDimension();
     }
 
@@ -61,7 +60,7 @@ class ChunkWrapper implements IChunkData {
         int wx = master.toWorldX(x);
         int wz = master.toWorldZ(z);
 
-        BlockPos pos = master.getWorld().getHeightmapPos(Heightmap.Type.MOTION_BLOCKING, new BlockPos(wx, 0, wz));
+        BlockPos pos = master.getWorld().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, new BlockPos(wx, 0, wz));
 
         return pos.getY();
     }
@@ -74,7 +73,7 @@ class ChunkWrapper implements IChunkData {
         int h = getTerrainHeight(x, z);
         if(h == 0) return 0;
 
-        World w = master.getWorld();
+        Level w = master.getWorld();
         if(!w.isWaterAt(new BlockPos(wx, --h, wz))) return 0;
         int d = 1;
 
@@ -90,7 +89,7 @@ class ChunkWrapper implements IChunkData {
         int wx = master.toWorldX(x);
         int wz = master.toWorldZ(z);
         int y = getTerrainHeight(x, z);
-        World w = master.getWorld();
+        Level w = master.getWorld();
         boolean loop = true;
         while(loop && y > 0){
             BlockState state = w.getBlockState(new BlockPos(wx, --y, wz));

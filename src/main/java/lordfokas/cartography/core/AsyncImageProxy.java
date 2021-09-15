@@ -1,7 +1,7 @@
 package lordfokas.cartography.core;
 
 import lordfokas.cartography.core.data.ThreadHandler;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;

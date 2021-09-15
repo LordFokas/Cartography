@@ -2,15 +2,15 @@ package lordfokas.cartography.core.markers;
 
 import lordfokas.cartography.core.ImageHandler;
 import lordfokas.cartography.core.MapType;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 
 import java.awt.image.BufferedImage;
 
 public class Marker {
     public final String key;
-    public final RegistryKey<World> dim;
+    public final ResourceKey<Level> dim;
     public final int worldX, worldZ;
     public final BufferedImage image;
     public final int tint;
@@ -20,7 +20,7 @@ public class Marker {
     public final BlockPos nw, se;
     public final MapType[] maps;
 
-    private Marker(String key, RegistryKey<World> dim, int x, int z, BufferedImage image, int tint, int imageScale, int markerScale, int rotation, MapType ... maps){
+    private Marker(String key, ResourceKey<Level> dim, int x, int z, BufferedImage image, int tint, int imageScale, int markerScale, int rotation, MapType ... maps){
         this.key = key;
         this.dim = dim;
         this.worldX = x;
@@ -37,11 +37,11 @@ public class Marker {
         se = nw.offset(w, 0, h);
     }
 
-    public Marker(String key, RegistryKey<World> dim, int x, int z, String label, int tint, int imageScale, int markerScale, int rotation, MapType ... maps){
+    public Marker(String key, ResourceKey<Level> dim, int x, int z, String label, int tint, int imageScale, int markerScale, int rotation, MapType ... maps){
         this(key, dim, x, z, ImageHandler.getLabel(label, imageScale), tint, imageScale, markerScale, rotation, maps);
     }
 
-    public Marker(String key, RegistryKey<World> dim, int x, int z, BufferedImage image, int imageScale, int markerScale, MapType ... maps){
+    public Marker(String key, ResourceKey<Level> dim, int x, int z, BufferedImage image, int imageScale, int markerScale, MapType ... maps){
         this(key, dim, x, z, image, 0xFFFFFF, imageScale, markerScale, 0, maps);
     }
 }

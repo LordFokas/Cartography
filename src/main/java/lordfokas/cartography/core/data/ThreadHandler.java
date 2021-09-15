@@ -1,6 +1,7 @@
 package lordfokas.cartography.core.data;
 
-import javax.xml.ws.Holder;
+import lordfokas.cartography.utils.Pointer;
+
 import java.util.function.Function;
 
 public final class ThreadHandler<I, O> {
@@ -35,8 +36,8 @@ public final class ThreadHandler<I, O> {
         public void runOnGameThreadBlocking(Runnable task){
             asyncDataCruncher.assertIsOnDataCruncherThread();
             Thread thread = Thread.currentThread();
-            Holder<Boolean> control = new Holder<>(Boolean.FALSE);
-            Holder<Throwable> error = new Holder<>();
+            Pointer<Boolean> control = new Pointer<>(Boolean.FALSE);
+            Pointer<Throwable> error = new Pointer<>();
             gameThreadQueue.submit(() -> {
                 try{
                     task.run();
@@ -54,9 +55,9 @@ public final class ThreadHandler<I, O> {
         }
 
         public <T> T getOnGameThreadBlocking(Function<Void, T> fn){
-            Holder<T> holder = new Holder<>();
-            runOnGameThreadBlocking(() -> holder.value = fn.apply(null));
-            return holder.value;
+            Pointer<T> pointer = new Pointer<>();
+            runOnGameThreadBlocking(() -> pointer.value = fn.apply(null));
+            return pointer.value;
         }
     }
 

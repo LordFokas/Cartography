@@ -2,8 +2,8 @@ package lordfokas.cartography.core;
 
 import lordfokas.cartography.Cartography;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.IResource;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
 
 import javax.annotation.Nonnull;
 import javax.imageio.ImageIO;
@@ -26,7 +26,7 @@ public class ImageHandler {
     public static BufferedImage getImage(ResourceLocation texture){
         return BASE.computeIfAbsent(texture, $ -> {
             try{
-                IResource res = Minecraft.getInstance().getResourceManager().getResource(texture);
+                Resource res = Minecraft.getInstance().getResourceManager().getResource(texture);
                 return ImageIO.read(res.getInputStream());
             }catch(IOException e){
                 e.printStackTrace();

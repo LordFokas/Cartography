@@ -8,10 +8,10 @@ import journeymap.client.model.EntityDTO;
 import journeymap.client.model.MapType;
 import journeymap.client.task.multi.ITask;
 import journeymap.client.task.multi.MapPlayerTask;
-import lordfokas.cartography.integration.journeymap.blackmagic.JMHacks;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
+import lordfokas.cartography.integration.journeymap.JMHacks;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.gen.Invoker;
@@ -25,7 +25,7 @@ import java.util.List;
 public class MapPlayerTaskMixin {
 
     @Invoker("<init>")
-    static MapPlayerTask newMapPlayerTask(ChunkRenderController chunkRenderController, World world, MapType mapType, Collection<ChunkPos> chunkCoords) {
+    static MapPlayerTask newMapPlayerTask(ChunkRenderController chunkRenderController, Level world, MapType mapType, Collection<ChunkPos> chunkCoords) {
         throw new AssertionError();
     }
 

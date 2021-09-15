@@ -3,7 +3,7 @@ package lordfokas.cartography.modules.geology;
 import lordfokas.cartography.core.data.AsyncDataCruncher;
 import lordfokas.cartography.core.data.ClusterRealm;
 import lordfokas.cartography.core.data.IClusterConsumer;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.level.ChunkPos;
 
 import java.util.ArrayList;
 import java.util.Collection;

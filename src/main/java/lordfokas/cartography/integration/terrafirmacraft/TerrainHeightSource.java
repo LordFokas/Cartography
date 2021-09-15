@@ -3,9 +3,8 @@ package lordfokas.cartography.integration.terrafirmacraft;
 import lordfokas.cartography.core.DataType;
 import lordfokas.cartography.core.mapping.IChunkData;
 import lordfokas.cartography.core.mapping.continuous.IContinuousDataSource;
+import lordfokas.cartography.utils.Pointer;
 import net.minecraft.util.Tuple;
-
-import javax.xml.ws.Holder;
 
 public class TerrainHeightSource implements IContinuousDataSource {
     private final int step;
@@ -42,7 +41,7 @@ public class TerrainHeightSource implements IContinuousDataSource {
     }
 
     private int scan(IChunkData c, int x, int z){
-        Holder<Integer> height = new Holder<>(0);
+        Pointer<Integer> height = new Pointer<>(0);
         c.traverseColumn(x, z, (y, state) -> {
             Tuple<String, TFCBlockTypes.Type> res = TFCBlockTypes.getName(state.getBlock(), TFCBlockTypes.Classification.ROCK, TFCBlockTypes.Classification.SEDIMENT);
             if(res != null){

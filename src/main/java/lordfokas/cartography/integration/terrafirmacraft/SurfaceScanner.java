@@ -4,11 +4,11 @@ import lordfokas.cartography.core.DataType;
 import lordfokas.cartography.core.mapping.IChunkData;
 import lordfokas.cartography.core.mapping.discrete.DiscreteDatum;
 import lordfokas.cartography.core.mapping.discrete.IDiscreteDataSource;
-import net.minecraft.block.Block;
+import lordfokas.cartography.utils.Pointer;
 import net.minecraft.util.Tuple;
+import net.minecraft.world.level.block.Block;
 
 import javax.annotation.Nonnull;
-import javax.xml.ws.Holder;
 import java.util.function.Function;
 
 public class SurfaceScanner implements IDiscreteDataSource {
@@ -40,7 +40,7 @@ public class SurfaceScanner implements IDiscreteDataSource {
 
     @Nonnull
     private String scan(IChunkData c, int x, int z){
-        Holder<String> id = new Holder<>("");
+        Pointer<String> id = new Pointer<>("");
         c.traverseColumn(x, z, (y, state) -> {
             Tuple<String, TFCBlockTypes.Type> res = classifier.apply(state.getBlock());
             if(res != null){

@@ -2,16 +2,16 @@ package lordfokas.cartography.modules.geology;
 
 import lordfokas.cartography.core.GameContainer;
 import lordfokas.cartography.core.mapping.IChunkData;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 
 import java.util.HashMap;
 
 public class RockDataHandler implements IRockDataHandler{
-    private final HashMap<RegistryKey<World>, HashMap<ChunkPos, String>> data = new HashMap<>();
-    private final HashMap<RegistryKey<World>, HashMap<String, RockClusterRealm>> clusters = new HashMap<>();
-    private final HashMap<RegistryKey<World>, RockClusterViewer> viewers = new HashMap<>();
+    private final HashMap<ResourceKey<Level>, HashMap<ChunkPos, String>> data = new HashMap<>();
+    private final HashMap<ResourceKey<Level>, HashMap<String, RockClusterRealm>> clusters = new HashMap<>();
+    private final HashMap<ResourceKey<Level>, RockClusterViewer> viewers = new HashMap<>();
     private final GameContainer container;
     private volatile boolean visible = true;
 

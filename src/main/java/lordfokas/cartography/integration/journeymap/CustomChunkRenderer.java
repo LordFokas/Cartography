@@ -5,10 +5,10 @@ import journeymap.client.cartography.render.BaseRenderer;
 import journeymap.client.model.ChunkMD;
 import journeymap.client.render.ComparableBufferedImage;
 import lordfokas.cartography.core.mapping.IChunkData;
-import lordfokas.cartography.core.markers.IMarkerHandler;
 import lordfokas.cartography.core.mapping.IMapRenderer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
+import lordfokas.cartography.core.markers.IMarkerHandler;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
 
 class CustomChunkRenderer extends BaseRenderer {
 

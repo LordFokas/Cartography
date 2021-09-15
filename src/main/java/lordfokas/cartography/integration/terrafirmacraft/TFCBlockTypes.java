@@ -1,16 +1,16 @@
 package lordfokas.cartography.integration.terrafirmacraft;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.rock.Ore;
+import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
-import net.dries007.tfc.common.types.Ore;
-import net.dries007.tfc.common.types.Rock;
-import net.dries007.tfc.common.types.Wood;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.ResourceLocation;
+import net.dries007.tfc.common.blocks.wood.Wood;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Tuple;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.fmllegacy.RegistryObject;
 
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -102,7 +102,7 @@ public class TFCBlockTypes {
 
     static {
         // ROCKS  ======================================================================================================
-        for(Rock.Default rock : Rock.Default.values()){
+        for(Rock rock : Rock.values()){
             String name = rock.name().toLowerCase();
             for(Rock.BlockType type : STONE_TYPES){
                 put(Type.STONE, TFCBlocks.ROCK_BLOCKS.get(rock).get(type).get(), name);
@@ -138,7 +138,7 @@ public class TFCBlockTypes {
         }
 
         // WOODS  ======================================================================================================
-        for(Wood.Default wood : Wood.Default.values()){
+        for(Wood wood : Wood.values()){
             String name = wood.name().toLowerCase();
             for(Wood.BlockType log : LOG_TYPES){
                 put(Type.LOG, TFCBlocks.WOODS.get(wood).get(log).get(), name);
@@ -150,7 +150,7 @@ public class TFCBlockTypes {
         // WATER  ======================================================================================================
         put(Type.WATER, TFCBlocks.SALT_WATER.get(), "salt_water");
         put(Type.WATER, TFCBlocks.SPRING_WATER.get(), "spring_water");
-        put(Type.WATER, Blocks.WATER.getBlock(), "fresh_water");
+        put(Type.WATER, Blocks.WATER.delegate.get(), "fresh_water");
     }
 
     private static void put(Type type, Block block, String name){

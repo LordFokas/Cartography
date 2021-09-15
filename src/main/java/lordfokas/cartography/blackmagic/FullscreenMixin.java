@@ -9,7 +9,8 @@ import journeymap.client.ui.theme.Theme;
 import journeymap.client.ui.theme.ThemeButton;
 import journeymap.client.ui.theme.ThemeToggle;
 import journeymap.client.ui.theme.ThemeToolbar;
-import lordfokas.cartography.integration.journeymap.blackmagic.JMHacks;
+import lordfokas.cartography.integration.journeymap.JMHacks;
+import lordfokas.cartography.utils.Pointer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -17,7 +18,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import javax.xml.ws.Holder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -44,9 +44,9 @@ public abstract class FullscreenMixin extends JmUI {
             MapType _type = state.getMapType();
 
             for(MapType.Name name : JMHacks.getCustomNames()){
-                Holder<ThemeButton> holder = new Holder<>();
-                ThemeButton button = holder.value = this.addButton(new ThemeToggle(_theme, "cartography.fullscreen.map_"+name.name(), name.name(), (b) -> {
-                    if (holder.value.isEnabled()) {
+                Pointer<ThemeButton> pointer = new Pointer<>();
+                ThemeButton button = pointer.value = this.addRenderableWidget(new ThemeToggle(_theme, "cartography.fullscreen.map_"+name.name(), name.name(), (b) -> {
+                    if (pointer.value.isEnabled()) {
                         this.updateMapType(new MapType(name, null, state.getDimension()));
                     }
                 }));

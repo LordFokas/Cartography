@@ -4,19 +4,22 @@ import lordfokas.cartography.Cartography;
 import lordfokas.cartography.core.GameContainer;
 import lordfokas.cartography.core.data.SerializableDataPool;
 import lordfokas.cartography.core.mapping.IChunkData;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class TreeDataHandler implements ITreeDataHandler {
     private static final TreeDataSerializer CODEC = new TreeDataSerializer();
     private static final UUID UUID_ZERO = new UUID(0L,0L);
 
-    private final HashMap<RegistryKey<World>, SerializableDataPool<ChunkPos, Collection<TreeSummary>>> summaries = new HashMap<>();
-    private final HashMap<RegistryKey<World>, TreeClusterRealm> clusters = new HashMap<>();
-    private final HashMap<RegistryKey<World>, TreeClusterViewer> viewers = new HashMap<>();
+    private final HashMap<ResourceKey<Level>, SerializableDataPool<ChunkPos, Collection<TreeSummary>>> summaries = new HashMap<>();
+    private final HashMap<ResourceKey<Level>, TreeClusterRealm> clusters = new HashMap<>();
+    private final HashMap<ResourceKey<Level>, TreeClusterViewer> viewers = new HashMap<>();
     private final GameContainer container;
     private volatile boolean visible = true;
 
@@ -86,7 +89,7 @@ public class TreeDataHandler implements ITreeDataHandler {
 
     private SerializableDataPool<ChunkPos, Collection<TreeSummary>> getDataPool(IChunkData chunk){
         return summaries.computeIfAbsent(chunk.getDimension(), $ -> {
-            SerializableDataPool<ChunkPos, Collection<TreeSummary>> pool = new SerializableDataPool<>(CODEC, container.getDataStoreManager().getDataStore(UUID_ZERO, Cartography.MOD_ID), "trees.bin");
+            SerializableDataPool<ChunkPos, Collection<TreeSummary>> pool = new SerializableDataPool(CODEC, container.getDataStoreManager().getDataStore(UUID_ZERO, Cartography.MOD_ID), "trees.bin");
             TreeClusterRealm clusters = this.clusters.computeIfAbsent(chunk.getDimension(), w -> new TreeClusterRealm(container.getAsyncDataCruncher().getThreadAsserter(), getClusterViewer(chunk), pool));
             pool.addConsumer(clusters);
             pool.load();
