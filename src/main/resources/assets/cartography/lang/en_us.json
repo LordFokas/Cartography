@@ -1,0 +1,13 @@
+{
+  "cartography.map.rainfall": "Rainfall",
+  "cartography.map.temperature": "Temperature",
+  "cartography.map.ecosystem": "Ecosystem",
+  "cartography.map.geology": "Geology",
+
+  "cartography.layer.rainfall": "Rainfall",
+  "cartography.layer.rainfall_iso": "Rainfall Isolines",
+  "cartography.layer.temperature": "Temperature",
+  "cartography.layer.temperature_iso": "Temperature Isolines",
+  "cartography.layer.ecosystem": "Ecosystem",
+  "cartography.layer.geology": "Geology"
+}
