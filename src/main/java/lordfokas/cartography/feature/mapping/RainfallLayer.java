@@ -1,5 +1,7 @@
 package lordfokas.cartography.feature.mapping;
 
+import net.minecraft.client.gui.components.Widget;
+
 import com.eerussianguy.blazemap.api.mapping.Layer;
 import com.eerussianguy.blazemap.api.util.IDataSource;
 import com.mojang.blaze3d.platform.NativeImage;
@@ -10,7 +12,7 @@ import lordfokas.cartography.utils.ColorScale;
 import lordfokas.cartography.utils.Colors;
 
 public class RainfallLayer extends Layer {
-    private static final float MAX_RAINFALL = 500F;
+    public static final float MAX_RAINFALL = 500F;
     private static final ColorScale SCALE = new ColorScale(0F, 300F);
 
     public RainfallLayer() {
@@ -35,5 +37,20 @@ public class RainfallLayer extends Layer {
         }
 
         return true;
+    }
+
+    @Override
+    public Widget getLegendWidget() {
+        return new RainfallLegendWidget();
+    }
+
+    public static NativeImage getLegend(){
+        int height = 100;
+        NativeImage legend = new NativeImage(1, height, false);
+        for(int y = 0; y < height; y++){
+            float hue = Colors.normalizeHue(SCALE.interpolate(((float)y) / height));
+            legend.setPixelRGBA(0, (height - y) - 1, Colors.HSB2ABGR(hue, 0.65F, 1F));
+        }
+        return legend;
     }
 }

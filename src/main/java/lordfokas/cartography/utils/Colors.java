@@ -5,6 +5,7 @@ import java.awt.*;
 public class Colors {
 
     public static final int NO_TINT = -1;
+    public static final int NHITE = 0xFFFFFFFF;
 
     public static int HSB2ABGR(float h, float s, float b){
         Color color = Color.getHSBColor(h, s, b);
