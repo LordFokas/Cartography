@@ -21,7 +21,9 @@ build
 eclipse
 run
 run-*
-libs
+
+#wtf help I'm scared
+/libs/
 
 # Files from Forge MDK
 forge*changelog.txt
