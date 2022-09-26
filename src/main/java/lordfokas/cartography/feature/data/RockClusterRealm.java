@@ -9,7 +9,7 @@ import com.eerussianguy.blazemap.engine.async.AsyncDataCruncher;
 import lordfokas.cartography.data.ClusterRealm;
 import lordfokas.cartography.data.IClusterConsumer;
 
-public class RockClusterRealm extends ClusterRealm<ChunkPos, String, String, RockCluster> {
+public class RockClusterRealm extends ClusterRealm<ChunkPos, String, RockCluster> {
     private final String rock;
 
     public RockClusterRealm(AsyncDataCruncher.IThreadAsserter dataCruncherThread, IClusterConsumer<RockCluster> consumer, String rock) {
