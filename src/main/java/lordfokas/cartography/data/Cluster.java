@@ -2,15 +2,13 @@ package lordfokas.cartography.data;
 
 import java.util.Collection;
 
-public class Cluster<C, D, R> {
+public class Cluster<C, D> {
     private final Collection<C> coordinates;
     private D data;
-    private final Collection<R> keys;
 
-    public Cluster(Collection<C> coordinates, D data, Collection<R> keys) {
+    public Cluster(Collection<C> coordinates, D data) {
         this.coordinates = coordinates;
         this.data = data;
-        this.keys = keys;
     }
 
     public Collection<C> getCoordinates() {
@@ -23,9 +21,5 @@ public class Cluster<C, D, R> {
 
     public D getData() {
         return data;
-    }
-
-    public Collection<R> getKeys() {
-        return keys;
     }
 }
