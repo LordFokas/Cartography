@@ -1,4 +1,4 @@
-package lordfokas.cartography.feature.data;
+package lordfokas.cartography.feature.data.rock;
 
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ChunkPos;

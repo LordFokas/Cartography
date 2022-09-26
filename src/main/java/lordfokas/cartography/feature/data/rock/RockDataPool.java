@@ -1,4 +1,4 @@
-package lordfokas.cartography.feature.data;
+package lordfokas.cartography.feature.data.rock;
 
 import java.io.IOException;
 import java.util.HashMap;

@@ -16,7 +16,10 @@ import com.eerussianguy.blazemap.api.event.BlazeRegistryEvent.ProcessorRegistryE
 import com.mojang.logging.LogUtils;
 import lordfokas.cartography.data.ClusterStore;
 import lordfokas.cartography.data.SerializableDataPool;
-import lordfokas.cartography.feature.data.*;
+import lordfokas.cartography.feature.data.climate.ClimateClusterStore;
+import lordfokas.cartography.feature.data.climate.ClimateProcessor;
+import lordfokas.cartography.feature.data.rock.RockClusterStore;
+import lordfokas.cartography.feature.data.rock.RockLayerProcessor;
 import lordfokas.cartography.feature.mapping.*;
 import lordfokas.cartography.utils.ImageHandler;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package lordfokas.cartography.feature.data;
+package lordfokas.cartography.feature.data.rock;
 
 import java.util.HashMap;
 
@@ -30,9 +30,7 @@ public class RockClusterStore extends ClusterStore {
 
     @SubscribeEvent
     public static void onDimensionChanged(DimensionChangedEvent event) {
-        foreach(ClusterType.ROCKS, rock -> {
-            BlazeMapEngine.async().runOnDataThread(() -> getDataPool(event.dimension, rock));
-        });
+        foreach(ClusterType.ROCKS, rock -> BlazeMapEngine.async().runOnDataThread(() -> getDataPool(event.dimension, rock)));
     }
 
     public static synchronized RockDataPool getDataPool(ResourceKey<Level> dimension, String rock) {

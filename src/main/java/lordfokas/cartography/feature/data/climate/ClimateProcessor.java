@@ -1,4 +1,4 @@
-package lordfokas.cartography.feature.data;
+package lordfokas.cartography.feature.data.climate;
 
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ChunkPos;
@@ -22,8 +22,17 @@ public class ClimateProcessor extends Processor {
     @Override
     public boolean execute(ResourceKey<Level> dimension, RegionPos region, ChunkPos chunk, IDataSource data) {
         ClimateMD climate = (ClimateMD) data.get(CartographyReferences.Collectors.CLIMATE);
-        process(ClimateProcessor::temperature, climate, 1, ((mx, my, angle, value) -> ClimateClusterStore.add(dimension, chunk, mx, my, angle, value, "*C")));
-        process(ClimateProcessor::rainfall, climate, 10, ((mx, my, angle, value) -> ClimateClusterStore.add(dimension, chunk, mx, my, angle, value, "mm")));
+
+        process(ClimateProcessor::temperature, climate, 1, ((mx, my, angle, v) -> {
+            String value = String.valueOf(v);
+            ClimateClusterStore.getTemperaturePool(dimension, value).addData(chunk, Isoline.of(chunk, value, "*C", angle, mx, my));
+        }));
+
+        process(ClimateProcessor::rainfall, climate, 10, ((mx, my, angle, v) -> {
+            String value = String.valueOf(v);
+            ClimateClusterStore.getRainfallPool(dimension, value).addData(chunk, Isoline.of(chunk, value, "mm", angle, mx, my));
+        }));
+
         return true;
     }
 
