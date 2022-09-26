@@ -1,4 +1,4 @@
-package lordfokas.cartography.feature.data;
+package lordfokas.cartography.feature.mapping;
 
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;

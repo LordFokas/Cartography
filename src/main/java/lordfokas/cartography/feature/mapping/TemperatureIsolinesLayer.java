@@ -5,7 +5,6 @@ import com.eerussianguy.blazemap.api.util.IDataSource;
 import com.mojang.blaze3d.platform.NativeImage;
 import lordfokas.cartography.Cartography;
 import lordfokas.cartography.CartographyReferences;
-import lordfokas.cartography.feature.data.ClimateMD;
 
 public class TemperatureIsolinesLayer extends Layer {
     public static final int TEMPERATURE_RED = 0xFF0000DD;

@@ -8,6 +8,7 @@ import com.eerussianguy.blazemap.api.mapping.Processor;
 import com.eerussianguy.blazemap.api.util.IDataSource;
 import com.eerussianguy.blazemap.api.util.RegionPos;
 import lordfokas.cartography.CartographyReferences;
+import lordfokas.cartography.feature.mapping.GroundCompositionMD;
 import lordfokas.cartography.utils.StringCounter;
 
 public class RockLayerProcessor extends Processor {

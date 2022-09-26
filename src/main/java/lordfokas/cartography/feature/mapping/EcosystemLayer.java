@@ -7,7 +7,6 @@ import com.eerussianguy.blazemap.api.util.IDataSource;
 import com.mojang.blaze3d.platform.NativeImage;
 import lordfokas.cartography.Cartography;
 import lordfokas.cartography.CartographyReferences;
-import lordfokas.cartography.feature.data.GroundCompositionMD;
 import lordfokas.cartography.utils.ImageHandler;
 import lordfokas.cartography.utils.TFCBlockTypes;
 
