@@ -10,7 +10,7 @@ public class Isoline {
     public final String value;
     public final String unit;
 
-    public static Isoline of(ChunkPos pos, String value, String unit, float angle, int mx, int my){
+    public static Isoline of(ChunkPos pos, String value, String unit, float angle, int mx, int my) {
         Isoline.Curve curve = new Isoline.Curve(pos, angle, mx, my);
         Map<ChunkPos, Isoline.Curve> data = new HashMap<>();
         data.put(pos, curve);
@@ -36,7 +36,7 @@ public class Isoline {
         }
     }
 
-    public Isoline copy(){
+    public Isoline copy() {
         return new Isoline(new HashMap<>(curves), value, unit);
     }
 }

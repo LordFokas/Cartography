@@ -60,7 +60,7 @@ public class ClimateClusterStore extends ClusterStore {
     }
 
     private static ResourceLocation clusterID(ClimateCluster cluster, String type) {
-        return Cartography.resource("clusters/"+type+"/" + cluster.hashCode());
+        return Cartography.resource("clusters/" + type + "/" + cluster.hashCode());
     }
 
     private static final class ClimateConsumer implements IClusterConsumer<ClimateCluster> {

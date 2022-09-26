@@ -27,7 +27,7 @@ public class ClimateDataPool extends SerializableDataPool<ChunkPos, Isoline> {
         if(count == 0) return;
         HashMap<ChunkPos, Isoline> data = new HashMap<>();
 
-        for(int i = 0; i < count; i++){
+        for(int i = 0; i < count; i++) {
             ChunkPos pos = new ChunkPos(stream.readLong());
             data.put(pos, Isoline.of(pos, value, unit, stream.readFloat(), stream.readInt(), stream.readInt()));
         }
@@ -38,7 +38,7 @@ public class ClimateDataPool extends SerializableDataPool<ChunkPos, Isoline> {
     @Override
     protected synchronized void save(MinecraftStreams.Output stream) throws IOException {
         stream.writeInt(pool.size());
-        for(Isoline line : pool.values()){
+        for(Isoline line : pool.values()) {
             Isoline.Curve curve = line.curves.values().iterator().next();
             stream.writeLong(curve.chunk.toLong());
             stream.writeFloat(curve.angle);

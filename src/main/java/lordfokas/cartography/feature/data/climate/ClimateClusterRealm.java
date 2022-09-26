@@ -18,7 +18,7 @@ public class ClimateClusterRealm extends ClusterRealm<ChunkPos, Isoline, Climate
     @Override
     protected boolean isInRange(ChunkPos coordinate, Collection<ChunkPos> cluster) {
         ChunkPos other = cluster.iterator().next();
-        if(coordinate.x >> SHIFT == other.x >> SHIFT && coordinate.z >> SHIFT == other.z >> SHIFT){
+        if(coordinate.x >> SHIFT == other.x >> SHIFT && coordinate.z >> SHIFT == other.z >> SHIFT) {
             for(ChunkPos target : cluster) {
                 if(coordinate.getChessboardDistance(target) <= 3) {
                     return true;

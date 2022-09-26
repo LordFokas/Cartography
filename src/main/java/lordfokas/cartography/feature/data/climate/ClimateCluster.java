@@ -11,7 +11,7 @@ public class ClimateCluster extends Cluster<ChunkPos, Isoline> {
         super(Collections.unmodifiableSet(data.curves.keySet()), data);
     }
 
-    public Isoline.Curve getCenterPoint(){
+    public Isoline.Curve getCenterPoint() {
         if(getCoordinates().size() < 8) return null;
 
         Isoline.Curve curve = null;
@@ -26,11 +26,11 @@ public class ClimateCluster extends Cluster<ChunkPos, Isoline> {
         x /= size;
         z /= size;
 
-        for(Isoline.Curve c : data.curves.values()){
+        for(Isoline.Curve c : data.curves.values()) {
             long dx = x - c.chunk.x;
             long dz = z - c.chunk.z;
             double d = Math.sqrt(dx * dx + dz * dz);
-            if(d < min){
+            if(d < min) {
                 min = d;
                 curve = c;
             }
