@@ -25,8 +25,6 @@ public abstract class ClusterRealm<C, D, K extends Cluster<C, D>> implements Dat
 
     protected abstract K split(K removed, K existing);
 
-    protected abstract D summarize(Collection<C> cluster);
-
     protected abstract K make(C coordinate, D data);
 
     public synchronized K getClusterAt(C coordinate) {
@@ -85,12 +83,5 @@ public abstract class ClusterRealm<C, D, K extends Cluster<C, D>> implements Dat
             add(datum.getKey(), datum.getValue(), false);
         }
         consumer.pushClusters(clusters);
-    }
-
-    public synchronized void refreshClusterAt(C coordinate) {
-        dataCruncherThread.assertCurrentThread();
-        K cluster = getClusterAt(coordinate);
-        cluster.setData(summarize(cluster.getCoordinates()));
-        consumer.pushCluster(cluster);
     }
 }

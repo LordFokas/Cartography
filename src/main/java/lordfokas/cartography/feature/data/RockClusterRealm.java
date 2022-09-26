@@ -54,11 +54,6 @@ public class RockClusterRealm extends ClusterRealm<ChunkPos, String, RockCluster
     }
 
     @Override
-    protected String summarize(Collection<ChunkPos> cluster) {
-        return rock;
-    }
-
-    @Override
     protected RockCluster make(ChunkPos coordinate, String data) {
         Collection<ChunkPos> coordinates = new ArrayList<>(1);
         coordinates.add(coordinate);

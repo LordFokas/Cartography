@@ -4,7 +4,7 @@ import java.util.Collection;
 
 public class Cluster<C, D> {
     private final Collection<C> coordinates;
-    private D data;
+    protected final D data;
 
     public Cluster(Collection<C> coordinates, D data) {
         this.coordinates = coordinates;
@@ -13,10 +13,6 @@ public class Cluster<C, D> {
 
     public Collection<C> getCoordinates() {
         return coordinates;
-    }
-
-    public void setData(D data) {
-        this.data = data;
     }
 
     public D getData() {
