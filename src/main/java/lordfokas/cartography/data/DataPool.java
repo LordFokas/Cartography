@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class DataPool<C, D> implements DataFlow.IDataConsumer<C, D>, DataFlow.IDataSource<C, D> {
     protected final ArrayList<DataFlow.IDataConsumer<C, D>> consumers = new ArrayList<>(4);
@@ -15,13 +14,13 @@ public class DataPool<C, D> implements DataFlow.IDataConsumer<C, D>, DataFlow.ID
     }
 
     @Override
-    public void addData(C coordinate, D data) {
+    public synchronized void addData(C coordinate, D data) {
         pool.put(coordinate, data);
         notifyConsumers(DataPool::notifyAdd, coordinate);
     }
 
     @Override
-    public void setData(Map<C, D> pool) {
+    public synchronized void setData(Map<C, D> pool) {
         this.pool.clear();
         this.pool.putAll(pool);
         for(DataFlow.IDataConsumer<C, D> consumer : consumers) {
@@ -30,9 +29,9 @@ public class DataPool<C, D> implements DataFlow.IDataConsumer<C, D>, DataFlow.ID
     }
 
     @Override
-    public void removeData(C coordinate, D data) {
-        notifyConsumers(DataPool::notifyRemove, coordinate);
+    public synchronized void removeData(C coordinate, D data) {
         pool.remove(coordinate);
+        notifyConsumers(DataPool::notifyRemove, coordinate);
     }
 
     @Override
@@ -43,10 +42,6 @@ public class DataPool<C, D> implements DataFlow.IDataConsumer<C, D>, DataFlow.ID
     @Override
     public D get(C coordinate) {
         return pool.get(coordinate);
-    }
-
-    public D computeIfAbsent(C coordinate, Supplier<D> supplier) {
-        return pool.computeIfAbsent(coordinate, $ -> supplier.get());
     }
 
     protected void notifyConsumers(IConsumerNotifier notifier, C coordinate) {

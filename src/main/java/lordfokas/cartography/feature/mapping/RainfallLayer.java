@@ -13,7 +13,7 @@ import lordfokas.cartography.utils.Colors;
 
 public class RainfallLayer extends Layer {
     public static final float MAX_RAINFALL = 500F;
-    private static final ColorScale SCALE = new ColorScale(0F, 300F);
+    private static final ColorScale SCALE = new ColorScale(0F, 240F);
 
     public RainfallLayer() {
         super(

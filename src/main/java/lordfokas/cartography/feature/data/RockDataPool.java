@@ -33,7 +33,7 @@ public class RockDataPool extends SerializableDataPool<ChunkPos, String> {
     }
 
     @Override
-    protected void save(MinecraftStreams.Output stream) throws IOException {
+    protected synchronized void save(MinecraftStreams.Output stream) throws IOException {
         int count = pool.size();
         stream.writeInt(count);
         if(count == 0) return;
