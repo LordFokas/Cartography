@@ -5,7 +5,6 @@ import java.util.*;
 import java.util.function.Consumer;
 
 import net.minecraft.resources.ResourceLocation;
-
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -51,7 +50,7 @@ public class ClusterStore {
         return labels;
     }
 
-    protected static IStorageAccess storage(){
+    protected static IStorageAccess storage() {
         return dimensionStorage;
     }
 
@@ -66,7 +65,7 @@ public class ClusterStore {
                     List<String> v = entry.getValue();
                     output.writeUTF(k.name);
                     output.writeInt(v.size());
-                    for(String cluster : v){
+                    for(String cluster : v) {
                         output.writeUTF(cluster);
                     }
                 }

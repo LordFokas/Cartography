@@ -28,8 +28,8 @@ public class RainfallLayer extends Layer {
     public boolean renderTile(NativeImage tile, IDataSource data) {
         ClimateMD climate = (ClimateMD) data.get(CartographyReferences.Collectors.CLIMATE);
 
-        for(int x = 0; x < 16; x++){
-            for(int y = 0; y < 16; y++){
+        for(int x = 0; x < 16; x++) {
+            for(int y = 0; y < 16; y++) {
                 float rainfall = climate.rainfall[x][y] / MAX_RAINFALL;
                 float hue = Colors.normalizeHue(SCALE.interpolate(rainfall));
                 tile.setPixelRGBA(x, y, Colors.HSB2ABGR(hue, 0.65F, 1F));
@@ -44,11 +44,11 @@ public class RainfallLayer extends Layer {
         return new RainfallLegendWidget();
     }
 
-    public static NativeImage getLegend(){
+    public static NativeImage getLegend() {
         int height = 100;
         NativeImage legend = new NativeImage(1, height, false);
-        for(int y = 0; y < height; y++){
-            float hue = Colors.normalizeHue(SCALE.interpolate(((float)y) / height));
+        for(int y = 0; y < height; y++) {
+            float hue = Colors.normalizeHue(SCALE.interpolate(((float) y) / height));
             legend.setPixelRGBA(0, (height - y) - 1, Colors.HSB2ABGR(hue, 0.65F, 1F));
         }
         return legend;

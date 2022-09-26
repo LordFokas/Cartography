@@ -9,7 +9,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-import com.eerussianguy.blazemap.api.event.BlazeRegistryEvent.*;
+import com.eerussianguy.blazemap.api.event.BlazeRegistryEvent.CollectorRegistryEvent;
+import com.eerussianguy.blazemap.api.event.BlazeRegistryEvent.LayerRegistryEvent;
+import com.eerussianguy.blazemap.api.event.BlazeRegistryEvent.MapTypeRegistryEvent;
+import com.eerussianguy.blazemap.api.event.BlazeRegistryEvent.ProcessorRegistryEvent;
 import com.mojang.logging.LogUtils;
 import lordfokas.cartography.data.ClusterStore;
 import lordfokas.cartography.data.SerializableDataPool;
@@ -40,13 +43,13 @@ public class Cartography {
     }
 
     @SubscribeEvent
-    public void registerCollectors(CollectorRegistryEvent evt){
+    public void registerCollectors(CollectorRegistryEvent evt) {
         evt.registry.register(new ClimateCollector());
         evt.registry.register(new GroundCompositionCollector());
     }
 
     @SubscribeEvent
-    public void registerLayers(LayerRegistryEvent evt){
+    public void registerLayers(LayerRegistryEvent evt) {
         evt.registry.register(new RainfallLayer());
         evt.registry.register(new RainfallIsolinesLayer());
         evt.registry.register(new TemperatureLayer());
@@ -56,7 +59,7 @@ public class Cartography {
     }
 
     @SubscribeEvent
-    public void registerMapTypes(MapTypeRegistryEvent evt){
+    public void registerMapTypes(MapTypeRegistryEvent evt) {
         evt.registry.register(new RainfallMapType());
         evt.registry.register(new TemperatureMapType());
         evt.registry.register(new EcosystemMapType());
@@ -64,7 +67,7 @@ public class Cartography {
     }
 
     @SubscribeEvent
-    public void registerProcessors(ProcessorRegistryEvent evt){
+    public void registerProcessors(ProcessorRegistryEvent evt) {
         evt.registry.register(new ClimateProcessor());
         evt.registry.register(new RockLayerProcessor());
     }
@@ -73,7 +76,7 @@ public class Cartography {
         return new TranslatableComponent(CartographyReferences.MOD_ID + "." + key);
     }
 
-    public static ResourceLocation resource(String path){
+    public static ResourceLocation resource(String path) {
         return new ResourceLocation(CartographyReferences.MOD_ID, path);
     }
 }

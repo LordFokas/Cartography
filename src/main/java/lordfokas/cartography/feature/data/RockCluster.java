@@ -12,13 +12,13 @@ public class RockCluster extends Cluster<ChunkPos, String, String> {
         super(coordinates, data, keys);
     }
 
-    public BlockPos centerOfMass(){
+    public BlockPos centerOfMass() {
         int size = getCoordinates().size();
-        if(size < 20){
+        if(size < 20) {
             return null;
         }
         long x = 0, z = 0;
-        for(ChunkPos pos : getCoordinates()){
+        for(ChunkPos pos : getCoordinates()) {
             x += pos.getMinBlockX();
             z += pos.getMinBlockZ();
         }

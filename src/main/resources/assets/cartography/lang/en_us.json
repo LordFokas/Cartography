@@ -3,7 +3,6 @@
   "cartography.map.temperature": "Temperature",
   "cartography.map.ecosystem": "Ecosystem",
   "cartography.map.geology": "Geology",
-
   "cartography.layer.rainfall": "Rainfall",
   "cartography.layer.rainfall_iso": "Rainfall Isolines",
   "cartography.layer.temperature": "Temperature",

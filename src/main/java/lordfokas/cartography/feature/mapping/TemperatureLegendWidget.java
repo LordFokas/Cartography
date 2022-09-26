@@ -21,7 +21,7 @@ public class TemperatureLegendWidget implements Widget {
     private static RenderType type;
 
     private static RenderType getLegend() {
-        if (type == null) {
+        if(type == null) {
             Minecraft mc = Minecraft.getInstance();
             legend = TemperatureLayer.getLegend();
             DynamicTexture texture = new DynamicTexture(legend);
@@ -35,17 +35,17 @@ public class TemperatureLegendWidget implements Widget {
 
     @Override
     public void render(PoseStack stack, int i, int j, float k) {
-        if (legend == null) {
+        if(legend == null) {
             getLegend();
         }
 
         int height = legend.getHeight();
         stack.translate(-28.0D, (-(height + 8)), 0.0D);
         MultiBufferSource.BufferSource buffers = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
-        RenderHelper.fillRect(buffers, stack.last().pose(), 28.0F, (float)(height + 8), -1610612736);
+        RenderHelper.fillRect(buffers, stack.last().pose(), 28.0F, (float) (height + 8), -1610612736);
         stack.pushPose();
         stack.translate(16.0D, 4.0D, 0.0D);
-        RenderHelper.drawQuad(buffers.getBuffer(getLegend()), stack.last().pose(), 10.0F, (float)height);
+        RenderHelper.drawQuad(buffers.getBuffer(getLegend()), stack.last().pose(), 10.0F, (float) height);
         stack.popPose();
         Font font = Minecraft.getInstance().font;
         stack.pushPose();

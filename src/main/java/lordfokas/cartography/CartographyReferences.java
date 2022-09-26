@@ -1,8 +1,9 @@
 package lordfokas.cartography;
 
-import static com.eerussianguy.blazemap.api.BlazeMapAPI.*;
 import com.eerussianguy.blazemap.api.BlazeRegistry.Key;
 import com.eerussianguy.blazemap.api.mapping.*;
+
+import static com.eerussianguy.blazemap.api.BlazeMapAPI.*;
 
 public class CartographyReferences {
     public static final String MOD_ID = "cartography";

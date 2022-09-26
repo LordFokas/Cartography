@@ -1,9 +1,9 @@
 package lordfokas.cartography.feature.data;
 
-import net.minecraft.world.level.ChunkPos;
-
 import java.util.ArrayList;
 import java.util.Collection;
+
+import net.minecraft.world.level.ChunkPos;
 
 import com.eerussianguy.blazemap.engine.async.AsyncDataCruncher;
 import lordfokas.cartography.data.ClusterRealm;
@@ -12,15 +12,15 @@ import lordfokas.cartography.data.IClusterConsumer;
 public class RockClusterRealm extends ClusterRealm<ChunkPos, String, String, RockCluster> {
     private final String rock;
 
-    public RockClusterRealm(AsyncDataCruncher.IThreadAsserter dataCruncherThread, IClusterConsumer<RockCluster> consumer, String rock){
+    public RockClusterRealm(AsyncDataCruncher.IThreadAsserter dataCruncherThread, IClusterConsumer<RockCluster> consumer, String rock) {
         super(dataCruncherThread, consumer);
         this.rock = rock.replace("STONE:", "");
     }
 
     @Override
     protected boolean isInRange(ChunkPos coordinate, Collection<ChunkPos> cluster) {
-        for(ChunkPos target : cluster){
-            if(coordinate.getChessboardDistance(target) <= 1){
+        for(ChunkPos target : cluster) {
+            if(coordinate.getChessboardDistance(target) <= 1) {
                 return true;
             }
         }
@@ -29,8 +29,8 @@ public class RockClusterRealm extends ClusterRealm<ChunkPos, String, String, Roc
 
     @Override
     protected boolean isIncluded(ChunkPos coordinate, Collection<ChunkPos> cluster) {
-        for(ChunkPos target : cluster){
-            if(target.equals(coordinate)){
+        for(ChunkPos target : cluster) {
+            if(target.equals(coordinate)) {
                 return true;
             }
         }
@@ -40,7 +40,7 @@ public class RockClusterRealm extends ClusterRealm<ChunkPos, String, String, Roc
     @Override
     protected RockCluster merge(RockCluster added, Iterable<RockCluster> existing) {
         ArrayList<ChunkPos> coordinates = new ArrayList<>(added.getCoordinates());
-        for(RockCluster cluster : existing){
+        for(RockCluster cluster : existing) {
             coordinates.addAll(cluster.getCoordinates());
         }
         return new RockCluster(coordinates, added.getData(), new ArrayList<>(16));

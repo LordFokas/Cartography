@@ -3,7 +3,6 @@ package lordfokas.cartography.feature.data;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import com.eerussianguy.blazemap.api.event.DimensionChangedEvent;
@@ -21,17 +20,17 @@ public class ClimateClusterStore {
     private static IMarkerStorage.Layered<MapLabel> labels;
 
     @SubscribeEvent
-    public static void onDimensionChanged(DimensionChangedEvent event){
+    public static void onDimensionChanged(DimensionChangedEvent event) {
         labels = event.labels;
     }
 
-    public static void add(ResourceKey<Level> dimension, ChunkPos chunk, int mx, int my, float angle, int value, String unit){
+    public static void add(ResourceKey<Level> dimension, ChunkPos chunk, int mx, int my, float angle, int value, String unit) {
         if((chunk.x + chunk.z) % 5 != 0) return;
         boolean isRainfall = unit.equals("mm");
         String text = String.format(" %d %s ", value, unit);
         ImageHandler.DynamicLabel dynamicLabel = ImageHandler.getLabel(text);
         MapLabel label = new MapLabel(
-            Cartography.resource("clusters/climate/"+System.nanoTime()),
+            Cartography.resource("clusters/climate/" + System.nanoTime()),
             dimension,
             chunk.getBlockAt(mx, 0, my),
             isRainfall ? CartographyReferences.Layers.RAINFALL_ISO : CartographyReferences.Layers.TEMPERATURE_ISO,
@@ -44,7 +43,7 @@ public class ClimateClusterStore {
             true
         );
         BlazeMapEngine.async().runOnGameThread(() -> {
-            if(labels.has(label)){
+            if(labels.has(label)) {
                 labels.remove(label);
             }
             labels.add(label);

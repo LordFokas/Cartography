@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import net.minecraft.resources.ResourceLocation;
-
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import com.eerussianguy.blazemap.api.event.ServerJoinedEvent;
@@ -19,41 +18,44 @@ public abstract class SerializableDataPool<C, D> extends DataPool<C, D> {
     private final IStorageAccess storage;
 
     @SubscribeEvent
-    public static void onServerJoined(ServerJoinedEvent event){
-        if(debouncer != null){
+    public static void onServerJoined(ServerJoinedEvent event) {
+        if(debouncer != null) {
             BlazeMapEngine.debouncer().remove(debouncer);
         }
         debouncer = new DebouncingDomain<>(SerializableDataPool::save, 5000, 30000);
         BlazeMapEngine.debouncer().add(debouncer);
     }
 
-    public SerializableDataPool(IStorageAccess storage, ResourceLocation node){
+    public SerializableDataPool(IStorageAccess storage, ResourceLocation node) {
         this.storage = storage;
         this.node = node;
     }
 
-    public void load(){
+    public void load() {
         if(!storage.exists(node)) return;
-        try(MinecraftStreams.Input stream = storage.read(node)){
+        try(MinecraftStreams.Input stream = storage.read(node)) {
             load(stream);
-        }catch(IOException ex){
+        }
+        catch(IOException ex) {
             ex.printStackTrace();
         }
     }
 
-    public void save(){
-        try(MinecraftStreams.Output stream = storage.write(node)){
+    public void save() {
+        try(MinecraftStreams.Output stream = storage.write(node)) {
             save(stream);
-        }catch(IOException ex){
+        }
+        catch(IOException ex) {
             ex.printStackTrace();
         }
     }
 
-    public void markDirty(){
+    public void markDirty() {
         debouncer.push(this);
     }
 
     protected abstract void load(MinecraftStreams.Input stream) throws IOException;
+
     protected abstract void save(MinecraftStreams.Output stream) throws IOException;
 
     @Override

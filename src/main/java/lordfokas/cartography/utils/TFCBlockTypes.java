@@ -1,11 +1,11 @@
 package lordfokas.cartography.utils;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-
 import net.minecraftforge.registries.RegistryObject;
 
 import lordfokas.cartography.Cartography;
@@ -17,18 +17,18 @@ import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 
 public class TFCBlockTypes {
-    private static final Rock.BlockType[] STONE_TYPES = new Rock.BlockType[]{ Rock.BlockType.RAW, Rock.BlockType.HARDENED};
-    private static final Wood.BlockType[] LOG_TYPES = new Wood.BlockType[]{ Wood.BlockType.LOG, Wood.BlockType.STRIPPED_LOG };
+    private static final Rock.BlockType[] STONE_TYPES = new Rock.BlockType[] {Rock.BlockType.RAW, Rock.BlockType.HARDENED};
+    private static final Wood.BlockType[] LOG_TYPES = new Wood.BlockType[] {Wood.BlockType.LOG, Wood.BlockType.STRIPPED_LOG};
     private static final Map<Block, Profile> TYPES = new HashMap<>();
 
-    public static Profile getProfile(Block block){
+    public static Profile getProfile(Block block) {
         return TYPES.get(block);
     }
 
-    public static Profile getProfile(Block block, Classification ... classifications){
+    public static Profile getProfile(Block block, Classification... classifications) {
         Profile profile = TYPES.get(block);
-        if(profile != null){
-            for(Classification classification : classifications){
+        if(profile != null) {
+            for(Classification classification : classifications) {
                 if(profile.type.classification != classification) continue;
                 return profile;
             }
@@ -36,10 +36,10 @@ public class TFCBlockTypes {
         return null;
     }
 
-    public static Profile getProfile(Block block, Type ... types){
+    public static Profile getProfile(Block block, Type... types) {
         Profile profile = TYPES.get(block);
-        if(profile != null){
-            for(Type t : types){
+        if(profile != null) {
+            for(Type t : types) {
                 if(t != profile.type) continue;
                 return profile;
             }
@@ -47,7 +47,7 @@ public class TFCBlockTypes {
         return null;
     }
 
-    public static ResourceLocation getTexturePath(Profile profile){
+    public static ResourceLocation getTexturePath(Profile profile) {
         return switch(profile.type) {
             case ORE, STONE -> new ResourceLocation("tfc", "textures/block/rock/raw/" + profile.name + ".png");
             case GRAVEL -> new ResourceLocation("tfc", "textures/block/rock/gravel/" + profile.name + ".png");
@@ -59,7 +59,7 @@ public class TFCBlockTypes {
         };
     }
 
-    public static ResourceLocation getLooseRockTexturePath(String rock){
+    public static ResourceLocation getLooseRockTexturePath(String rock) {
         return new ResourceLocation("tfc", "textures/item/loose_rock/" + rock + ".png");
     }
 
@@ -67,7 +67,7 @@ public class TFCBlockTypes {
         public final Type type;
         public final String name;
 
-        private Profile(Type type, String name){
+        private Profile(Type type, String name) {
             this.type = type;
             this.name = name;
         }
@@ -93,52 +93,54 @@ public class TFCBlockTypes {
         WATER(Classification.FLUID);
 
         public final Classification classification;
-        Type(Classification classification){ this.classification = classification; }
+
+        Type(Classification classification) {this.classification = classification;}
     }
 
     static {
         Cartography.LOGGER.info("Initializing TFCBlockTypes");
 
         // ROCKS  ======================================================================================================
-        for(Rock rock : Rock.values()){
+        for(Rock rock : Rock.values()) {
             String name = rock.name().toLowerCase();
-            for(Rock.BlockType type : STONE_TYPES){
+            for(Rock.BlockType type : STONE_TYPES) {
                 put(Type.STONE, TFCBlocks.ROCK_BLOCKS.get(rock).get(type).get(), name);
             }
             put(Type.GRAVEL, TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.GRAVEL).get(), name);
-            for(RegistryObject<Block> obj : TFCBlocks.ORES.get(rock).values()){
+            for(RegistryObject<Block> obj : TFCBlocks.ORES.get(rock).values()) {
                 put(Type.ORE, obj.get(), name);
             }
             for(Map<Ore.Grade, RegistryObject<Block>> ores : TFCBlocks.GRADED_ORES.get(rock).values()) {
-                for (RegistryObject<Block> obj : ores.values()) {
+                for(RegistryObject<Block> obj : ores.values()) {
                     put(Type.ORE, obj.get(), name);
                 }
             }
         }
 
         // SOILS  ======================================================================================================
-        for(SoilBlockType.Variant var : SoilBlockType.Variant.values()){
+        for(SoilBlockType.Variant var : SoilBlockType.Variant.values()) {
             String name = var.name().toLowerCase();
-            for(SoilBlockType type : SoilBlockType.values()){
+            for(SoilBlockType type : SoilBlockType.values()) {
                 Block block = TFCBlocks.SOIL.get(type).get(var).get();
-                if(type == SoilBlockType.CLAY || type == SoilBlockType.CLAY_GRASS){
+                if(type == SoilBlockType.CLAY || type == SoilBlockType.CLAY_GRASS) {
                     put(Type.CLAY, block, name);
-                }else{
+                }
+                else {
                     put(Type.DIRT, block, name);
                 }
             }
         }
         put(Type.DIRT, TFCBlocks.PEAT.get(), "peat");
         put(Type.DIRT, TFCBlocks.PEAT_GRASS.get(), "peat");
-        for(SandBlockType sand : SandBlockType.values()){
+        for(SandBlockType sand : SandBlockType.values()) {
             String name = sand.name().toLowerCase();
             put(Type.SAND, TFCBlocks.SAND.get(sand).get(), name);
         }
 
         // WOODS  ======================================================================================================
-        for(Wood wood : Wood.values()){
+        for(Wood wood : Wood.values()) {
             String name = wood.name().toLowerCase();
-            for(Wood.BlockType log : LOG_TYPES){
+            for(Wood.BlockType log : LOG_TYPES) {
                 put(Type.LOG, TFCBlocks.WOODS.get(wood).get(log).get(), name);
             }
             put(Type.LEAVES, TFCBlocks.WOODS.get(wood).get(Wood.BlockType.LEAVES).get(), name);
@@ -153,7 +155,7 @@ public class TFCBlockTypes {
         Cartography.LOGGER.info("Done");
     }
 
-    private static void put(Type type, Block block, String name){
+    private static void put(Type type, Block block, String name) {
         TYPES.put(block, new Profile(type, name));
     }
 }

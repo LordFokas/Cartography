@@ -24,15 +24,15 @@ public class TemperatureIsolinesLayer extends Layer {
     public boolean renderTile(NativeImage tile, IDataSource data) {
         ClimateMD climate = (ClimateMD) data.get(CartographyReferences.Collectors.CLIMATE);
 
-        for(int x = 0; x < 16; x++){
-            for(int y = 0; y < 16; y++){
+        for(int x = 0; x < 16; x++) {
+            for(int y = 0; y < 16; y++) {
                 boolean isBorder = false;
                 float value = temperature(climate, x, y, 0);
                 isBorder = delta(value, temperature(climate, x + 1, y, value), isBorder);
                 isBorder = delta(value, temperature(climate, x - 1, y, value), isBorder);
                 isBorder = delta(value, temperature(climate, x, y + 1, value), isBorder);
                 isBorder = delta(value, temperature(climate, x, y - 1, value), isBorder);
-                if(isBorder){
+                if(isBorder) {
                     tile.setPixelRGBA(x, y, TEMPERATURE_RED);
                 }
             }

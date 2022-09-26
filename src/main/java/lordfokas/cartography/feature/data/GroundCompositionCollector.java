@@ -26,18 +26,18 @@ public class GroundCompositionCollector extends Collector<GroundCompositionMD> {
                 int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING, minX + x, minZ + z);
 
                 boolean soil = false;
-                while(y > level.getMinBuildHeight()){
+                while(y > level.getMinBuildHeight()) {
                     BlockState state = level.getBlockState(POS.set(minX + x, y, minZ + z));
                     Profile profile = TFCBlockTypes.getProfile(state.getBlock(), Classification.ROCK, Classification.SOIL);
-                    if(profile != null){
-                        if(!soil){
-                            if(profile.type.classification == Classification.SOIL){
+                    if(profile != null) {
+                        if(!soil) {
+                            if(profile.type.classification == Classification.SOIL) {
                                 soils[x][z] = profile;
                                 soil = true;
                                 continue;
                             }
                         }
-                        if(profile.type.classification == Classification.ROCK){
+                        if(profile.type.classification == Classification.ROCK) {
                             rocks[x][z] = profile;
                             break;
                         }

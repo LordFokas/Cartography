@@ -26,12 +26,12 @@ public class ClimateProcessor extends Processor {
         return true;
     }
 
-    private void process(Metric metric, ClimateMD climate, int skip, LabelPlacer labels){
+    private void process(Metric metric, ClimateMD climate, int skip, LabelPlacer labels) {
         int xi = 0, yi = 0, xf = 0, yf = 0;
         boolean initial = true, line = false;
 
-        for(int x = 0; x < 16; x++){
-            for(int y = 0; y < 16; y++){
+        for(int x = 0; x < 16; x++) {
+            for(int y = 0; y < 16; y++) {
                 boolean isBorder;
                 float value = metric.get(climate, x, y, 0);
                 isBorder = delta(value, metric.get(climate, x + 1, y, value), skip, false);
@@ -39,12 +39,13 @@ public class ClimateProcessor extends Processor {
                 isBorder = delta(value, metric.get(climate, x, y + 1, value), skip, isBorder);
                 isBorder = delta(value, metric.get(climate, x, y - 1, value), skip, isBorder);
 
-                if(isBorder){
-                    if(initial){
+                if(isBorder) {
+                    if(initial) {
                         xi = x;
                         yi = y;
                         initial = false;
-                    }else{
+                    }
+                    else {
                         xf = x;
                         yf = y;
                         line = true;
@@ -57,7 +58,7 @@ public class ClimateProcessor extends Processor {
             int value = (int) Math.floor(metric.get(climate, xi, yi, 0));
             int mx = (xi + xf) / 2, my = (yi + yf) / 2;
             float dx = xf - xi, dy = yf - yi;
-            float angle = (float) ((Math.toDegrees(Math.atan(dy / dx)) + 270 ) % 360 ) + 90;
+            float angle = (float) ((Math.toDegrees(Math.atan(dy / dx)) + 270) % 360) + 90;
             labels.put(mx, my, angle, value);
         }
     }
@@ -73,7 +74,7 @@ public class ClimateProcessor extends Processor {
     private static boolean delta(float pixel, float neighbor, int skip, boolean prev) {
         if(prev) return true;
         int value = (int) Math.floor(pixel);
-        return  value % skip == 0 && value == Math.ceil(neighbor);
+        return value % skip == 0 && value == Math.ceil(neighbor);
     }
 
     @FunctionalInterface

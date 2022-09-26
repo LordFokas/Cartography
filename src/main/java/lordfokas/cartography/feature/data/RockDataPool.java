@@ -25,7 +25,7 @@ public class RockDataPool extends SerializableDataPool<ChunkPos, String> {
         String rock = stream.readUTF();
         HashMap<ChunkPos, String> data = new HashMap<>();
 
-        for(int i = 0; i < count; i++){
+        for(int i = 0; i < count; i++) {
             data.put(new ChunkPos(stream.readLong()), rock);
         }
 
@@ -41,7 +41,7 @@ public class RockDataPool extends SerializableDataPool<ChunkPos, String> {
         String rock = pool.entrySet().iterator().next().getValue();
         stream.writeUTF(rock);
 
-        for(ChunkPos chunk : pool.keySet()){
+        for(ChunkPos chunk : pool.keySet()) {
             stream.writeLong(chunk.toLong());
         }
     }

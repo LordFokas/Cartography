@@ -9,7 +9,7 @@ public class GroundCompositionMD implements MasterDatum {
     public final Profile[][] soil;
     public final Profile[][] rock;
 
-    public GroundCompositionMD(Profile[][] soil, Profile[][] rock){
+    public GroundCompositionMD(Profile[][] soil, Profile[][] rock) {
         this.soil = soil;
         this.rock = rock;
     }

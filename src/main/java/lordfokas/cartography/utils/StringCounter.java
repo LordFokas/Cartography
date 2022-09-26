@@ -7,7 +7,7 @@ public class StringCounter {
     private String dominant = null;
     private final HashMap<String, Integer> counters = new HashMap<>();
 
-    public void consume(TFCBlockTypes.Profile[][] profileMatrix){
+    public void consume(TFCBlockTypes.Profile[][] profileMatrix) {
         counters.clear();
         dominant = null;
         for(TFCBlockTypes.Profile[] profileArray : profileMatrix) {
@@ -19,10 +19,10 @@ public class StringCounter {
             }
         }
 
-        if(counters.size() > 0){
+        if(counters.size() > 0) {
             int max = 0;
-            for(Map.Entry<String, Integer> entry : counters.entrySet()){
-                if(entry.getValue() > max){
+            for(Map.Entry<String, Integer> entry : counters.entrySet()) {
+                if(entry.getValue() > max) {
                     max = entry.getValue();
                     dominant = entry.getKey();
                 }
@@ -30,7 +30,7 @@ public class StringCounter {
         }
     }
 
-    public String getDominant(){
+    public String getDominant() {
         return dominant;
     }
 }

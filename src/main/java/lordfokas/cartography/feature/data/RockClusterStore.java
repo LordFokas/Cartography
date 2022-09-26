@@ -8,7 +8,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
-
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import com.eerussianguy.blazemap.api.event.DimensionChangedEvent;
@@ -26,12 +25,12 @@ public class RockClusterStore extends ClusterStore {
     private static final HashMap<ResourceKey<Level>, HashMap<String, RockDataPool>> REALMS = new HashMap<>();
 
     @SubscribeEvent
-    public static void onServerJoined(ServerJoinedEvent event){
+    public static void onServerJoined(ServerJoinedEvent event) {
         REALMS.clear();
     }
 
     @SubscribeEvent
-    public static void onDimensionChanged(DimensionChangedEvent event){
+    public static void onDimensionChanged(DimensionChangedEvent event) {
         foreach(ClusterType.ROCKS, rock -> {
             BlazeMapEngine.async().runOnDataThread(() -> getDataPool(event.dimension, rock));
         });
@@ -46,8 +45,8 @@ public class RockClusterStore extends ClusterStore {
             ));
     }
 
-    private static ResourceLocation clusterID(RockCluster cluster){
-        return Cartography.resource("clusters/rock/"+cluster.hashCode());
+    private static ResourceLocation clusterID(RockCluster cluster) {
+        return Cartography.resource("clusters/rock/" + cluster.hashCode());
     }
 
     private static final IClusterConsumer<RockCluster> CONSUMER = new IClusterConsumer<>() {
@@ -70,7 +69,7 @@ public class RockClusterStore extends ClusterStore {
             );
             BlazeMapEngine.async().runOnGameThread(() -> {
                 var labels = labels();
-                if(labels.has(label)){
+                if(labels.has(label)) {
                     labels.remove(label);
                 }
                 labels.add(label);

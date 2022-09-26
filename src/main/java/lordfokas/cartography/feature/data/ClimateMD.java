@@ -8,7 +8,7 @@ public class ClimateMD implements MasterDatum {
     public final float[][] rainfall;
     public final float[][] temperature;
 
-    public ClimateMD(float[][] rainfall, float[][] temperature){
+    public ClimateMD(float[][] rainfall, float[][] temperature) {
         this.rainfall = rainfall;
         this.temperature = temperature;
     }

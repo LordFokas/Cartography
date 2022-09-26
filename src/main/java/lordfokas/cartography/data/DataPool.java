@@ -1,18 +1,21 @@
 package lordfokas.cartography.data;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class DataPool<C, D> implements DataFlow.IDataConsumer<C, D>, DataFlow.IDataSource<C, D> {
     protected final ArrayList<DataFlow.IDataConsumer<C, D>> consumers = new ArrayList<>(4);
     protected final HashMap<C, D> pool = new HashMap<>();
 
-    public void addConsumer(DataFlow.IDataConsumer<C, D> consumer){
+    public void addConsumer(DataFlow.IDataConsumer<C, D> consumer) {
         this.consumers.add(consumer);
     }
 
     @Override
-    public void addData(C coordinate, D data){
+    public void addData(C coordinate, D data) {
         pool.put(coordinate, data);
         notifyConsumers(DataPool::notifyAdd, coordinate);
     }
@@ -21,48 +24,48 @@ public class DataPool<C, D> implements DataFlow.IDataConsumer<C, D>, DataFlow.ID
     public void setData(Map<C, D> pool) {
         this.pool.clear();
         this.pool.putAll(pool);
-        for(DataFlow.IDataConsumer<C, D> consumer : consumers){
+        for(DataFlow.IDataConsumer<C, D> consumer : consumers) {
             consumer.setData(pool);
         }
     }
 
     @Override
-    public void removeData(C coordinate, D data){
+    public void removeData(C coordinate, D data) {
         notifyConsumers(DataPool::notifyRemove, coordinate);
         pool.remove(coordinate);
     }
 
     @Override
-    public Collection<C> keys(){
+    public Collection<C> keys() {
         return pool.keySet();
     }
 
     @Override
-    public D get(C coordinate){
+    public D get(C coordinate) {
         return pool.get(coordinate);
     }
 
-    public D computeIfAbsent(C coordinate, Supplier<D> supplier){
+    public D computeIfAbsent(C coordinate, Supplier<D> supplier) {
         return pool.computeIfAbsent(coordinate, $ -> supplier.get());
     }
 
-    protected void notifyConsumers(IConsumerNotifier notifier, C coordinate){
+    protected void notifyConsumers(IConsumerNotifier notifier, C coordinate) {
         D data = pool.get(coordinate);
-        for(DataFlow.IDataConsumer<C, D> consumer : consumers){
+        for(DataFlow.IDataConsumer<C, D> consumer : consumers) {
             notifier.notify(consumer, coordinate, data);
         }
     }
 
     @FunctionalInterface
-    protected interface IConsumerNotifier{
+    protected interface IConsumerNotifier {
         <C, D> void notify(DataFlow.IDataConsumer<C, D> consumer, C coordinate, D data);
     }
 
-    protected static <C, D> void notifyAdd(DataFlow.IDataConsumer<C, D> consumer, C coordinate, D data){
+    protected static <C, D> void notifyAdd(DataFlow.IDataConsumer<C, D> consumer, C coordinate, D data) {
         consumer.addData(coordinate, data);
     }
 
-    protected static <C, D> void notifyRemove(DataFlow.IDataConsumer<C, D> consumer, C coordinate, D data){
+    protected static <C, D> void notifyRemove(DataFlow.IDataConsumer<C, D> consumer, C coordinate, D data) {
         consumer.removeData(coordinate, data);
     }
 }

@@ -24,15 +24,15 @@ public class RainfallIsolinesLayer extends Layer {
     public boolean renderTile(NativeImage tile, IDataSource data) {
         ClimateMD climate = (ClimateMD) data.get(CartographyReferences.Collectors.CLIMATE);
 
-        for(int x = 0; x < 16; x++){
-            for(int y = 0; y < 16; y++){
+        for(int x = 0; x < 16; x++) {
+            for(int y = 0; y < 16; y++) {
                 boolean isBorder = false;
                 float value = rainfall(climate, x, y, 0);
                 isBorder = delta(value, rainfall(climate, x + 1, y, value), isBorder);
                 isBorder = delta(value, rainfall(climate, x - 1, y, value), isBorder);
                 isBorder = delta(value, rainfall(climate, x, y + 1, value), isBorder);
                 isBorder = delta(value, rainfall(climate, x, y - 1, value), isBorder);
-                if(isBorder){
+                if(isBorder) {
                     tile.setPixelRGBA(x, y, RAINFALL_BLUE);
                 }
             }
@@ -48,6 +48,6 @@ public class RainfallIsolinesLayer extends Layer {
     private static boolean delta(float pixel, float neighbor, boolean prev) {
         if(prev) return true;
         int value = (int) Math.floor(pixel);
-        return  value % 10 == 0 && value == Math.ceil(neighbor);
+        return value % 10 == 0 && value == Math.ceil(neighbor);
     }
 }

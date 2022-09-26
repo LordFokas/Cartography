@@ -1,10 +1,12 @@
 package lordfokas.cartography.data;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
 
 public class DataFlow {
     public interface IDataSource<C, D> {
         Collection<C> keys();
+
         D get(C coordinate);
     }
 
@@ -14,6 +16,7 @@ public class DataFlow {
 
     public interface IDataConsumer<C, D> extends IDataSink<C, D> {
         void addData(C coordinate, D data);
+
         void removeData(C coordinate, D data);
     }
 }
