@@ -36,23 +36,35 @@ authors="LordFokas" #optional
 description='''
 Better mapping for TFC using Blaze Map
 '''
-# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.cartography]] #optional
-    # the modid of the dependency
-    modId="forge" #mandatory
-    # Does this dependency have to exist - if not, ordering below must be specified
-    mandatory=true #mandatory
-    # The version range of the dependency
-    versionRange="[40,)" #mandatory
-    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+
+# TerraFirmaCraft
+[[dependencies.cartography]]
+    modId="tfc"
+    mandatory=true
+    versionRange="[2.1,)"
     ordering="NONE"
-    # Side this dependency is applied on - BOTH, CLIENT or SERVER
+    side="CLIENT"
+
+# Blaze Map
+[[dependencies.cartography]]
+    modId="blazemap"
+    mandatory=true
+    versionRange="[0.4.6,)"
+    ordering="NONE"
+    side="CLIENT"
+
+# MinecraftForge
+[[dependencies.cartography]]
+    modId="forge"
+    mandatory=true
+    versionRange="[40,)"
+    ordering="NONE"
     side="BOTH"
-# Here's another dependency
+
+# Minecraft
 [[dependencies.cartography]]
     modId="minecraft"
     mandatory=true
-# This version range declares a minimum of the current minecraft version up to but not including the next major version
     versionRange="[1.18.2,1.19)"
     ordering="NONE"
     side="BOTH"

@@ -11,6 +11,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import com.eerussianguy.blazemap.api.event.BlazeRegistryEvent.*;
 import com.mojang.logging.LogUtils;
+import lordfokas.cartography.data.ClusterStore;
+import lordfokas.cartography.data.SerializableDataPool;
 import lordfokas.cartography.feature.data.*;
 import lordfokas.cartography.feature.mapping.*;
 import lordfokas.cartography.utils.ImageHandler;
@@ -27,11 +29,14 @@ public class Cartography {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
+        // Initialize generic utility mechanisms
         ImageHandler.init();
+        MinecraftForge.EVENT_BUS.register(SerializableDataPool.class);
+        MinecraftForge.EVENT_BUS.register(ClusterStore.class);
 
-        IEventBus bus = MinecraftForge.EVENT_BUS;
-        bus.addListener(ClimateClusterStore::onDimensionChanged);
-        bus.addListener(RockClusterStore::onDimensionChanged);
+        // Initialize specific feature facilities
+        MinecraftForge.EVENT_BUS.register(ClimateClusterStore.class);
+        MinecraftForge.EVENT_BUS.register(RockClusterStore.class);
     }
 
     @SubscribeEvent

@@ -4,6 +4,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+
 import com.eerussianguy.blazemap.api.event.DimensionChangedEvent;
 import com.eerussianguy.blazemap.api.markers.IMarkerStorage;
 import com.eerussianguy.blazemap.api.markers.MapLabel;
@@ -18,6 +20,7 @@ import lordfokas.cartography.utils.ImageHandler;
 public class ClimateClusterStore {
     private static IMarkerStorage.Layered<MapLabel> labels;
 
+    @SubscribeEvent
     public static void onDimensionChanged(DimensionChangedEvent event){
         labels = event.labels;
     }

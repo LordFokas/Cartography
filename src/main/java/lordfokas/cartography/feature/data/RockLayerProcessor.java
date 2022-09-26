@@ -26,7 +26,7 @@ public class RockLayerProcessor extends Processor {
         StringCounter counter = COUNTER.get();
         counter.consume(ground.rock);
         String rock = counter.getDominant();
-        RockClusterStore.getRealm(dimension, rock).addData(chunk, rock);
+        RockClusterStore.getDataPool(dimension, rock).addData(chunk, rock);
         return false;
     }
 }

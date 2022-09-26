@@ -3,7 +3,7 @@ package lordfokas.cartography.data;
 import java.util.*;
 import java.util.function.Supplier;
 
-public abstract class DataPool<C, D> implements DataFlow.IDataConsumer<C, D>, DataFlow.IDataSource<C, D> {
+public class DataPool<C, D> implements DataFlow.IDataConsumer<C, D>, DataFlow.IDataSource<C, D> {
     protected final ArrayList<DataFlow.IDataConsumer<C, D>> consumers = new ArrayList<>(4);
     protected final HashMap<C, D> pool = new HashMap<>();
 
@@ -15,6 +15,15 @@ public abstract class DataPool<C, D> implements DataFlow.IDataConsumer<C, D>, Da
     public void addData(C coordinate, D data){
         pool.put(coordinate, data);
         notifyConsumers(DataPool::notifyAdd, coordinate);
+    }
+
+    @Override
+    public void setData(Map<C, D> pool) {
+        this.pool.clear();
+        this.pool.putAll(pool);
+        for(DataFlow.IDataConsumer<C, D> consumer : consumers){
+            consumer.setData(pool);
+        }
     }
 
     @Override

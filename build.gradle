@@ -22,7 +22,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
-version = '0.2.0-dev'
+version = '0.3.0-dev'
 group = 'lordfokas.cartography' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "Cartography-${minecraft_version}"
 
