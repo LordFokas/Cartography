@@ -43,14 +43,14 @@ public class RockClusterRealm extends ClusterRealm<ChunkPos, String, String, Roc
         for(RockCluster cluster : existing) {
             coordinates.addAll(cluster.getCoordinates());
         }
-        return new RockCluster(coordinates, added.getData(), new ArrayList<>(16));
+        return new RockCluster(coordinates, added.getData());
     }
 
     @Override
     protected RockCluster split(RockCluster removed, RockCluster existing) {
         ArrayList<ChunkPos> coordinates = new ArrayList<>(existing.getCoordinates());
         coordinates.removeAll(removed.getCoordinates());
-        return new RockCluster(coordinates, existing.getData(), new ArrayList<>(16));
+        return new RockCluster(coordinates, existing.getData());
     }
 
     @Override
@@ -62,6 +62,6 @@ public class RockClusterRealm extends ClusterRealm<ChunkPos, String, String, Roc
     protected RockCluster make(ChunkPos coordinate, String data) {
         Collection<ChunkPos> coordinates = new ArrayList<>(1);
         coordinates.add(coordinate);
-        return new RockCluster(coordinates, rock, new ArrayList<>(16));
+        return new RockCluster(coordinates, rock);
     }
 }

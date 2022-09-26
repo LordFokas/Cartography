@@ -7,9 +7,9 @@ import net.minecraft.world.level.ChunkPos;
 
 import lordfokas.cartography.data.Cluster;
 
-public class RockCluster extends Cluster<ChunkPos, String, String> {
-    public RockCluster(Collection<ChunkPos> coordinates, String data, Collection<String> keys) {
-        super(coordinates, data, keys);
+public class RockCluster extends Cluster<ChunkPos, String> {
+    public RockCluster(Collection<ChunkPos> coordinates, String data) {
+        super(coordinates, data);
     }
 
     public BlockPos centerOfMass() {
