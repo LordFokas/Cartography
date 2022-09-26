@@ -1,6 +1,5 @@
 package lordfokas.cartography.feature.data;
 
-import java.util.Collection;
 import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
@@ -77,18 +76,8 @@ public class RockClusterStore extends ClusterStore {
         }
 
         @Override
-        public void pushClusters(Collection<RockCluster> clusters) {
-            for(RockCluster cluster : clusters) pushCluster(cluster);
-        }
-
-        @Override
         public void dropCluster(RockCluster cluster) {
             BlazeMapEngine.async().runOnGameThread(() -> labels().remove(clusterID(cluster), CartographyReferences.Layers.GEOLOGY));
-        }
-
-        @Override
-        public void dropClusters(Collection<RockCluster> clusters) {
-            for(RockCluster cluster : clusters) dropCluster(cluster);
         }
     };
 }
