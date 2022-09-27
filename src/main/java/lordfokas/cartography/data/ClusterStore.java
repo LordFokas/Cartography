@@ -94,7 +94,9 @@ public class ClusterStore {
         RAINFALL("cluster_rainfall"),
         TEMPERATURE("cluster_temperature"),
         ROCKS("cluster_rock"),
-        NUGGET("cluster_nugget");
+        NUGGET("cluster_nugget"),
+        FRUIT("cluster_fruit"),
+        CROP("cluster_crop");
 
         private final String name;
 

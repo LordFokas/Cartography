@@ -11,6 +11,8 @@ import net.minecraftforge.registries.RegistryObject;
 
 import lordfokas.cartography.Cartography;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.crop.Crop;
+import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
@@ -173,6 +175,20 @@ public class TFCBlockTypes {
         for(Ore ore : Ore.values()) {
             if(!ore.isGraded()) continue;
             put(Type.NUGGET, TFCBlocks.SMALL_ORES.get(ore).get(), ore.name().toLowerCase(Locale.ROOT));
+        }
+
+        // FRUITS  =====================================================================================================
+        for(FruitBlocks.Tree tree : FruitBlocks.Tree.values()){
+            String name = tree.name().toLowerCase(Locale.ROOT);
+            put(Type.FRUIT, TFCBlocks.FRUIT_TREE_BRANCHES.get(tree).get(), name);
+            put(Type.FRUIT, TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.get(tree).get(), name);
+            put(Type.FRUIT, TFCBlocks.FRUIT_TREE_LEAVES.get(tree).get(), name);
+            put(Type.FRUIT, TFCBlocks.FRUIT_TREE_SAPLINGS.get(tree).get(), name);
+        }
+
+        // CROPS  ======================================================================================================
+        for(Crop crop : Crop.values()){
+            put(Type.CROP, TFCBlocks.WILD_CROPS.get(crop).get(), crop.name().toLowerCase(Locale.ROOT));
         }
 
         Cartography.LOGGER.info("Done");

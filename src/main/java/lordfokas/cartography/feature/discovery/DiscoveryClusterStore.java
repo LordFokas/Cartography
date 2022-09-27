@@ -24,17 +24,25 @@ import lordfokas.cartography.utils.TFCBlockTypes;
 
 public class DiscoveryClusterStore extends ClusterStore {
     private static final HashMap<ResourceKey<Level>, HashMap<String, DiscoveryDataPool>> NUGGETS = new HashMap<>();
+    private static final HashMap<ResourceKey<Level>, HashMap<String, DiscoveryDataPool>> FRUITS = new HashMap<>();
+    private static final HashMap<ResourceKey<Level>, HashMap<String, DiscoveryDataPool>> CROPS = new HashMap<>();
 
     private static final DiscoveryConsumer NUGGET_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.GEOLOGY, "nugget");
+    private static final DiscoveryConsumer FRUIT_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.ECOSYSTEM, "fruit");
+    private static final DiscoveryConsumer CROP_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.ECOSYSTEM, "crop");
 
     @SubscribeEvent
     public static void onServerJoined(ServerJoinedEvent event) {
         NUGGETS.clear();
+        FRUITS.clear();
+        CROPS.clear();
     }
 
     @SubscribeEvent
     public static void onDimensionChanged(DimensionChangedEvent event) {
         foreach(ClusterType.NUGGET, nugget -> BlazeMapEngine.async().runOnDataThread(() -> getNuggetPool(event.dimension, nugget)));
+        foreach(ClusterType.FRUIT, fruit -> BlazeMapEngine.async().runOnDataThread(() -> getFruitPool(event.dimension, fruit)));
+        foreach(ClusterType.CROP, crop -> BlazeMapEngine.async().runOnDataThread(() -> getCropPool(event.dimension, crop)));
     }
 
     public static synchronized DiscoveryDataPool getNuggetPool(ResourceKey<Level> dimension, String nugget) {
@@ -44,6 +52,26 @@ public class DiscoveryClusterStore extends ClusterStore {
                 storage(), getClusterNode(ClusterType.NUGGET, nugget),
                 new DiscoveryClusterRealm(BlazeMapEngine.cruncher().getThreadAsserter(), NUGGET_CONSUMER),
                 nugget
+            ));
+    }
+
+    public static synchronized DiscoveryDataPool getFruitPool(ResourceKey<Level> dimension, String fruit) {
+        return FRUITS
+            .computeIfAbsent(dimension, $ -> new HashMap<>())
+            .computeIfAbsent(fruit, $ -> new DiscoveryDataPool(
+                storage(), getClusterNode(ClusterType.FRUIT, fruit),
+                new DiscoveryClusterRealm(BlazeMapEngine.cruncher().getThreadAsserter(), FRUIT_CONSUMER),
+                fruit
+            ));
+    }
+
+    public static synchronized DiscoveryDataPool getCropPool(ResourceKey<Level> dimension, String crop) {
+        return CROPS
+            .computeIfAbsent(dimension, $ -> new HashMap<>())
+            .computeIfAbsent(crop, $ -> new DiscoveryDataPool(
+                storage(), getClusterNode(ClusterType.CROP, crop),
+                new DiscoveryClusterRealm(BlazeMapEngine.cruncher().getThreadAsserter(), CROP_CONSUMER),
+                crop
             ));
     }
 
