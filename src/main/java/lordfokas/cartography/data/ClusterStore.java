@@ -3,6 +3,7 @@ package lordfokas.cartography.data;
 import java.io.IOException;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -81,12 +82,19 @@ public class ClusterStore {
         CLUSTERS.computeIfAbsent(type, $ -> new ArrayList<>()).forEach(consumer);
     }
 
+    protected static ResourceLocation clusterID(Cluster<?, ?> cluster, String type) {
+        return Cartography.resource("clusters/" + type + "/" + cluster.hashCode());
+    }
+
+    protected static String pretty(String str) {
+        return Arrays.stream(str.split("_")).map(s -> Character.toUpperCase(s.charAt(0)) + s.substring(1)).collect(Collectors.joining(" "));
+    }
 
     protected enum ClusterType {
         RAINFALL("cluster_rainfall"),
         TEMPERATURE("cluster_temperature"),
         ROCKS("cluster_rock"),
-        ORE("cluster_ore");
+        NUGGET("cluster_nugget");
 
         private final String name;
 

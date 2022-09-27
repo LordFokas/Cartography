@@ -1,6 +1,7 @@
 package lordfokas.cartography.utils;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import net.minecraft.resources.ResourceLocation;
@@ -63,6 +64,18 @@ public class TFCBlockTypes {
         return new ResourceLocation("tfc", "textures/item/loose_rock/" + rock + ".png");
     }
 
+    public static ResourceLocation getNuggetTexturePath(String nugget) {
+        return new ResourceLocation("tfc", "textures/item/ore/normal_" + nugget + ".png");
+    }
+
+    public static ResourceLocation getFruitTexturePath(String fruit) {
+        return new ResourceLocation("tfc", "textures/block/fruit_tree/" + fruit + "_sapling.png");
+    }
+
+    public static ResourceLocation getCropTexturePath(String crop) {
+        return new ResourceLocation("tfc", "textures/block/crop/" + crop + "_wild.png");
+    }
+
     public static class Profile {
         public final Type type;
         public final String name;
@@ -77,7 +90,8 @@ public class TFCBlockTypes {
         ROCK,
         SOIL,
         FLUID,
-        TREE
+        TREE,
+        DISCOVERY
     }
 
     public enum Type {
@@ -90,7 +104,10 @@ public class TFCBlockTypes {
         LOG(Classification.TREE),
         LEAVES(Classification.TREE),
         SAPLING(Classification.TREE),
-        WATER(Classification.FLUID);
+        WATER(Classification.FLUID),
+        NUGGET(Classification.DISCOVERY),
+        CROP(Classification.DISCOVERY),
+        FRUIT(Classification.DISCOVERY);
 
         public final Classification classification;
 
@@ -102,7 +119,7 @@ public class TFCBlockTypes {
 
         // ROCKS  ======================================================================================================
         for(Rock rock : Rock.values()) {
-            String name = rock.name().toLowerCase();
+            String name = rock.name().toLowerCase(Locale.ROOT);
             for(Rock.BlockType type : STONE_TYPES) {
                 put(Type.STONE, TFCBlocks.ROCK_BLOCKS.get(rock).get(type).get(), name);
             }
@@ -119,7 +136,7 @@ public class TFCBlockTypes {
 
         // SOILS  ======================================================================================================
         for(SoilBlockType.Variant var : SoilBlockType.Variant.values()) {
-            String name = var.name().toLowerCase();
+            String name = var.name().toLowerCase(Locale.ROOT);
             for(SoilBlockType type : SoilBlockType.values()) {
                 Block block = TFCBlocks.SOIL.get(type).get(var).get();
                 if(type == SoilBlockType.CLAY || type == SoilBlockType.CLAY_GRASS) {
@@ -133,13 +150,13 @@ public class TFCBlockTypes {
         put(Type.DIRT, TFCBlocks.PEAT.get(), "peat");
         put(Type.DIRT, TFCBlocks.PEAT_GRASS.get(), "peat");
         for(SandBlockType sand : SandBlockType.values()) {
-            String name = sand.name().toLowerCase();
+            String name = sand.name().toLowerCase(Locale.ROOT);
             put(Type.SAND, TFCBlocks.SAND.get(sand).get(), name);
         }
 
         // WOODS  ======================================================================================================
         for(Wood wood : Wood.values()) {
-            String name = wood.name().toLowerCase();
+            String name = wood.name().toLowerCase(Locale.ROOT);
             for(Wood.BlockType log : LOG_TYPES) {
                 put(Type.LOG, TFCBlocks.WOODS.get(wood).get(log).get(), name);
             }
@@ -151,6 +168,12 @@ public class TFCBlockTypes {
         put(Type.WATER, TFCBlocks.SALT_WATER.get(), "salt_water");
         put(Type.WATER, TFCBlocks.SPRING_WATER.get(), "spring_water");
         put(Type.WATER, Blocks.WATER.delegate.get(), "fresh_water");
+
+        // NUGGETS  ====================================================================================================
+        for(Ore ore : Ore.values()) {
+            if(!ore.isGraded()) continue;
+            put(Type.NUGGET, TFCBlocks.SMALL_ORES.get(ore).get(), ore.name().toLowerCase(Locale.ROOT));
+        }
 
         Cartography.LOGGER.info("Done");
     }

@@ -16,11 +16,14 @@ import com.eerussianguy.blazemap.api.event.BlazeRegistryEvent.ProcessorRegistryE
 import com.mojang.logging.LogUtils;
 import lordfokas.cartography.data.ClusterStore;
 import lordfokas.cartography.data.SerializableDataPool;
-import lordfokas.cartography.feature.data.climate.ClimateClusterStore;
-import lordfokas.cartography.feature.data.climate.ClimateProcessor;
-import lordfokas.cartography.feature.data.rock.RockClusterStore;
-import lordfokas.cartography.feature.data.rock.RockLayerProcessor;
-import lordfokas.cartography.feature.mapping.*;
+import lordfokas.cartography.feature.discovery.DiscoveryClusterStore;
+import lordfokas.cartography.feature.discovery.DiscoveryHandler;
+import lordfokas.cartography.feature.environment.climate.ClimateClusterStore;
+import lordfokas.cartography.feature.environment.climate.ClimateProcessor;
+import lordfokas.cartography.feature.environment.rock.RockClusterStore;
+import lordfokas.cartography.feature.environment.rock.RockLayerProcessor;
+import lordfokas.cartography.feature.mapping.climate.*;
+import lordfokas.cartography.feature.mapping.ground.*;
 import lordfokas.cartography.utils.ImageHandler;
 import org.slf4j.Logger;
 
@@ -43,6 +46,8 @@ public class Cartography {
         // Initialize specific feature facilities
         MinecraftForge.EVENT_BUS.register(ClimateClusterStore.class);
         MinecraftForge.EVENT_BUS.register(RockClusterStore.class);
+        MinecraftForge.EVENT_BUS.register(DiscoveryHandler.class);
+        MinecraftForge.EVENT_BUS.register(DiscoveryClusterStore.class);
     }
 
     @SubscribeEvent
