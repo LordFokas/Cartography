@@ -14,7 +14,7 @@ public class RockClusterRealm extends ClusterRealm<ChunkPos, String, RockCluster
 
     public RockClusterRealm(AsyncDataCruncher.IThreadAsserter dataCruncherThread, IClusterConsumer<RockCluster> consumer, String rock) {
         super(dataCruncherThread, consumer);
-        this.rock = rock.replace("STONE:", "");
+        this.rock = rock;
     }
 
     @Override

@@ -2,14 +2,14 @@ package lordfokas.cartography.feature.mapping.climate;
 
 import net.minecraft.world.level.Level;
 
-import com.eerussianguy.blazemap.api.mapping.Collector;
+import com.eerussianguy.blazemap.api.pipeline.Collector;
 import lordfokas.cartography.CartographyReferences;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 
 public class ClimateCollector extends Collector<ClimateMD> {
     public ClimateCollector() {
-        super(CartographyReferences.Collectors.CLIMATE);
+        super(CartographyReferences.Collectors.CLIMATE, CartographyReferences.MasterData.CLIMATE);
     }
 
     @Override

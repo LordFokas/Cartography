@@ -2,7 +2,7 @@ package lordfokas.cartography.feature.mapping.ground;
 
 import net.minecraft.resources.ResourceLocation;
 
-import com.eerussianguy.blazemap.api.mapping.Layer;
+import com.eerussianguy.blazemap.api.pipeline.Layer;
 import com.eerussianguy.blazemap.api.util.IDataSource;
 import com.mojang.blaze3d.platform.NativeImage;
 import lordfokas.cartography.Cartography;
@@ -16,13 +16,13 @@ public class EcosystemLayer extends Layer {
             CartographyReferences.Layers.ECOSYSTEM,
             Cartography.lang("layer.ecosystem"),
 
-            CartographyReferences.Collectors.GROUND_COMPOSITION
+            CartographyReferences.MasterData.GROUND_COMPOSITION
         );
     }
 
     @Override
     public boolean renderTile(NativeImage tile, IDataSource data) {
-        GroundCompositionMD ground = (GroundCompositionMD) data.get(CartographyReferences.Collectors.GROUND_COMPOSITION);
+        GroundCompositionMD ground = (GroundCompositionMD) data.get(CartographyReferences.MasterData.GROUND_COMPOSITION);
         for(int x = 0; x < 16; x++) {
             for(int y = 0; y < 16; y++) {
                 TFCBlockTypes.Profile soil = ground.soil[x][y];

@@ -11,10 +11,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import com.eerussianguy.blazemap.api.event.DimensionChangedEvent;
 import com.eerussianguy.blazemap.api.event.ServerJoinedEvent;
 import com.eerussianguy.blazemap.api.markers.MapLabel;
-import com.eerussianguy.blazemap.engine.BlazeMapEngine;
 import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.data.ClusterStore;
 import lordfokas.cartography.data.IClusterConsumer;
+import lordfokas.cartography.utils.BMEngines;
 import lordfokas.cartography.utils.ImageHandler;
 import lordfokas.cartography.utils.TFCBlockTypes;
 
@@ -28,7 +28,7 @@ public class RockClusterStore extends ClusterStore {
 
     @SubscribeEvent
     public static void onDimensionChanged(DimensionChangedEvent event) {
-        foreach(ClusterType.ROCKS, rock -> BlazeMapEngine.async().runOnDataThread(() -> getDataPool(event.dimension, rock)));
+        foreach(ClusterType.ROCKS, rock -> BMEngines.async().runOnDataThread(() -> getDataPool(event.dimension, rock)));
     }
 
     public static synchronized RockDataPool getDataPool(ResourceKey<Level> dimension, String rock) {
@@ -36,7 +36,7 @@ public class RockClusterStore extends ClusterStore {
             .computeIfAbsent(dimension, $ -> new HashMap<>())
             .computeIfAbsent(rock, $ -> new RockDataPool(
                 storage(), getClusterNode(ClusterType.ROCKS, rock),
-                new RockClusterRealm(BlazeMapEngine.cruncher().getThreadAsserter(), CONSUMER, rock)
+                new RockClusterRealm(BMEngines.cruncher().getThreadAsserter(), CONSUMER, rock)
             ));
     }
 
@@ -58,7 +58,7 @@ public class RockClusterStore extends ClusterStore {
                 dynamicLabel.image.getWidth(),
                 dynamicLabel.image.getHeight()
             );
-            BlazeMapEngine.async().runOnGameThread(() -> {
+            BMEngines.async().runOnGameThread(() -> {
                 var labels = labels();
                 if(labels.has(label)) {
                     labels.remove(label);
@@ -69,7 +69,7 @@ public class RockClusterStore extends ClusterStore {
 
         @Override
         public void dropCluster(RockCluster cluster) {
-            BlazeMapEngine.async().runOnGameThread(() -> labels().remove(clusterID(cluster, "rock"), CartographyReferences.Layers.GEOLOGY));
+            BMEngines.async().runOnGameThread(() -> labels().remove(clusterID(cluster, "rock"), CartographyReferences.Layers.GEOLOGY));
         }
     };
 }

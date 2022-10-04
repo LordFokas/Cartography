@@ -4,7 +4,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 
-import com.eerussianguy.blazemap.api.mapping.Processor;
+import com.eerussianguy.blazemap.api.pipeline.Processor;
 import com.eerussianguy.blazemap.api.util.IDataSource;
 import com.eerussianguy.blazemap.api.util.RegionPos;
 import lordfokas.cartography.CartographyReferences;
@@ -15,13 +15,13 @@ public class ClimateProcessor extends Processor {
     public ClimateProcessor() {
         super(
             CartographyReferences.Processors.CLIMATE,
-            CartographyReferences.Collectors.CLIMATE
+            CartographyReferences.MasterData.CLIMATE
         );
     }
 
     @Override
     public boolean execute(ResourceKey<Level> dimension, RegionPos region, ChunkPos chunk, IDataSource data) {
-        ClimateMD climate = (ClimateMD) data.get(CartographyReferences.Collectors.CLIMATE);
+        ClimateMD climate = (ClimateMD) data.get(CartographyReferences.MasterData.CLIMATE);
 
         process(ClimateProcessor::temperature, climate, 1, ((mx, my, angle, v) -> {
             String value = String.valueOf(v);

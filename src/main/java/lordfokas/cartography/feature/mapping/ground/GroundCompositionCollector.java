@@ -4,7 +4,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 
-import com.eerussianguy.blazemap.api.mapping.Collector;
+import com.eerussianguy.blazemap.api.pipeline.Collector;
 import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.utils.TFCBlockTypes;
 import lordfokas.cartography.utils.TFCBlockTypes.Classification;
@@ -13,7 +13,7 @@ import lordfokas.cartography.utils.TFCBlockTypes.Profile;
 public class GroundCompositionCollector extends Collector<GroundCompositionMD> {
 
     public GroundCompositionCollector() {
-        super(CartographyReferences.Collectors.GROUND_COMPOSITION);
+        super(CartographyReferences.Collectors.GROUND_COMPOSITION, CartographyReferences.MasterData.GROUND_COMPOSITION);
     }
 
     @Override

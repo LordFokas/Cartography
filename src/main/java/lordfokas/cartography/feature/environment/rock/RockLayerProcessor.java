@@ -4,7 +4,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 
-import com.eerussianguy.blazemap.api.mapping.Processor;
+import com.eerussianguy.blazemap.api.pipeline.Processor;
 import com.eerussianguy.blazemap.api.util.IDataSource;
 import com.eerussianguy.blazemap.api.util.RegionPos;
 import lordfokas.cartography.CartographyReferences;
@@ -17,13 +17,13 @@ public class RockLayerProcessor extends Processor {
     public RockLayerProcessor() {
         super(
             CartographyReferences.Processors.ROCK_LAYER,
-            CartographyReferences.Collectors.GROUND_COMPOSITION
+            CartographyReferences.MasterData.GROUND_COMPOSITION
         );
     }
 
     @Override
     public boolean execute(ResourceKey<Level> dimension, RegionPos region, ChunkPos chunk, IDataSource data) {
-        GroundCompositionMD ground = (GroundCompositionMD) data.get(CartographyReferences.Collectors.GROUND_COMPOSITION);
+        GroundCompositionMD ground = (GroundCompositionMD) data.get(CartographyReferences.MasterData.GROUND_COMPOSITION);
         StringCounter counter = COUNTER.get();
         counter.consume(ground.rock);
         String rock = counter.getDominant();

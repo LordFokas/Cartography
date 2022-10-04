@@ -71,11 +71,11 @@ public class TFCBlockTypes {
     }
 
     public static ResourceLocation getFruitTexturePath(String fruit) {
-        return new ResourceLocation("tfc", "textures/block/fruit_tree/" + fruit + "_sapling.png");
+        return new ResourceLocation("tfc", "textures/item/food/" + fruit + ".png");
     }
 
     public static ResourceLocation getCropTexturePath(String crop) {
-        return new ResourceLocation("tfc", "textures/block/crop/" + crop + "_wild.png");
+        return new ResourceLocation("tfc", "textures/item/food/" + crop + ".png");
     }
 
     public static class Profile {

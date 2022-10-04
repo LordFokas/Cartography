@@ -1,10 +1,11 @@
 package lordfokas.cartography.feature.mapping.climate;
 
-import net.minecraft.nbt.CompoundTag;
+import com.eerussianguy.blazemap.api.BlazeRegistry;
+import com.eerussianguy.blazemap.api.pipeline.DataType;
+import com.eerussianguy.blazemap.api.pipeline.MasterDatum;
+import lordfokas.cartography.CartographyReferences;
 
-import com.eerussianguy.blazemap.api.mapping.MasterDatum;
-
-public class ClimateMD implements MasterDatum {
+public class ClimateMD extends MasterDatum {
     public final float[][] rainfall;
     public final float[][] temperature;
 
@@ -14,12 +15,12 @@ public class ClimateMD implements MasterDatum {
     }
 
     @Override
-    public CompoundTag serialize() {
-        return null;
+    public BlazeRegistry.Key<DataType<MasterDatum>> getID() {
+        return CartographyReferences.MasterData.CLIMATE;
     }
 
     @Override
-    public MasterDatum deserialize(CompoundTag compoundTag) {
-        return null;
+    public boolean equals(Object o) {
+        return false;
     }
 }

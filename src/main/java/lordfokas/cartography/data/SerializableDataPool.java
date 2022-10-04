@@ -9,8 +9,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import com.eerussianguy.blazemap.api.event.ServerJoinedEvent;
 import com.eerussianguy.blazemap.api.util.IStorageAccess;
 import com.eerussianguy.blazemap.api.util.MinecraftStreams;
-import com.eerussianguy.blazemap.engine.BlazeMapEngine;
 import com.eerussianguy.blazemap.engine.async.DebouncingDomain;
+import lordfokas.cartography.utils.BMEngines;
 
 public abstract class SerializableDataPool<C, D> extends DataPool<C, D> {
     private static DebouncingDomain<SerializableDataPool<?, ?>> debouncer;
@@ -20,10 +20,9 @@ public abstract class SerializableDataPool<C, D> extends DataPool<C, D> {
     @SubscribeEvent
     public static void onServerJoined(ServerJoinedEvent event) {
         if(debouncer != null) {
-            BlazeMapEngine.debouncer().remove(debouncer);
+            BMEngines.debouncer().remove(debouncer);
         }
-        debouncer = new DebouncingDomain<>(SerializableDataPool::save, 5000, 30000);
-        BlazeMapEngine.debouncer().add(debouncer);
+        debouncer = new DebouncingDomain<>(BMEngines.debouncer(), SerializableDataPool::save, 5000, 30000);
     }
 
     public SerializableDataPool(IStorageAccess storage, ResourceLocation node) {

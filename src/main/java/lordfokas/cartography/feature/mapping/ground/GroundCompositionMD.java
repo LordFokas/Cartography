@@ -1,11 +1,12 @@
 package lordfokas.cartography.feature.mapping.ground;
 
-import net.minecraft.nbt.CompoundTag;
-
-import com.eerussianguy.blazemap.api.mapping.MasterDatum;
+import com.eerussianguy.blazemap.api.BlazeRegistry;
+import com.eerussianguy.blazemap.api.pipeline.DataType;
+import com.eerussianguy.blazemap.api.pipeline.MasterDatum;
+import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.utils.TFCBlockTypes.Profile;
 
-public class GroundCompositionMD implements MasterDatum {
+public class GroundCompositionMD extends MasterDatum {
     public final Profile[][] soil;
     public final Profile[][] rock;
 
@@ -15,12 +16,12 @@ public class GroundCompositionMD implements MasterDatum {
     }
 
     @Override
-    public CompoundTag serialize() {
-        return null;
+    public BlazeRegistry.Key<DataType<MasterDatum>> getID() {
+        return CartographyReferences.MasterData.GROUND_COMPOSITION;
     }
 
     @Override
-    public MasterDatum deserialize(CompoundTag compoundTag) {
-        return null;
+    public boolean equals(Object o) {
+        return false;
     }
 }

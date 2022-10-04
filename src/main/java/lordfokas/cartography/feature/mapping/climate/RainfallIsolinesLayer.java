@@ -1,6 +1,6 @@
 package lordfokas.cartography.feature.mapping.climate;
 
-import com.eerussianguy.blazemap.api.mapping.Layer;
+import com.eerussianguy.blazemap.api.pipeline.Layer;
 import com.eerussianguy.blazemap.api.util.IDataSource;
 import com.mojang.blaze3d.platform.NativeImage;
 import lordfokas.cartography.Cartography;
@@ -15,13 +15,13 @@ public class RainfallIsolinesLayer extends Layer {
             Cartography.lang("layer.rainfall_iso"),
             Cartography.resource("icons/maps/rainfall.png"),
 
-            CartographyReferences.Collectors.CLIMATE
+            CartographyReferences.MasterData.CLIMATE
         );
     }
 
     @Override
     public boolean renderTile(NativeImage tile, IDataSource data) {
-        ClimateMD climate = (ClimateMD) data.get(CartographyReferences.Collectors.CLIMATE);
+        ClimateMD climate = (ClimateMD) data.get(CartographyReferences.MasterData.CLIMATE);
 
         for(int x = 0; x < 16; x++) {
             for(int y = 0; y < 16; y++) {

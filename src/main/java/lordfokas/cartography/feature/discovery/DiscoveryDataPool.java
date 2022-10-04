@@ -18,6 +18,7 @@ public class DiscoveryDataPool extends SerializableDataPool<BlockPos, String> {
         super(storage, node);
         addConsumer(consumer);
         this.type = type;
+        load();
     }
 
     @Override
