@@ -82,7 +82,6 @@ public class ClimateClusterStore extends ClusterStore {
                 dimension,
                 center.chunk.getBlockAt(center.mx, 0, center.my),
                 layer,
-                text,
                 dynamicLabel.path,
                 dynamicLabel.image.getWidth(),
                 dynamicLabel.image.getHeight(),

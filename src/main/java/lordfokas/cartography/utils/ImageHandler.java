@@ -1,5 +1,6 @@
 package lordfokas.cartography.utils;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
@@ -22,6 +23,7 @@ public class ImageHandler {
     private static final HashMap<ResourceLocation, NativeImage> BASE = new HashMap<>();
     private static final HashMap<Character, NativeImage> CHARS = new HashMap<>();
     private static final HashMap<String, DynamicLabel> LABELS = new HashMap<>();
+    private static final HashMap<ResourceLocation, Integer> COLORS = new HashMap<>();
 
     @Nonnull
     public static synchronized NativeImage getImage(ResourceLocation texture) {
@@ -34,6 +36,34 @@ public class ImageHandler {
                 e.printStackTrace();
                 return NOT_FOUND;
             }
+        });
+    }
+
+    public static int getColor(ResourceLocation path){
+        return COLORS.computeIfAbsent(path, $ -> {
+            NativeImage image = getImage(path);
+            int chosen = -1;
+            float best = 0;
+            float[] hsb = new float[3];
+
+            for(int x = 0; x < image.getWidth(); x++){
+                for(int y = 0; y < image.getHeight(); y++){
+                    int pixel = image.getPixelRGBA(x, y);
+                    if((pixel & 0xFF000000) != 0xFF000000) continue;
+                    // Mojang's NativeImage is ABGR
+                    int b = (pixel >> 16) & 0xFF;
+                    int g = (pixel >> 8) & 0xFF;
+                    int r = (pixel) & 0xFF;
+                    Color.RGBtoHSB(r, g, b, hsb);
+                    float score = hsb[1] + hsb[2];
+                    if(score > best){
+                        chosen = pixel;
+                        best = score;
+                    }
+                }
+            }
+
+            return Colors.argb2abgr(chosen);
         });
     }
 

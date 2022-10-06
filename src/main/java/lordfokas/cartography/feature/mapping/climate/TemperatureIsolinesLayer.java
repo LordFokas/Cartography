@@ -13,7 +13,7 @@ public class TemperatureIsolinesLayer extends Layer {
         super(
             CartographyReferences.Layers.TEMPERATURE_ISO,
             Cartography.lang("layer.temperature_iso"),
-            Cartography.resource("icons/maps/temperature.png"),
+            Cartography.resource("icons/layers/temperature.png"),
 
             CartographyReferences.MasterData.CLIMATE
         );

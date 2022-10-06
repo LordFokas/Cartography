@@ -8,16 +8,17 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
 
-import com.eerussianguy.blazemap.api.event.BlazeRegistryEvent.CollectorRegistryEvent;
-import com.eerussianguy.blazemap.api.event.BlazeRegistryEvent.LayerRegistryEvent;
-import com.eerussianguy.blazemap.api.event.BlazeRegistryEvent.MapTypeRegistryEvent;
-import com.eerussianguy.blazemap.api.event.BlazeRegistryEvent.ProcessorRegistryEvent;
+import com.eerussianguy.blazemap.api.event.BlazeRegistryEvent.*;
+import com.eerussianguy.blazemap.api.pipeline.FakeLayer;
 import com.mojang.logging.LogUtils;
 import lordfokas.cartography.data.ClusterStore;
 import lordfokas.cartography.data.SerializableDataPool;
 import lordfokas.cartography.feature.discovery.DiscoveryClusterStore;
 import lordfokas.cartography.feature.discovery.DiscoveryHandler;
+import lordfokas.cartography.feature.discovery.DiscoveryMarkerRenderer;
 import lordfokas.cartography.feature.environment.climate.ClimateClusterStore;
 import lordfokas.cartography.feature.environment.climate.ClimateProcessor;
 import lordfokas.cartography.feature.environment.rock.RockClusterStore;
@@ -30,6 +31,13 @@ import org.slf4j.Logger;
 @Mod(CartographyReferences.MOD_ID)
 public class Cartography {
     public static final Logger LOGGER = LogUtils.getLogger();
+    private static final String PROTOCOL_VERSION = "1";
+    public static final SimpleChannel NETWORK = NetworkRegistry.newSimpleChannel(
+        resource("network"),
+        () -> PROTOCOL_VERSION,
+        PROTOCOL_VERSION::equals,
+        PROTOCOL_VERSION::equals
+    );
 
     public Cartography() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -39,9 +47,11 @@ public class Cartography {
 
     private void setup(final FMLCommonSetupEvent event) {
         // Initialize generic utility mechanisms
-        ImageHandler.init();
         MinecraftForge.EVENT_BUS.register(SerializableDataPool.class);
         MinecraftForge.EVENT_BUS.register(ClusterStore.class);
+
+        // Initialize network
+        // NETWORK.registerMessage(0, pkt.class, pkt::encode, pkt::decode, (msg, ctx) -> msg.handle(ctx.get()));
 
         // Initialize specific feature facilities
         MinecraftForge.EVENT_BUS.register(ClimateClusterStore.class);
@@ -51,19 +61,44 @@ public class Cartography {
     }
 
     @SubscribeEvent
+    public void registerMasterData(MasterDataRegistryEvent evt) {
+        evt.registry.register(new ClimateSerializer());
+        evt.registry.register(new GroundCompositionSerializer());
+    }
+
+    @SubscribeEvent
     public void registerCollectors(CollectorRegistryEvent evt) {
         evt.registry.register(new ClimateCollector());
         evt.registry.register(new GroundCompositionCollector());
     }
 
     @SubscribeEvent
+    public void registerTransformers(TransformerRegistryEvent evt) {}
+
+    @SubscribeEvent
+    public void registerProcessors(ProcessorRegistryEvent evt) {
+        evt.registry.register(new ClimateProcessor());
+        evt.registry.register(new RockLayerProcessor());
+    }
+
+    @SubscribeEvent
     public void registerLayers(LayerRegistryEvent evt) {
+        ImageHandler.init();
+
         evt.registry.register(new RainfallLayer());
         evt.registry.register(new RainfallIsolinesLayer());
+
         evt.registry.register(new TemperatureLayer());
         evt.registry.register(new TemperatureIsolinesLayer());
+
         evt.registry.register(new EcosystemLayer());
+        evt.registry.register(new FakeLayer(CartographyReferences.Layers.Fake.CROPS, lang("layer.ecosystem.crops"), resource("icons/layers/crops.png")));
+        evt.registry.register(new FakeLayer(CartographyReferences.Layers.Fake.FRUIT, lang("layer.ecosystem.fruit"), resource("icons/layers/fruit.png")));
+        evt.registry.register(new FakeLayer(CartographyReferences.Layers.Fake.TREES, lang("layer.ecosystem.trees"), resource("icons/layers/trees.png")));
+
         evt.registry.register(new GeologyLayer());
+        evt.registry.register(new FakeLayer(CartographyReferences.Layers.Fake.ROCKS, lang("layer.geology.rocks"), resource("icons/layers/rocks.png")));
+        evt.registry.register(new FakeLayer(CartographyReferences.Layers.Fake.ORES, lang("layer.geology.ores"), resource("icons/layers/ores.png")));
     }
 
     @SubscribeEvent
@@ -75,9 +110,8 @@ public class Cartography {
     }
 
     @SubscribeEvent
-    public void registerProcessors(ProcessorRegistryEvent evt) {
-        evt.registry.register(new ClimateProcessor());
-        evt.registry.register(new RockLayerProcessor());
+    public void registerObjectRenderers(ObjectRendererRegistryEvent evt) {
+        evt.registry.register(new DiscoveryMarkerRenderer());
     }
 
     public static TranslatableComponent lang(String key) {

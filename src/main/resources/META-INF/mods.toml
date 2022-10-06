@@ -43,21 +43,21 @@ Better mapping for TFC using Blaze Map
     mandatory=true
     versionRange="[2.1,)"
     ordering="NONE"
-    side="CLIENT"
+    side="BOTH"
 
 # Blaze Map
 [[dependencies.cartography]]
     modId="blazemap"
     mandatory=true
-    versionRange="[0.5.0,0.6)"
+    versionRange="[0.5.0-alpha4,0.6)"
     ordering="NONE"
-    side="CLIENT"
+    side="BOTH"
 
 # MinecraftForge
 [[dependencies.cartography]]
     modId="forge"
     mandatory=true
-    versionRange="[40,)"
+    versionRange="[40.1.80,)"
     ordering="NONE"
     side="BOTH"
 

@@ -8,5 +8,10 @@
   "cartography.layer.temperature": "Temperature",
   "cartography.layer.temperature_iso": "Temperature Isolines",
   "cartography.layer.ecosystem": "Ecosystem",
-  "cartography.layer.geology": "Geology"
+  "cartography.layer.ecosystem.crops": "Wild Crops",
+  "cartography.layer.ecosystem.fruit": "Fruit Trees",
+  "cartography.layer.ecosystem.trees": "Tree Types",
+  "cartography.layer.geology": "Geology",
+  "cartography.layer.geology.rocks": "Rock Types",
+  "cartography.layer.geology.ores": "Ore Nuggets"
 }

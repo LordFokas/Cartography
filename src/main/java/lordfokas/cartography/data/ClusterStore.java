@@ -29,6 +29,7 @@ public class ClusterStore {
         labels = event.labels;
         CLUSTERS.clear();
         dimensionStorage = event.dimensionStorage;
+        if(!dimensionStorage.exists(DIRECTORY)) return;
         try(MinecraftStreams.Input input = dimensionStorage.read(DIRECTORY)) {
             int types = input.readInt();
             for(int i = 0; i < types; i++) {

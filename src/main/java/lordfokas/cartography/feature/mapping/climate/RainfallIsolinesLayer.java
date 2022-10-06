@@ -13,7 +13,7 @@ public class RainfallIsolinesLayer extends Layer {
         super(
             CartographyReferences.Layers.RAINFALL_ISO,
             Cartography.lang("layer.rainfall_iso"),
-            Cartography.resource("icons/maps/rainfall.png"),
+            Cartography.resource("icons/layers/rainfall.png"),
 
             CartographyReferences.MasterData.CLIMATE
         );

@@ -15,6 +15,7 @@ import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.data.ClusterStore;
 import lordfokas.cartography.data.IClusterConsumer;
 import lordfokas.cartography.utils.BMEngines;
+import lordfokas.cartography.utils.Colors;
 import lordfokas.cartography.utils.ImageHandler;
 import lordfokas.cartography.utils.TFCBlockTypes;
 
@@ -52,11 +53,13 @@ public class RockClusterStore extends ClusterStore {
                 clusterID(cluster, "rock"),
                 dimension,
                 center,
-                CartographyReferences.Layers.GEOLOGY,
-                rock,
+                CartographyReferences.Layers.Fake.ROCKS,
                 dynamicLabel.path,
                 dynamicLabel.image.getWidth(),
-                dynamicLabel.image.getHeight()
+                dynamicLabel.image.getHeight(),
+                Colors.NO_TINT,
+                0,
+                false
             );
             BMEngines.async().runOnGameThread(() -> {
                 var labels = labels();
@@ -69,7 +72,7 @@ public class RockClusterStore extends ClusterStore {
 
         @Override
         public void dropCluster(RockCluster cluster) {
-            BMEngines.async().runOnGameThread(() -> labels().remove(clusterID(cluster, "rock"), CartographyReferences.Layers.GEOLOGY));
+            BMEngines.async().runOnGameThread(() -> labels().remove(clusterID(cluster, "rock"), CartographyReferences.Layers.Fake.ROCKS));
         }
     };
 }

@@ -14,7 +14,9 @@ public class GeologyMapType extends MapType {
 
             CartographyReferences.Layers.GEOLOGY,
             BlazeMapReferences.Layers.TERRAIN_ISOLINES,
-            BlazeMapReferences.Layers.WATER_LEVEL
+            BlazeMapReferences.Layers.WATER_LEVEL,
+            CartographyReferences.Layers.Fake.ROCKS,
+            CartographyReferences.Layers.Fake.ORES
         );
     }
 }

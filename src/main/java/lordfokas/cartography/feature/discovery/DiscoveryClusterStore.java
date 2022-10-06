@@ -13,12 +13,10 @@ import com.eerussianguy.blazemap.api.BlazeRegistry;
 import com.eerussianguy.blazemap.api.event.DimensionChangedEvent;
 import com.eerussianguy.blazemap.api.event.ServerJoinedEvent;
 import com.eerussianguy.blazemap.api.pipeline.Layer;
-import com.eerussianguy.blazemap.api.markers.MapLabel;
 import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.data.ClusterStore;
 import lordfokas.cartography.data.IClusterConsumer;
 import lordfokas.cartography.utils.BMEngines;
-import lordfokas.cartography.utils.Colors;
 import lordfokas.cartography.utils.TFCBlockTypes;
 
 public class DiscoveryClusterStore extends ClusterStore {
@@ -26,9 +24,9 @@ public class DiscoveryClusterStore extends ClusterStore {
     private static final HashMap<ResourceKey<Level>, HashMap<String, DiscoveryDataPool>> FRUITS = new HashMap<>();
     private static final HashMap<ResourceKey<Level>, HashMap<String, DiscoveryDataPool>> CROPS = new HashMap<>();
 
-    private static final DiscoveryConsumer NUGGET_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.GEOLOGY, "nugget");
-    private static final DiscoveryConsumer FRUIT_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.ECOSYSTEM, "fruit");
-    private static final DiscoveryConsumer CROP_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.ECOSYSTEM, "crop");
+    private static final DiscoveryConsumer NUGGET_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.Fake.ORES, "nugget");
+    private static final DiscoveryConsumer FRUIT_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.Fake.FRUIT, "fruit");
+    private static final DiscoveryConsumer CROP_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.Fake.CROPS, "crop");
 
     @SubscribeEvent
     public static void onServerJoined(ServerJoinedEvent event) {
@@ -95,26 +93,22 @@ public class DiscoveryClusterStore extends ClusterStore {
                 case "crop" -> TFCBlockTypes.getCropTexturePath(name);
                 default -> null;
             };
-            // ImageHandler.DynamicLabel dynamicLabel = ImageHandler.getLabel(pretty(name), icon);
-            MapLabel label = new MapLabel(
+            DiscoveryMarker marker = new DiscoveryMarker(
                 clusterID(cluster, type),
+                cluster,
                 Minecraft.getInstance().level.dimension(),
                 center,
                 layer,
-                name,
-                icon, //dynamicLabel.path,
-                32, //dynamicLabel.image.getWidth(),
-                32, //dynamicLabel.image.getHeight(),
-                Colors.NO_TINT,
-                0,
-                true
+                icon,
+                16,
+                16
             );
             BMEngines.async().runOnGameThread(() -> {
                 var labels = labels();
-                if(labels.has(label)) {
-                    labels.remove(label);
+                if(labels.has(marker)) {
+                    labels.remove(marker);
                 }
-                labels.add(label);
+                labels.add(marker);
             });
         }
 

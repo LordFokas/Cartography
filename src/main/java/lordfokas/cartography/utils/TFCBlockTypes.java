@@ -82,7 +82,7 @@ public class TFCBlockTypes {
         public final Type type;
         public final String name;
 
-        private Profile(Type type, String name) {
+        public Profile(Type type, String name) {
             this.type = type;
             this.name = name;
         }

@@ -2,6 +2,7 @@ package lordfokas.cartography;
 
 import com.eerussianguy.blazemap.api.BlazeRegistry.Key;
 import com.eerussianguy.blazemap.api.MapType;
+import com.eerussianguy.blazemap.api.markers.ObjectRenderer;
 import com.eerussianguy.blazemap.api.pipeline.*;
 
 import static com.eerussianguy.blazemap.api.BlazeMapAPI.*;
@@ -32,6 +33,14 @@ public class CartographyReferences {
         public static final Key<Layer> TEMPERATURE_ISO = new Key<>(LAYERS, MOD_ID, "temperature_iso");
         public static final Key<Layer> ECOSYSTEM = new Key<>(LAYERS, MOD_ID, "ecosystem");
         public static final Key<Layer> GEOLOGY = new Key<>(LAYERS, MOD_ID, "geology");
+
+        public static class Fake {
+            public static final Key<Layer> CROPS = new Key<>(LAYERS, MOD_ID, "fake.crops");
+            public static final Key<Layer> FRUIT = new Key<>(LAYERS, MOD_ID, "fake.fruit");
+            public static final Key<Layer> TREES = new Key<>(LAYERS, MOD_ID, "fake.trees");
+            public static final Key<Layer> ROCKS = new Key<>(LAYERS, MOD_ID, "fake.rocks");
+            public static final Key<Layer> ORES = new Key<>(LAYERS, MOD_ID, "fake.ores");
+        }
     }
 
     public static class MapTypes {
@@ -39,5 +48,9 @@ public class CartographyReferences {
         public static final Key<MapType> TEMPERATURE = new Key<>(MAPTYPES, MOD_ID, "temperature");
         public static final Key<MapType> ECOSYSTEM = new Key<>(MAPTYPES, MOD_ID, "ecosystem");
         public static final Key<MapType> GEOLOGY = new Key<>(MAPTYPES, MOD_ID, "geology");
+    }
+
+    public static class Renderers {
+        public static final Key<ObjectRenderer<?>> DISCOVERY_MARKER = new Key<>(OBJECT_RENDERERS, MOD_ID, "discovery");
     }
 }
