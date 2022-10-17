@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 
+import com.eerussianguy.blazemap.api.pipeline.PipelineType;
 import com.eerussianguy.blazemap.api.pipeline.Processor;
 import com.eerussianguy.blazemap.api.util.IDataSource;
 import com.eerussianguy.blazemap.api.util.RegionPos;
@@ -17,6 +18,11 @@ public class ClimateProcessor extends Processor {
             CartographyReferences.Processors.CLIMATE,
             CartographyReferences.MasterData.CLIMATE
         );
+    }
+
+    @Override
+    public boolean shouldExecuteIn(ResourceKey<Level> dimension, PipelineType pipeline) {
+        return pipeline.isClient;
     }
 
     @Override

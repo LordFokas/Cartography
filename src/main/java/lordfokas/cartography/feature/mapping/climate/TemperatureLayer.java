@@ -2,15 +2,17 @@ package lordfokas.cartography.feature.mapping.climate;
 
 import net.minecraft.client.gui.components.Widget;
 
-import com.eerussianguy.blazemap.api.pipeline.Layer;
+import com.eerussianguy.blazemap.api.maps.TileResolution;
+import com.eerussianguy.blazemap.api.util.ArrayAggregator;
 import com.eerussianguy.blazemap.api.util.IDataSource;
 import com.mojang.blaze3d.platform.NativeImage;
 import lordfokas.cartography.Cartography;
 import lordfokas.cartography.CartographyReferences;
+import lordfokas.cartography.feature.mapping.CartographyLayer;
 import lordfokas.cartography.utils.ColorScale;
 import lordfokas.cartography.utils.Colors;
 
-public class TemperatureLayer extends Layer {
+public class TemperatureLayer extends CartographyLayer {
     public static final float MAX_TEMP = 40F;
     public static final float MIN_TEMP = -20F;
     public static final float DELTA = MAX_TEMP - MIN_TEMP;
@@ -26,16 +28,14 @@ public class TemperatureLayer extends Layer {
     }
 
     @Override
-    public boolean renderTile(NativeImage tile, IDataSource data) {
+    public boolean renderTile(NativeImage tile, TileResolution resolution, IDataSource data, int xGridOffset, int zGridOffset) {
         ClimateMD climate = (ClimateMD) data.get(CartographyReferences.MasterData.CLIMATE);
 
-        for(int x = 0; x < 16; x++) {
-            for(int y = 0; y < 16; y++) {
-                float temperature = (climate.temperature[x][y] - MIN_TEMP) / DELTA;
-                float hue = Colors.normalizeHue(SCALE.interpolate(temperature));
-                tile.setPixelRGBA(x, y, Colors.HSB2ABGR(hue, 0.65F, 1F));
-            }
-        }
+        foreachPixel(resolution, (x, z) -> {
+            float temperature = (ArrayAggregator.avg(relevantData(resolution, x, z, climate.temperature)) - MIN_TEMP) / DELTA;
+            float hue = Colors.normalizeHue(SCALE.interpolate(temperature));
+            tile.setPixelRGBA(x, z, Colors.HSB2ABGR(hue, 0.65F, 1F));
+        });
 
         return true;
     }

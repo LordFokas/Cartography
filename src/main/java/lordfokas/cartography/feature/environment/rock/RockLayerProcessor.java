@@ -4,15 +4,16 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 
+import com.eerussianguy.blazemap.api.pipeline.PipelineType;
 import com.eerussianguy.blazemap.api.pipeline.Processor;
 import com.eerussianguy.blazemap.api.util.IDataSource;
 import com.eerussianguy.blazemap.api.util.RegionPos;
 import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.feature.mapping.ground.GroundCompositionMD;
-import lordfokas.cartography.utils.StringCounter;
+import lordfokas.cartography.utils.ProfileCounter;
 
 public class RockLayerProcessor extends Processor {
-    private static final ThreadLocal<StringCounter> COUNTER = ThreadLocal.withInitial(StringCounter::new);
+    private static final ThreadLocal<ProfileCounter> COUNTER = ThreadLocal.withInitial(ProfileCounter::new);
 
     public RockLayerProcessor() {
         super(
@@ -22,11 +23,16 @@ public class RockLayerProcessor extends Processor {
     }
 
     @Override
+    public boolean shouldExecuteIn(ResourceKey<Level> dimension, PipelineType pipeline) {
+        return pipeline.isClient;
+    }
+
+    @Override
     public boolean execute(ResourceKey<Level> dimension, RegionPos region, ChunkPos chunk, IDataSource data) {
         GroundCompositionMD ground = (GroundCompositionMD) data.get(CartographyReferences.MasterData.GROUND_COMPOSITION);
-        StringCounter counter = COUNTER.get();
+        ProfileCounter counter = COUNTER.get();
         counter.consume(ground.rock);
-        String rock = counter.getDominant();
+        String rock = counter.getDominantName();
         RockClusterStore.getDataPool(dimension, rock).addData(chunk, rock);
         return false;
     }

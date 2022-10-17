@@ -1,7 +1,7 @@
 package lordfokas.cartography.feature.mapping.climate;
 
 import com.eerussianguy.blazemap.api.BlazeMapReferences;
-import com.eerussianguy.blazemap.api.MapType;
+import com.eerussianguy.blazemap.api.maps.MapType;
 import lordfokas.cartography.Cartography;
 import lordfokas.cartography.CartographyReferences;
 

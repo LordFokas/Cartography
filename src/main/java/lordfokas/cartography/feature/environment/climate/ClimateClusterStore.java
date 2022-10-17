@@ -1,5 +1,6 @@
 package lordfokas.cartography.feature.environment.climate;
 
+import java.util.Collections;
 import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
@@ -10,7 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import com.eerussianguy.blazemap.api.BlazeRegistry;
 import com.eerussianguy.blazemap.api.event.DimensionChangedEvent;
 import com.eerussianguy.blazemap.api.event.ServerJoinedEvent;
-import com.eerussianguy.blazemap.api.pipeline.Layer;
+import com.eerussianguy.blazemap.api.maps.Layer;
 import com.eerussianguy.blazemap.api.markers.MapLabel;
 import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.data.ClusterStore;
@@ -87,7 +88,8 @@ public class ClimateClusterStore extends ClusterStore {
                 dynamicLabel.image.getHeight(),
                 color,
                 center.angle,
-                true
+                true,
+                Collections.EMPTY_SET
             );
             BMEngines.async().runOnGameThread(() -> {
                 var labels = labels();

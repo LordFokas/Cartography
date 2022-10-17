@@ -1,6 +1,8 @@
 package lordfokas.cartography.feature.discovery;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Set;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -12,7 +14,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import com.eerussianguy.blazemap.api.BlazeRegistry;
 import com.eerussianguy.blazemap.api.event.DimensionChangedEvent;
 import com.eerussianguy.blazemap.api.event.ServerJoinedEvent;
-import com.eerussianguy.blazemap.api.pipeline.Layer;
+import com.eerussianguy.blazemap.api.maps.Layer;
 import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.data.ClusterStore;
 import lordfokas.cartography.data.IClusterConsumer;
@@ -93,6 +95,10 @@ public class DiscoveryClusterStore extends ClusterStore {
                 case "crop" -> TFCBlockTypes.getCropTexturePath(name);
                 default -> null;
             };
+            Set<String> tags = switch(type){
+                case "nugget" -> TFCBlockTypes.getOreTags(name);
+                default -> Collections.EMPTY_SET;
+            };
             DiscoveryMarker marker = new DiscoveryMarker(
                 clusterID(cluster, type),
                 cluster,
@@ -101,7 +107,8 @@ public class DiscoveryClusterStore extends ClusterStore {
                 layer,
                 icon,
                 16,
-                16
+                16,
+                tags
             );
             BMEngines.async().runOnGameThread(() -> {
                 var labels = labels();

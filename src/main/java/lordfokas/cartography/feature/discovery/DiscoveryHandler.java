@@ -16,6 +16,7 @@ public class DiscoveryHandler {
     @SubscribeEvent
     public static void onInteract(PlayerInteractEvent event) {
         Level level = event.getWorld();
+        if(!level.isClientSide) return;
         BlockPos pos = event.getPos();
         TFCBlockTypes.Profile profile = TFCBlockTypes.getProfile(level.getBlockState(pos).getBlock());
         if(profile != null && profile.type.classification == TFCBlockTypes.Classification.DISCOVERY) {

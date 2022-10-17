@@ -12,7 +12,7 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 import com.eerussianguy.blazemap.api.event.BlazeRegistryEvent.*;
-import com.eerussianguy.blazemap.api.pipeline.FakeLayer;
+import com.eerussianguy.blazemap.api.maps.FakeLayer;
 import com.mojang.logging.LogUtils;
 import lordfokas.cartography.data.ClusterStore;
 import lordfokas.cartography.data.SerializableDataPool;
@@ -63,6 +63,7 @@ public class Cartography {
     @SubscribeEvent
     public void registerMasterData(MasterDataRegistryEvent evt) {
         evt.registry.register(new ClimateSerializer());
+        evt.registry.register(new ClimateIsolinesSerializer());
         evt.registry.register(new GroundCompositionSerializer());
     }
 
@@ -73,7 +74,9 @@ public class Cartography {
     }
 
     @SubscribeEvent
-    public void registerTransformers(TransformerRegistryEvent evt) {}
+    public void registerTransformers(TransformerRegistryEvent evt) {
+        evt.registry.register(new ClimateIsolinesTransformer());
+    }
 
     @SubscribeEvent
     public void registerProcessors(ProcessorRegistryEvent evt) {

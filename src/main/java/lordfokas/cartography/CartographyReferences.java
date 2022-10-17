@@ -1,7 +1,8 @@
 package lordfokas.cartography;
 
 import com.eerussianguy.blazemap.api.BlazeRegistry.Key;
-import com.eerussianguy.blazemap.api.MapType;
+import com.eerussianguy.blazemap.api.maps.Layer;
+import com.eerussianguy.blazemap.api.maps.MapType;
 import com.eerussianguy.blazemap.api.markers.ObjectRenderer;
 import com.eerussianguy.blazemap.api.pipeline.*;
 
@@ -13,11 +14,16 @@ public class CartographyReferences {
     public static class MasterData {
         public static final Key<DataType<MasterDatum>> GROUND_COMPOSITION = new Key<>(MASTER_DATA, MOD_ID, "ground_composition");
         public static final Key<DataType<MasterDatum>> CLIMATE = new Key<>(MASTER_DATA, MOD_ID, "climate");
+        public static final Key<DataType<MasterDatum>> CLIMATE_ISO = new Key<>(MASTER_DATA, MOD_ID, "climate_iso");
     }
 
     public static class Collectors {
         public static final Key<Collector<MasterDatum>> GROUND_COMPOSITION = new Key<>(COLLECTORS, MOD_ID, "ground_composition");
         public static final Key<Collector<MasterDatum>> CLIMATE = new Key<>(COLLECTORS, MOD_ID, "climate");
+    }
+
+    public static class Transformers {
+        public static final Key<Transformer<MasterDatum>> CLIMATE_ISO = new Key<>(TRANSFORMERS, MOD_ID, "climate_iso");
     }
 
     public static class Processors {

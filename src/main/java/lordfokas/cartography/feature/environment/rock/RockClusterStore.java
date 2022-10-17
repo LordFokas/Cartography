@@ -59,7 +59,8 @@ public class RockClusterStore extends ClusterStore {
                 dynamicLabel.image.getHeight(),
                 Colors.NO_TINT,
                 0,
-                false
+                false,
+                TFCBlockTypes.getRockTags(rock)
             );
             BMEngines.async().runOnGameThread(() -> {
                 var labels = labels();

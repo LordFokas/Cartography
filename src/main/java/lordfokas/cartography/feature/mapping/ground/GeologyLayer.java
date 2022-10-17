@@ -2,15 +2,17 @@ package lordfokas.cartography.feature.mapping.ground;
 
 import net.minecraft.resources.ResourceLocation;
 
-import com.eerussianguy.blazemap.api.pipeline.Layer;
+import com.eerussianguy.blazemap.api.maps.TileResolution;
 import com.eerussianguy.blazemap.api.util.IDataSource;
 import com.mojang.blaze3d.platform.NativeImage;
 import lordfokas.cartography.Cartography;
 import lordfokas.cartography.CartographyReferences;
+import lordfokas.cartography.feature.mapping.CartographyLayer;
 import lordfokas.cartography.utils.ImageHandler;
+import lordfokas.cartography.utils.ProfileCounter;
 import lordfokas.cartography.utils.TFCBlockTypes;
 
-public class GeologyLayer extends Layer {
+public class GeologyLayer extends CartographyLayer {
     public GeologyLayer() {
         super(
             CartographyReferences.Layers.GEOLOGY,
@@ -21,17 +23,22 @@ public class GeologyLayer extends Layer {
     }
 
     @Override
-    public boolean renderTile(NativeImage tile, IDataSource data) {
+    public boolean renderTile(NativeImage tile, TileResolution resolution, IDataSource data, int xGridOffset, int zGridOffset) {
         GroundCompositionMD ground = (GroundCompositionMD) data.get(CartographyReferences.MasterData.GROUND_COMPOSITION);
-        for(int x = 0; x < 16; x++) {
-            for(int y = 0; y < 16; y++) {
-                TFCBlockTypes.Profile rock = ground.rock[x][y];
-                if(rock == null) continue;
-                ResourceLocation path = TFCBlockTypes.getTexturePath(rock);
-                NativeImage texture = ImageHandler.getImage(path);
-                tile.setPixelRGBA(x, y, texture.getPixelRGBA(x, y));
-            }
-        }
+        final int xOff = xGridOffset * resolution.chunkWidth;
+        final int zOff = zGridOffset * resolution.chunkWidth;
+
+        foreachPixel(resolution, (x, z) -> {
+            ProfileCounter counter = COUNTERS.get();
+            counter.consume(relevantData(resolution, x, z, ground.rock, TFCBlockTypes.Profile.class));
+            TFCBlockTypes.Profile rock = counter.getDominantProfile();
+
+            if(rock == null) return;
+            ResourceLocation path = TFCBlockTypes.getTexturePath(rock);
+            NativeImage texture = ImageHandler.getImage(path);
+            tile.setPixelRGBA(x, z, texture.getPixelRGBA(xOff + x, zOff + z));
+        });
+
         return true;
     }
 }

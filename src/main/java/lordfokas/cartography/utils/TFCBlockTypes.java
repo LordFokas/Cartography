@@ -3,10 +3,14 @@ package lordfokas.cartography.utils;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.RegistryObject;
 
 import lordfokas.cartography.Cartography;
@@ -18,11 +22,15 @@ import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.common.recipes.HeatingRecipe;
 
 public class TFCBlockTypes {
     private static final Rock.BlockType[] STONE_TYPES = new Rock.BlockType[] {Rock.BlockType.RAW, Rock.BlockType.HARDENED};
     private static final Wood.BlockType[] LOG_TYPES = new Wood.BlockType[] {Wood.BlockType.LOG, Wood.BlockType.STRIPPED_LOG};
     private static final Map<Block, Profile> TYPES = new HashMap<>();
+    private static final Map<String, Set<String>> ROCK_TAGS = new HashMap<>();
+    private static final Map<String, Set<String>> ORE_TAGS = new HashMap<>();
 
     public static Profile getProfile(Block block) {
         return TYPES.get(block);
@@ -76,6 +84,14 @@ public class TFCBlockTypes {
 
     public static ResourceLocation getCropTexturePath(String crop) {
         return new ResourceLocation("tfc", "textures/item/food/" + crop + ".png");
+    }
+
+    public static Set<String> getRockTags(String rock){
+        return ROCK_TAGS.get(rock);
+    }
+
+    public static Set<String> getOreTags(String ore){
+        return ORE_TAGS.get(ore);
     }
 
     public static class Profile {
@@ -134,6 +150,7 @@ public class TFCBlockTypes {
                     put(Type.ORE, obj.get(), name);
                 }
             }
+            ROCK_TAGS.put(name, Set.of("rock", name, rock.category().name().toLowerCase(Locale.ROOT)));
         }
 
         // SOILS  ======================================================================================================
@@ -174,7 +191,16 @@ public class TFCBlockTypes {
         // NUGGETS  ====================================================================================================
         for(Ore ore : Ore.values()) {
             if(!ore.isGraded()) continue;
-            put(Type.NUGGET, TFCBlocks.SMALL_ORES.get(ore).get(), ore.name().toLowerCase(Locale.ROOT));
+            String name = ore.name().toLowerCase(Locale.ROOT);
+            put(Type.NUGGET, TFCBlocks.SMALL_ORES.get(ore).get(), name);
+
+            Item item = TFCItems.GRADED_ORES.get(ore).get(Ore.Grade.NORMAL).get();
+            HeatingRecipe recipe = HeatingRecipe.getRecipe(new ItemStack(item));
+            if(recipe == null) continue;
+            FluidStack fluid = recipe.getDisplayOutputFluid();
+            String[] parts = fluid.getTranslationKey().split("\\.");
+            String metal = parts[parts.length - 1].replace("cast_", "");
+            ORE_TAGS.put(name, Set.of("ore", name, metal));
         }
 
         // FRUITS  =====================================================================================================
