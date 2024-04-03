@@ -56,7 +56,7 @@ public class RainfallLegendWidget implements Widget {
             String label = String.valueOf(r);
             stack.pushPose();
             stack.translate(28 - font.width(label), 0.0D, 0.0D);
-            font.drawInBatch(label, 0.0F, 0.0F, Colors.NHITE, false, stack.last().pose(), buffers, false, 0, LightTexture.FULL_BRIGHT);
+            font.drawInBatch(label, 0.0F, 0.0F, Colors.WHITE, false, stack.last().pose(), buffers, false, 0, LightTexture.FULL_BRIGHT);
             stack.popPose();
             stack.translate(0.0D, 40D, 0.0D);
         }

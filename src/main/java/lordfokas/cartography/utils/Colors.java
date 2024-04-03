@@ -1,11 +1,11 @@
 package lordfokas.cartography.utils;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class Colors {
 
     public static final int NO_TINT = -1;
-    public static final int NHITE = 0xFFFFFFFF;
+    public static final int WHITE = 0xFFFFFFFF;
 
     public static int HSB2ABGR(float h, float s, float b) {
         Color color = Color.getHSBColor(h, s, b);

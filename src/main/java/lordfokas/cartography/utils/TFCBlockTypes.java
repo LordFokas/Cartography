@@ -14,6 +14,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.RegistryObject;
 
 import lordfokas.cartography.Cartography;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.crop.Crop;
 import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
@@ -31,6 +32,8 @@ public class TFCBlockTypes {
     private static final Map<Block, Profile> TYPES = new HashMap<>();
     private static final Map<String, Set<String>> ROCK_TAGS = new HashMap<>();
     private static final Map<String, Set<String>> ORE_TAGS = new HashMap<>();
+    private static final Map<String, Set<String>> CROP_TAGS = new HashMap<>();
+    private static final Map<String, Set<String>> FRUIT_TAGS = new HashMap<>();
 
     public static Profile getProfile(Block block) {
         return TYPES.get(block);
@@ -75,7 +78,7 @@ public class TFCBlockTypes {
     }
 
     public static ResourceLocation getNuggetTexturePath(String nugget) {
-        return new ResourceLocation("tfc", "textures/item/ore/normal_" + nugget + ".png");
+        return new ResourceLocation("tfc", "textures/item/ore/small_" + nugget + ".png");
     }
 
     public static ResourceLocation getFruitTexturePath(String fruit) {
@@ -92,6 +95,14 @@ public class TFCBlockTypes {
 
     public static Set<String> getOreTags(String ore){
         return ORE_TAGS.get(ore);
+    }
+
+    public static Set<String> getCropTags(String crop){
+        return CROP_TAGS.get(crop);
+    }
+
+    public static Set<String> getFruitTags(String fruit){
+        return FRUIT_TAGS.get(fruit);
     }
 
     public static class Profile {
@@ -150,7 +161,12 @@ public class TFCBlockTypes {
                     put(Type.ORE, obj.get(), name);
                 }
             }
-            ROCK_TAGS.put(name, Set.of("rock", name, rock.category().name().toLowerCase(Locale.ROOT)));
+            Block loose = TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.LOOSE).get();
+            if(new ItemStack(loose).is(TFCTags.Items.FLUX)){
+                ROCK_TAGS.put(name, Set.of("rock", name, "flux", rock.category().name().toLowerCase(Locale.ROOT)));
+            }else{
+                ROCK_TAGS.put(name, Set.of("rock", name, rock.category().name().toLowerCase(Locale.ROOT)));
+            }
         }
 
         // SOILS  ======================================================================================================
@@ -210,11 +226,14 @@ public class TFCBlockTypes {
             put(Type.FRUIT, TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.get(tree).get(), name);
             put(Type.FRUIT, TFCBlocks.FRUIT_TREE_LEAVES.get(tree).get(), name);
             put(Type.FRUIT, TFCBlocks.FRUIT_TREE_SAPLINGS.get(tree).get(), name);
+            FRUIT_TAGS.put(name, Set.of("fruit", name));
         }
 
         // CROPS  ======================================================================================================
         for(Crop crop : Crop.values()){
-            put(Type.CROP, TFCBlocks.WILD_CROPS.get(crop).get(), crop.name().toLowerCase(Locale.ROOT));
+            String name = crop.name().toLowerCase(Locale.ROOT);
+            put(Type.CROP, TFCBlocks.WILD_CROPS.get(crop).get(), name);
+            CROP_TAGS.put(name, Set.of("crop", name));
         }
 
         Cartography.LOGGER.info("Done");

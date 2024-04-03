@@ -12,6 +12,7 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 import com.eerussianguy.blazemap.api.event.BlazeRegistryEvent.*;
+import com.eerussianguy.blazemap.api.event.ModAnnouncementEvent;
 import com.eerussianguy.blazemap.api.maps.FakeLayer;
 import com.mojang.logging.LogUtils;
 import lordfokas.cartography.data.ClusterStore;
@@ -115,6 +116,11 @@ public class Cartography {
     @SubscribeEvent
     public void registerObjectRenderers(ObjectRendererRegistryEvent evt) {
         evt.registry.register(new DiscoveryMarkerRenderer());
+    }
+
+    @SubscribeEvent
+    public void announce(ModAnnouncementEvent evt) {
+        evt.announce("tfc");
     }
 
     public static TranslatableComponent lang(String key) {
