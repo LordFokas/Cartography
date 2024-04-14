@@ -2,6 +2,7 @@ package lordfokas.cartography.feature.discovery;
 
 import java.util.HashMap;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -26,7 +27,6 @@ public class DiscoveryClusterStore extends ClusterStore {
     private static final HashMap<ResourceKey<Level>, HashMap<String, DiscoveryDataPool>> NUGGETS = new HashMap<>();
     private static final HashMap<ResourceKey<Level>, HashMap<String, DiscoveryDataPool>> FRUITS = new HashMap<>();
     private static final HashMap<ResourceKey<Level>, HashMap<String, DiscoveryDataPool>> CROPS = new HashMap<>();
-
     private static final DiscoveryConsumer NUGGET_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.Fake.ORES, "nugget");
     private static final DiscoveryConsumer FRUIT_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.Fake.FRUIT, "fruit");
     private static final DiscoveryConsumer CROP_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.Fake.CROPS, "crop");
@@ -43,6 +43,18 @@ public class DiscoveryClusterStore extends ClusterStore {
         foreach(ClusterType.NUGGET, nugget -> BlazeMapAsync.instance().clientChain.runOnDataThread(() -> getNuggetPool(event.dimension, nugget)));
         foreach(ClusterType.FRUIT, fruit -> BlazeMapAsync.instance().clientChain.runOnDataThread(() -> getFruitPool(event.dimension, fruit)));
         foreach(ClusterType.CROP, crop -> BlazeMapAsync.instance().clientChain.runOnDataThread(() -> getCropPool(event.dimension, crop)));
+    }
+
+    public static synchronized void foreachNuggetPool(ResourceKey<Level> dimension, BiConsumer<String, DiscoveryDataPool> consumer) {
+        NUGGETS.computeIfAbsent(dimension, $ -> new HashMap<>()).forEach(consumer);
+    }
+
+    public static synchronized void foreachFruitPool(ResourceKey<Level> dimension, BiConsumer<String, DiscoveryDataPool> consumer) {
+        FRUITS.computeIfAbsent(dimension, $ -> new HashMap<>()).forEach(consumer);
+    }
+
+    public static synchronized void foreachCropPool(ResourceKey<Level> dimension, BiConsumer<String, DiscoveryDataPool> consumer) {
+        CROPS.computeIfAbsent(dimension, $ -> new HashMap<>()).forEach(consumer);
     }
 
     public static synchronized DiscoveryDataPool getNuggetPool(ResourceKey<Level> dimension, String nugget) {

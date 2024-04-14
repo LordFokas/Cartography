@@ -3,6 +3,7 @@ package lordfokas.cartography.feature.discovery;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.function.Consumer;
 
 import net.minecraft.core.BlockPos;
 
@@ -14,6 +15,14 @@ public class DiscoveryClusterRealm extends ClusterRealm<BlockPos, String, Discov
 
     protected DiscoveryClusterRealm(AsyncDataCruncher.IThreadAsserter dataCruncherThread, IClusterConsumer<DiscoveryCluster> consumer) {
         super(dataCruncherThread, consumer);
+    }
+
+    public synchronized void nearbyXZ(BlockPos pos, int distance, Consumer<DiscoveryCluster> consumer) {
+        clusters.forEach(cluster -> {
+            if(cluster.centerOfMass().atY(0).distSqr(pos) <= distance) {
+                consumer.accept(cluster);
+            }
+        });
     }
 
     @Override

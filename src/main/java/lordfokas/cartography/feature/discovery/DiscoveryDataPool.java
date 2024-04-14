@@ -2,6 +2,7 @@ package lordfokas.cartography.feature.discovery;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -13,12 +14,18 @@ import lordfokas.cartography.data.SerializableDataPool;
 
 public class DiscoveryDataPool extends SerializableDataPool<BlockPos, String> {
     private final String type;
+    private final DiscoveryClusterRealm clusters;
 
-    public DiscoveryDataPool(IStorageAccess storage, ResourceLocation node, DataFlow.IDataConsumer<BlockPos, String> consumer, String type) {
+    public DiscoveryDataPool(IStorageAccess storage, ResourceLocation node, DiscoveryClusterRealm consumer, String type) {
         super(storage, node);
         addConsumer(consumer);
+        this.clusters = consumer;
         this.type = type;
         load();
+    }
+
+    public void asClustered(Consumer<DiscoveryClusterRealm> consumer) {
+        consumer.accept(clusters);
     }
 
     @Override

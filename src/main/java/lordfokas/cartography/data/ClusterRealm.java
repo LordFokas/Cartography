@@ -8,7 +8,7 @@ import java.util.Map;
 import com.eerussianguy.blazemap.engine.async.AsyncDataCruncher;
 
 public abstract class ClusterRealm<C, D, K extends Cluster<C, D>> implements DataFlow.IDataConsumer<C, D> {
-    private final Collection<K> clusters = new ArrayList<>(64);
+    protected final Collection<K> clusters = new ArrayList<>(64);
     private final AsyncDataCruncher.IThreadAsserter dataCruncherThread;
     private final IClusterConsumer<K> consumer;
 

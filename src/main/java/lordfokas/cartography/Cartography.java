@@ -8,8 +8,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
 
 import com.eerussianguy.blazemap.api.debug.ModAnnouncementEvent;
 import com.eerussianguy.blazemap.api.event.BlazeRegistryEvent.*;
@@ -19,6 +17,7 @@ import lordfokas.cartography.data.ClusterStore;
 import lordfokas.cartography.data.SerializableDataPool;
 import lordfokas.cartography.feature.discovery.DiscoveryClusterStore;
 import lordfokas.cartography.feature.discovery.DiscoveryHandler;
+import lordfokas.cartography.feature.discovery.DiscoveryMapMenu;
 import lordfokas.cartography.feature.discovery.DiscoveryMarkerRenderer;
 import lordfokas.cartography.feature.environment.climate.ClimateClusterStore;
 import lordfokas.cartography.feature.environment.climate.ClimateProcessor;
@@ -32,18 +31,10 @@ import org.slf4j.Logger;
 @Mod(CartographyReferences.MOD_ID)
 public class Cartography {
     public static final Logger LOGGER = LogUtils.getLogger();
-    private static final String PROTOCOL_VERSION = "1";
-    public static final SimpleChannel NETWORK = NetworkRegistry.newSimpleChannel(
-        resource("network"),
-        () -> PROTOCOL_VERSION,
-        PROTOCOL_VERSION::equals,
-        PROTOCOL_VERSION::equals
-    );
 
     public Cartography() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::setup);
-        MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void setup(final FMLCommonSetupEvent event) {
@@ -51,14 +42,15 @@ public class Cartography {
         MinecraftForge.EVENT_BUS.register(SerializableDataPool.class);
         MinecraftForge.EVENT_BUS.register(ClusterStore.class);
 
-        // Initialize network
-        // NETWORK.registerMessage(0, pkt.class, pkt::encode, pkt::decode, (msg, ctx) -> msg.handle(ctx.get()));
+        // Register self for Blaze Map features
+        MinecraftForge.EVENT_BUS.register(this);
 
         // Initialize specific feature facilities
         MinecraftForge.EVENT_BUS.register(ClimateClusterStore.class);
         MinecraftForge.EVENT_BUS.register(RockClusterStore.class);
         MinecraftForge.EVENT_BUS.register(DiscoveryHandler.class);
         MinecraftForge.EVENT_BUS.register(DiscoveryClusterStore.class);
+        MinecraftForge.EVENT_BUS.register(DiscoveryMapMenu.class);
     }
 
     @SubscribeEvent
