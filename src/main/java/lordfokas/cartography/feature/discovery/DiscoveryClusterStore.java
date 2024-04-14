@@ -14,11 +14,11 @@ import com.eerussianguy.blazemap.api.BlazeRegistry.Key;
 import com.eerussianguy.blazemap.api.event.DimensionChangedEvent;
 import com.eerussianguy.blazemap.api.event.ServerJoinedEvent;
 import com.eerussianguy.blazemap.api.maps.Layer;
+import com.eerussianguy.blazemap.engine.BlazeMapAsync;
 import lordfokas.cartography.Cartography;
 import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.data.ClusterStore;
 import lordfokas.cartography.data.IClusterConsumer;
-import lordfokas.cartography.utils.BMEngines;
 import lordfokas.cartography.utils.ImageHandler;
 import lordfokas.cartography.utils.TFCBlockTypes;
 
@@ -40,9 +40,9 @@ public class DiscoveryClusterStore extends ClusterStore {
 
     @SubscribeEvent
     public static void onDimensionChanged(DimensionChangedEvent event) {
-        foreach(ClusterType.NUGGET, nugget -> BMEngines.async().runOnDataThread(() -> getNuggetPool(event.dimension, nugget)));
-        foreach(ClusterType.FRUIT, fruit -> BMEngines.async().runOnDataThread(() -> getFruitPool(event.dimension, fruit)));
-        foreach(ClusterType.CROP, crop -> BMEngines.async().runOnDataThread(() -> getCropPool(event.dimension, crop)));
+        foreach(ClusterType.NUGGET, nugget -> BlazeMapAsync.instance().clientChain.runOnDataThread(() -> getNuggetPool(event.dimension, nugget)));
+        foreach(ClusterType.FRUIT, fruit -> BlazeMapAsync.instance().clientChain.runOnDataThread(() -> getFruitPool(event.dimension, fruit)));
+        foreach(ClusterType.CROP, crop -> BlazeMapAsync.instance().clientChain.runOnDataThread(() -> getCropPool(event.dimension, crop)));
     }
 
     public static synchronized DiscoveryDataPool getNuggetPool(ResourceKey<Level> dimension, String nugget) {
@@ -50,7 +50,7 @@ public class DiscoveryClusterStore extends ClusterStore {
             .computeIfAbsent(dimension, $ -> new HashMap<>())
             .computeIfAbsent(nugget, $ -> new DiscoveryDataPool(
                 storage(), getClusterNode(ClusterType.NUGGET, nugget),
-                new DiscoveryClusterRealm(BMEngines.cruncher().getThreadAsserter(), NUGGET_CONSUMER),
+                new DiscoveryClusterRealm(BlazeMapAsync.instance().cruncher.getThreadAsserter(), NUGGET_CONSUMER),
                 nugget
             ));
     }
@@ -60,7 +60,7 @@ public class DiscoveryClusterStore extends ClusterStore {
             .computeIfAbsent(dimension, $ -> new HashMap<>())
             .computeIfAbsent(fruit, $ -> new DiscoveryDataPool(
                 storage(), getClusterNode(ClusterType.FRUIT, fruit),
-                new DiscoveryClusterRealm(BMEngines.cruncher().getThreadAsserter(), FRUIT_CONSUMER),
+                new DiscoveryClusterRealm(BlazeMapAsync.instance().cruncher.getThreadAsserter(), FRUIT_CONSUMER),
                 fruit
             ));
     }
@@ -70,7 +70,7 @@ public class DiscoveryClusterStore extends ClusterStore {
             .computeIfAbsent(dimension, $ -> new HashMap<>())
             .computeIfAbsent(crop, $ -> new DiscoveryDataPool(
                 storage(), getClusterNode(ClusterType.CROP, crop),
-                new DiscoveryClusterRealm(BMEngines.cruncher().getThreadAsserter(), CROP_CONSUMER),
+                new DiscoveryClusterRealm(BlazeMapAsync.instance().cruncher.getThreadAsserter(), CROP_CONSUMER),
                 crop
             ));
     }
@@ -124,7 +124,7 @@ public class DiscoveryClusterStore extends ClusterStore {
                 dynamicLabel.image.getHeight(),
                 tags
             );
-            BMEngines.async().runOnGameThread(() -> {
+            BlazeMapAsync.instance().clientChain.runOnGameThread(() -> {
                 var labels = labels();
                 if(labels.has(marker)) {
                     labels.remove(marker);
@@ -135,7 +135,7 @@ public class DiscoveryClusterStore extends ClusterStore {
 
         @Override
         public void dropCluster(DiscoveryCluster cluster) {
-            BMEngines.async().runOnGameThread(() -> labels().remove(clusterID(cluster, type), layer));
+            BlazeMapAsync.instance().clientChain.runOnGameThread(() -> labels().remove(clusterID(cluster, type), layer));
         }
     }
 }

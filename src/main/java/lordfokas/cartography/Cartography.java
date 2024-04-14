@@ -11,8 +11,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
+import com.eerussianguy.blazemap.api.debug.ModAnnouncementEvent;
 import com.eerussianguy.blazemap.api.event.BlazeRegistryEvent.*;
-import com.eerussianguy.blazemap.api.event.ModAnnouncementEvent;
 import com.eerussianguy.blazemap.api.maps.FakeLayer;
 import com.mojang.logging.LogUtils;
 import lordfokas.cartography.data.ClusterStore;

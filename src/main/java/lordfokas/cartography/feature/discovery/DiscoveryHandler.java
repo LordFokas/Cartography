@@ -9,7 +9,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import lordfokas.cartography.utils.BMEngines;
+import com.eerussianguy.blazemap.engine.BlazeMapAsync;
 import lordfokas.cartography.utils.TFCBlockTypes;
 
 public class DiscoveryHandler {
@@ -44,14 +44,14 @@ public class DiscoveryHandler {
     }
 
     private static void nugget(ResourceKey<Level> dimension, BlockPos pos, String nugget) {
-        BMEngines.async().runOnDataThread(() -> DiscoveryClusterStore.getNuggetPool(dimension, nugget).addData(pos, nugget));
+        BlazeMapAsync.instance().clientChain.runOnDataThread(() -> DiscoveryClusterStore.getNuggetPool(dimension, nugget).addData(pos, nugget));
     }
 
     private static void fruit(ResourceKey<Level> dimension, BlockPos pos, String fruit) {
-        BMEngines.async().runOnDataThread(() -> DiscoveryClusterStore.getFruitPool(dimension, fruit).addData(pos, fruit));
+        BlazeMapAsync.instance().clientChain.runOnDataThread(() -> DiscoveryClusterStore.getFruitPool(dimension, fruit).addData(pos, fruit));
     }
 
     private static void crop(ResourceKey<Level> dimension, BlockPos pos, String crop) {
-        BMEngines.async().runOnDataThread(() -> DiscoveryClusterStore.getCropPool(dimension, crop).addData(pos, crop));
+        BlazeMapAsync.instance().clientChain.runOnDataThread(() -> DiscoveryClusterStore.getCropPool(dimension, crop).addData(pos, crop));
     }
 }

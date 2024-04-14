@@ -13,12 +13,12 @@ import com.eerussianguy.blazemap.api.event.DimensionChangedEvent;
 import com.eerussianguy.blazemap.api.event.ServerJoinedEvent;
 import com.eerussianguy.blazemap.api.maps.Layer;
 import com.eerussianguy.blazemap.api.markers.MapLabel;
+import com.eerussianguy.blazemap.engine.BlazeMapAsync;
 import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.data.ClusterStore;
 import lordfokas.cartography.data.IClusterConsumer;
 import lordfokas.cartography.feature.mapping.climate.RainfallIsolinesLayer;
 import lordfokas.cartography.feature.mapping.climate.TemperatureIsolinesLayer;
-import lordfokas.cartography.utils.BMEngines;
 import lordfokas.cartography.utils.Colors;
 import lordfokas.cartography.utils.ImageHandler;
 
@@ -36,8 +36,8 @@ public class ClimateClusterStore extends ClusterStore {
 
     @SubscribeEvent
     public static void onDimensionChanged(DimensionChangedEvent event) {
-        foreach(ClusterType.RAINFALL, value -> BMEngines.async().runOnDataThread(() -> getRainfallPool(event.dimension, value)));
-        foreach(ClusterType.TEMPERATURE, value -> BMEngines.async().runOnDataThread(() -> getTemperaturePool(event.dimension, value)));
+        foreach(ClusterType.RAINFALL, value -> BlazeMapAsync.instance().clientChain.runOnDataThread(() -> getRainfallPool(event.dimension, value)));
+        foreach(ClusterType.TEMPERATURE, value -> BlazeMapAsync.instance().clientChain.runOnDataThread(() -> getTemperaturePool(event.dimension, value)));
     }
 
     public static synchronized ClimateDataPool getRainfallPool(ResourceKey<Level> dimension, String value) {
@@ -45,7 +45,7 @@ public class ClimateClusterStore extends ClusterStore {
             .computeIfAbsent(dimension, $ -> new HashMap<>())
             .computeIfAbsent(value, $ -> new ClimateDataPool(
                 storage(), getClusterNode(ClusterType.RAINFALL, value),
-                new ClimateClusterRealm(BMEngines.cruncher().getThreadAsserter(), RAIN_CONSUMER),
+                new ClimateClusterRealm(BlazeMapAsync.instance().cruncher.getThreadAsserter(), RAIN_CONSUMER),
                 value, "mm"));
     }
 
@@ -54,7 +54,7 @@ public class ClimateClusterStore extends ClusterStore {
             .computeIfAbsent(dimension, $ -> new HashMap<>())
             .computeIfAbsent(value, $ -> new ClimateDataPool(
                 storage(), getClusterNode(ClusterType.TEMPERATURE, value),
-                new ClimateClusterRealm(BMEngines.cruncher().getThreadAsserter(), TEMP_CONSUMER),
+                new ClimateClusterRealm(BlazeMapAsync.instance().cruncher.getThreadAsserter(), TEMP_CONSUMER),
                 value, "*C"));
     }
 
@@ -91,7 +91,7 @@ public class ClimateClusterStore extends ClusterStore {
                 true,
                 Collections.EMPTY_SET
             );
-            BMEngines.async().runOnGameThread(() -> {
+            BlazeMapAsync.instance().clientChain.runOnGameThread(() -> {
                 var labels = labels();
                 if(labels.has(label)) {
                     labels.remove(label);
@@ -102,7 +102,7 @@ public class ClimateClusterStore extends ClusterStore {
 
         @Override
         public void dropCluster(ClimateCluster cluster) {
-            BMEngines.async().runOnGameThread(() -> labels().remove(clusterID(cluster, type), layer));
+            BlazeMapAsync.instance().clientChain.runOnGameThread(() -> labels().remove(clusterID(cluster, type), layer));
         }
     }
 }
