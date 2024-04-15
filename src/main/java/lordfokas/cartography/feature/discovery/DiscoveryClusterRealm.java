@@ -13,6 +13,7 @@ import lordfokas.cartography.data.IClusterConsumer;
 
 public class DiscoveryClusterRealm extends ClusterRealm<BlockPos, DiscoveryState, DiscoveryCluster> {
     public final String type;
+    private Runnable notifyDataChange = () -> {};
 
     protected DiscoveryClusterRealm(AsyncDataCruncher.IThreadAsserter dataCruncherThread, IClusterConsumer<DiscoveryCluster> consumer, String type) {
         super(dataCruncherThread, consumer);
@@ -66,5 +67,15 @@ public class DiscoveryClusterRealm extends ClusterRealm<BlockPos, DiscoveryState
     @Override
     protected DiscoveryCluster make(BlockPos coordinate, DiscoveryState data) {
         return new DiscoveryCluster(List.of(coordinate), List.of(data), type, this::onClusterChanged);
+    }
+
+    @Override
+    protected void onClusterChanged(DiscoveryCluster cluster) {
+        super.onClusterChanged(cluster);
+        this.notifyDataChange.run();
+    }
+
+    public void setNotifyDataChange(Runnable notifyDataChange) {
+        this.notifyDataChange = notifyDataChange;
     }
 }

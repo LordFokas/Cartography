@@ -3,6 +3,7 @@ package lordfokas.cartography.feature.discovery;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -16,7 +17,6 @@ import com.eerussianguy.blazemap.api.event.DimensionChangedEvent;
 import com.eerussianguy.blazemap.api.event.ServerJoinedEvent;
 import com.eerussianguy.blazemap.api.maps.Layer;
 import com.eerussianguy.blazemap.engine.BlazeMapAsync;
-import lordfokas.cartography.Cartography;
 import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.data.ClusterStore;
 import lordfokas.cartography.data.IClusterConsumer;
@@ -28,9 +28,9 @@ public class DiscoveryClusterStore extends ClusterStore {
     private static final HashMap<ResourceKey<Level>, HashMap<String, DiscoveryDataPool>> NUGGETS = new HashMap<>();
     private static final HashMap<ResourceKey<Level>, HashMap<String, DiscoveryDataPool>> FRUITS = new HashMap<>();
     private static final HashMap<ResourceKey<Level>, HashMap<String, DiscoveryDataPool>> CROPS = new HashMap<>();
-    private static final DiscoveryConsumer NUGGET_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.Fake.ORES, "nugget");
-    private static final DiscoveryConsumer FRUIT_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.Fake.FRUIT, "fruit");
-    private static final DiscoveryConsumer CROP_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.Fake.CROPS, "crop");
+    private static final DiscoveryConsumer NUGGET_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.Fake.ORES, "nugget", TFCBlockTypes::getNuggetTexturePath, TFCBlockTypes::getOreTags);
+    private static final DiscoveryConsumer FRUIT_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.Fake.FRUIT, "fruit", TFCBlockTypes::getFruitTexturePath, TFCBlockTypes::getFruitTags);
+    private static final DiscoveryConsumer CROP_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.Fake.CROPS, "crop", TFCBlockTypes::getCropTexturePath, TFCBlockTypes::getCropTags);
 
     @SubscribeEvent
     public static void onServerJoined(ServerJoinedEvent event) {
@@ -63,8 +63,7 @@ public class DiscoveryClusterStore extends ClusterStore {
             .computeIfAbsent(dimension, $ -> new HashMap<>())
             .computeIfAbsent(nugget, $ -> new DiscoveryDataPool(
                 storage(), getClusterNode(ClusterType.NUGGET, nugget),
-                new DiscoveryClusterRealm(BlazeMapAsync.instance().cruncher.getThreadAsserter(), NUGGET_CONSUMER, nugget),
-                nugget
+                new DiscoveryClusterRealm(BlazeMapAsync.instance().cruncher.getThreadAsserter(), NUGGET_CONSUMER, nugget)
             ));
     }
 
@@ -73,8 +72,7 @@ public class DiscoveryClusterStore extends ClusterStore {
             .computeIfAbsent(dimension, $ -> new HashMap<>())
             .computeIfAbsent(fruit, $ -> new DiscoveryDataPool(
                 storage(), getClusterNode(ClusterType.FRUIT, fruit),
-                new DiscoveryClusterRealm(BlazeMapAsync.instance().cruncher.getThreadAsserter(), FRUIT_CONSUMER, fruit),
-                fruit
+                new DiscoveryClusterRealm(BlazeMapAsync.instance().cruncher.getThreadAsserter(), FRUIT_CONSUMER, fruit)
             ));
     }
 
@@ -83,18 +81,21 @@ public class DiscoveryClusterStore extends ClusterStore {
             .computeIfAbsent(dimension, $ -> new HashMap<>())
             .computeIfAbsent(crop, $ -> new DiscoveryDataPool(
                 storage(), getClusterNode(ClusterType.CROP, crop),
-                new DiscoveryClusterRealm(BlazeMapAsync.instance().cruncher.getThreadAsserter(), CROP_CONSUMER, crop),
-                crop
+                new DiscoveryClusterRealm(BlazeMapAsync.instance().cruncher.getThreadAsserter(), CROP_CONSUMER, crop)
             ));
     }
 
     private static final class DiscoveryConsumer implements IClusterConsumer<DiscoveryCluster> {
         private final Key<Layer> layer;
         private final String type;
+        private final Function<String, ResourceLocation> textureSupplier;
+        private final Function<String, Set<String>> tagSupplier;
 
-        private DiscoveryConsumer(Key<Layer> layer, String type) {
+        private DiscoveryConsumer(Key<Layer> layer, String type, Function<String, ResourceLocation> textureSupplier, Function<String, Set<String>> tagSupplier) {
             this.layer = layer;
             this.type = type;
+            this.textureSupplier = textureSupplier;
+            this.tagSupplier = tagSupplier;
         }
 
         @Override
@@ -103,29 +104,10 @@ public class DiscoveryClusterStore extends ClusterStore {
             if(center == null) return;
             String name = cluster.type;
 
-            ResourceLocation item = switch(type) {
-                case "nugget" -> TFCBlockTypes.getNuggetTexturePath(name);
-                case "fruit" -> TFCBlockTypes.getFruitTexturePath(name);
-                case "crop" -> TFCBlockTypes.getCropTexturePath(name);
-                default -> null;
-            };
-            if(item == null){
-                Cartography.LOGGER.warn("Unrecognized discovery type: {}", type);
-                return;
-            }
+            ResourceLocation item = textureSupplier.apply(name);
             int tint = cluster.getData().isDepleted() ? 0xFFFF0000 : Colors.NO_TINT;
-            ImageHandler.DynamicLabel dynamicLabel = switch(type) {
-                case "nugget" -> ImageHandler.getLabel(pretty(name), TFCBlockTypes.getNuggetTexturePath(name), tint);
-                case "fruit" -> ImageHandler.getLabel(pretty(name), TFCBlockTypes.getFruitTexturePath(name), tint);
-                case "crop" -> ImageHandler.getLabel(pretty(name), TFCBlockTypes.getCropTexturePath(name), tint);
-                default -> null;
-            };
-            Set<String> tags = switch(type){
-                case "nugget" -> TFCBlockTypes.getOreTags(name);
-                case "fruit" -> TFCBlockTypes.getFruitTags(name);
-                case "crop" -> TFCBlockTypes.getCropTags(name);
-                default -> null;
-            };
+            ImageHandler.DynamicLabel dynamicLabel = ImageHandler.getLabel(pretty(name), item, tint);
+            Set<String> tags = tagSupplier.apply(name);
             DiscoveryMarker marker = new DiscoveryMarker(
                 clusterID(cluster, type),
                 cluster,

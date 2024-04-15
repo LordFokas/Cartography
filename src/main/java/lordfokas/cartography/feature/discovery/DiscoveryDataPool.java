@@ -12,14 +12,13 @@ import com.eerussianguy.blazemap.api.util.MinecraftStreams;
 import lordfokas.cartography.data.SerializableDataPool;
 
 public class DiscoveryDataPool extends SerializableDataPool<BlockPos, DiscoveryState> {
-    private final String type;
     private final DiscoveryClusterRealm clusters;
 
-    public DiscoveryDataPool(IStorageAccess storage, ResourceLocation node, DiscoveryClusterRealm consumer, String type) {
+    public DiscoveryDataPool(IStorageAccess storage, ResourceLocation node, DiscoveryClusterRealm consumer) {
         super(storage, node);
         addConsumer(consumer);
+        consumer.setNotifyDataChange(this::markDirty);
         this.clusters = consumer;
-        this.type = type;
         load();
     }
 
