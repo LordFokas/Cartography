@@ -1,4 +1,4 @@
-package lordfokas.cartography.utils;
+package lordfokas.cartography.feature;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -26,7 +26,7 @@ import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 
-public class TFCBlockTypes {
+public class TFCContent {
     private static final Rock.BlockType[] STONE_TYPES = new Rock.BlockType[] {Rock.BlockType.RAW, Rock.BlockType.HARDENED};
     private static final Wood.BlockType[] LOG_TYPES = new Wood.BlockType[] {Wood.BlockType.LOG, Wood.BlockType.STRIPPED_LOG};
     private static final Map<Block, Profile> TYPES = new HashMap<>();

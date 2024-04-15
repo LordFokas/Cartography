@@ -10,7 +10,7 @@ import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.feature.mapping.CartographyLayer;
 import lordfokas.cartography.utils.ImageHandler;
 import lordfokas.cartography.utils.ProfileCounter;
-import lordfokas.cartography.utils.TFCBlockTypes;
+import lordfokas.cartography.feature.TFCContent;
 
 public class GeologyLayer extends CartographyLayer {
     public GeologyLayer() {
@@ -30,11 +30,11 @@ public class GeologyLayer extends CartographyLayer {
 
         foreachPixel(resolution, (x, z) -> {
             ProfileCounter counter = COUNTERS.get();
-            counter.consume(relevantData(resolution, x, z, ground.rock, TFCBlockTypes.Profile.class));
-            TFCBlockTypes.Profile rock = counter.getDominantProfile();
+            counter.consume(relevantData(resolution, x, z, ground.rock, TFCContent.Profile.class));
+            TFCContent.Profile rock = counter.getDominantProfile();
 
             if(rock == null) return;
-            ResourceLocation path = TFCBlockTypes.getTexturePath(rock);
+            ResourceLocation path = TFCContent.getTexturePath(rock);
             NativeImage texture = ImageHandler.getImage(path);
             tile.setPixelRGBA(x, z, texture.getPixelRGBA(xOff + x, zOff + z));
         });

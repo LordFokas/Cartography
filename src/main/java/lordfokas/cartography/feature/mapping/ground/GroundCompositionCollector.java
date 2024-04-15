@@ -6,9 +6,9 @@ import net.minecraft.world.level.levelgen.Heightmap;
 
 import com.eerussianguy.blazemap.api.pipeline.Collector;
 import lordfokas.cartography.CartographyReferences;
-import lordfokas.cartography.utils.TFCBlockTypes;
-import lordfokas.cartography.utils.TFCBlockTypes.Classification;
-import lordfokas.cartography.utils.TFCBlockTypes.Profile;
+import lordfokas.cartography.feature.TFCContent;
+import lordfokas.cartography.feature.TFCContent.Classification;
+import lordfokas.cartography.feature.TFCContent.Profile;
 
 public class GroundCompositionCollector extends Collector<GroundCompositionMD> {
 
@@ -28,7 +28,7 @@ public class GroundCompositionCollector extends Collector<GroundCompositionMD> {
                 boolean soil = false;
                 while(y > level.getMinBuildHeight()) {
                     BlockState state = level.getBlockState(POS.set(minX + x, y, minZ + z));
-                    Profile profile = TFCBlockTypes.getProfile(state.getBlock(), Classification.ROCK, Classification.SOIL);
+                    Profile profile = TFCContent.getProfile(state.getBlock(), Classification.ROCK, Classification.SOIL);
                     if(profile != null) {
                         if(!soil) {
                             if(profile.type.classification == Classification.SOIL) {

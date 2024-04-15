@@ -22,15 +22,15 @@ import lordfokas.cartography.data.ClusterStore;
 import lordfokas.cartography.data.IClusterConsumer;
 import lordfokas.cartography.utils.Colors;
 import lordfokas.cartography.utils.ImageHandler;
-import lordfokas.cartography.utils.TFCBlockTypes;
+import lordfokas.cartography.feature.TFCContent;
 
 public class DiscoveryClusterStore extends ClusterStore {
     private static final HashMap<ResourceKey<Level>, HashMap<String, DiscoveryDataPool>> NUGGETS = new HashMap<>();
     private static final HashMap<ResourceKey<Level>, HashMap<String, DiscoveryDataPool>> FRUITS = new HashMap<>();
     private static final HashMap<ResourceKey<Level>, HashMap<String, DiscoveryDataPool>> CROPS = new HashMap<>();
-    private static final DiscoveryConsumer NUGGET_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.Fake.ORES, "nugget", TFCBlockTypes::getNuggetTexturePath, TFCBlockTypes::getOreTags);
-    private static final DiscoveryConsumer FRUIT_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.Fake.FRUIT, "fruit", TFCBlockTypes::getFruitTexturePath, TFCBlockTypes::getFruitTags);
-    private static final DiscoveryConsumer CROP_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.Fake.CROPS, "crop", TFCBlockTypes::getCropTexturePath, TFCBlockTypes::getCropTags);
+    private static final DiscoveryConsumer NUGGET_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.Fake.ORES, "nugget", TFCContent::getNuggetTexturePath, TFCContent::getOreTags);
+    private static final DiscoveryConsumer FRUIT_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.Fake.FRUIT, "fruit", TFCContent::getFruitTexturePath, TFCContent::getFruitTags);
+    private static final DiscoveryConsumer CROP_CONSUMER = new DiscoveryConsumer(CartographyReferences.Layers.Fake.CROPS, "crop", TFCContent::getCropTexturePath, TFCContent::getCropTags);
 
     @SubscribeEvent
     public static void onServerJoined(ServerJoinedEvent event) {

@@ -6,7 +6,7 @@ import com.eerussianguy.blazemap.api.BlazeRegistry;
 import com.eerussianguy.blazemap.api.pipeline.DataType;
 import com.eerussianguy.blazemap.api.util.MinecraftStreams;
 import lordfokas.cartography.CartographyReferences;
-import lordfokas.cartography.utils.TFCBlockTypes.*;
+import lordfokas.cartography.feature.TFCContent.*;
 
 public class GroundCompositionSerializer implements DataType<GroundCompositionMD> {
     @Override

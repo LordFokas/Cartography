@@ -10,7 +10,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import com.eerussianguy.blazemap.engine.BlazeMapAsync;
-import lordfokas.cartography.utils.TFCBlockTypes;
+import lordfokas.cartography.feature.TFCContent;
 
 public class DiscoveryHandler {
     @SubscribeEvent
@@ -18,8 +18,8 @@ public class DiscoveryHandler {
         Level level = event.getWorld();
         if(!level.isClientSide) return;
         BlockPos pos = event.getPos();
-        TFCBlockTypes.Profile profile = TFCBlockTypes.getProfile(level.getBlockState(pos).getBlock());
-        if(profile != null && profile.type.classification == TFCBlockTypes.Classification.DISCOVERY) {
+        TFCContent.Profile profile = TFCContent.getProfile(level.getBlockState(pos).getBlock());
+        if(profile != null && profile.type.classification == TFCContent.Classification.DISCOVERY) {
             switch(profile.type) {
                 case NUGGET -> nugget(level.dimension(), pos, profile.name);
                 case FRUIT -> fruit(level.dimension(), pos, profile.name);
@@ -34,8 +34,8 @@ public class DiscoveryHandler {
         if(event.getPlayer() != mc.player) return;
         LevelAccessor level = event.getWorld();
         BlockPos pos = event.getPos();
-        TFCBlockTypes.Profile profile = TFCBlockTypes.getProfile(level.getBlockState(pos).getBlock());
-        if(profile != null && profile.type.classification == TFCBlockTypes.Classification.DISCOVERY) {
+        TFCContent.Profile profile = TFCContent.getProfile(level.getBlockState(pos).getBlock());
+        if(profile != null && profile.type.classification == TFCContent.Classification.DISCOVERY) {
             switch(profile.type) {
                 case NUGGET -> nugget(mc.level.dimension(), pos, profile.name);
                 case CROP -> crop(mc.level.dimension(), pos, profile.name);

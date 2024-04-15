@@ -3,17 +3,19 @@ package lordfokas.cartography.utils;
 import java.util.HashMap;
 import java.util.Map;
 
+import lordfokas.cartography.feature.TFCContent;
+
 public class ProfileCounter {
     private String dominant = null;
     private final HashMap<String, Integer> names = new HashMap<>();
-    private final HashMap<TFCBlockTypes.Profile, Integer> profiles = new HashMap<>();
+    private final HashMap<TFCContent.Profile, Integer> profiles = new HashMap<>();
 
-    public void consume(TFCBlockTypes.Profile[][] profileMatrix) {
+    public void consume(TFCContent.Profile[][] profileMatrix) {
         names.clear();
         profiles.clear();
         dominant = null;
-        for(TFCBlockTypes.Profile[] profileArray : profileMatrix) {
-            for(TFCBlockTypes.Profile profile : profileArray) {
+        for(TFCContent.Profile[] profileArray : profileMatrix) {
+            for(TFCContent.Profile profile : profileArray) {
                 if(profile != null) {
                     profiles.put(profile, profiles.computeIfAbsent(profile, $ -> 0) + 1);
                     names.put(profile.name, names.computeIfAbsent(profile.name, $ -> 0) + 1);
@@ -32,11 +34,11 @@ public class ProfileCounter {
         }
     }
 
-    public void consume(TFCBlockTypes.Profile[] profileArray) {
+    public void consume(TFCContent.Profile[] profileArray) {
         names.clear();
         profiles.clear();
         dominant = null;
-        for(TFCBlockTypes.Profile profile : profileArray) {
+        for(TFCContent.Profile profile : profileArray) {
             if(profile != null) {
                 profiles.put(profile, profiles.computeIfAbsent(profile, $ -> 0) + 1);
                 names.put(profile.name, names.computeIfAbsent(profile.name, $ -> 0) + 1);
@@ -58,11 +60,11 @@ public class ProfileCounter {
         return dominant;
     }
 
-    public TFCBlockTypes.Profile getDominantProfile() {
+    public TFCContent.Profile getDominantProfile() {
         if(dominant == null) return null;
         var ref = new Object() {
             int count = -1;
-            TFCBlockTypes.Profile result = null;
+            TFCContent.Profile result = null;
         };
 
         profiles.entrySet().stream().filter(e -> e.getKey().name.equals(dominant)).forEach(e -> {

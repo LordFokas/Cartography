@@ -10,7 +10,7 @@ import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.feature.mapping.CartographyLayer;
 import lordfokas.cartography.utils.ImageHandler;
 import lordfokas.cartography.utils.ProfileCounter;
-import lordfokas.cartography.utils.TFCBlockTypes;
+import lordfokas.cartography.feature.TFCContent;
 
 public class EcosystemLayer extends CartographyLayer {
     public EcosystemLayer() {
@@ -30,14 +30,14 @@ public class EcosystemLayer extends CartographyLayer {
 
         foreachPixel(resolution, (x, z) -> {
             ProfileCounter counter = COUNTERS.get();
-            counter.consume(relevantData(resolution, x, z, ground.soil, TFCBlockTypes.Profile.class));
-            TFCBlockTypes.Profile soil = counter.getDominantProfile();
-            counter.consume(relevantData(resolution, x, z, ground.rock, TFCBlockTypes.Profile.class));
-            TFCBlockTypes.Profile rock = counter.getDominantProfile();
+            counter.consume(relevantData(resolution, x, z, ground.soil, TFCContent.Profile.class));
+            TFCContent.Profile soil = counter.getDominantProfile();
+            counter.consume(relevantData(resolution, x, z, ground.rock, TFCContent.Profile.class));
+            TFCContent.Profile rock = counter.getDominantProfile();
 
             if(soil == null && rock == null) return;
 
-            ResourceLocation path = TFCBlockTypes.getTexturePath(soil != null ? soil : rock);
+            ResourceLocation path = TFCContent.getTexturePath(soil != null ? soil : rock);
             NativeImage texture = ImageHandler.getImage(path);
             tile.setPixelRGBA(x, z, texture.getPixelRGBA(xOff + x, zOff + z));
         });

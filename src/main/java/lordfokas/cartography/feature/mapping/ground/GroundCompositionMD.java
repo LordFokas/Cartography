@@ -4,7 +4,7 @@ import com.eerussianguy.blazemap.api.BlazeRegistry;
 import com.eerussianguy.blazemap.api.pipeline.DataType;
 import com.eerussianguy.blazemap.api.pipeline.MasterDatum;
 import lordfokas.cartography.CartographyReferences;
-import lordfokas.cartography.utils.TFCBlockTypes.Profile;
+import lordfokas.cartography.feature.TFCContent.Profile;
 
 public class GroundCompositionMD extends MasterDatum {
     public final Profile[][] soil;

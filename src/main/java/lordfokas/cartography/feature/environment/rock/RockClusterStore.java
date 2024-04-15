@@ -17,7 +17,7 @@ import lordfokas.cartography.data.ClusterStore;
 import lordfokas.cartography.data.IClusterConsumer;
 import lordfokas.cartography.utils.Colors;
 import lordfokas.cartography.utils.ImageHandler;
-import lordfokas.cartography.utils.TFCBlockTypes;
+import lordfokas.cartography.feature.TFCContent;
 
 public class RockClusterStore extends ClusterStore {
     private static final HashMap<ResourceKey<Level>, HashMap<String, RockDataPool>> REALMS = new HashMap<>();
@@ -48,7 +48,7 @@ public class RockClusterStore extends ClusterStore {
             BlockPos center = cluster.centerOfMass();
             if(center == null) return;
             String rock = cluster.getData();
-            ImageHandler.DynamicLabel dynamicLabel = ImageHandler.getLabel(pretty(rock), TFCBlockTypes.getLooseRockTexturePath(rock));
+            ImageHandler.DynamicLabel dynamicLabel = ImageHandler.getLabel(pretty(rock), TFCContent.getLooseRockTexturePath(rock));
             MapLabel label = new MapLabel(
                 clusterID(cluster, "rock"),
                 dimension,
@@ -60,7 +60,7 @@ public class RockClusterStore extends ClusterStore {
                 Colors.NO_TINT,
                 0,
                 false,
-                TFCBlockTypes.getRockTags(rock)
+                TFCContent.getRockTags(rock)
             );
             BlazeMapAsync.instance().clientChain.runOnGameThread(() -> {
                 var labels = labels();

@@ -21,7 +21,7 @@ import com.eerussianguy.blazemap.api.markers.Waypoint;
 import lordfokas.cartography.Cartography;
 import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.utils.ImageHandler;
-import lordfokas.cartography.utils.TFCBlockTypes;
+import lordfokas.cartography.feature.TFCContent;
 
 public class DiscoveryMapMenu {
     private static IMarkerStorage<Waypoint> waypointStore;
@@ -36,9 +36,9 @@ public class DiscoveryMapMenu {
     @SubscribeEvent
     public static void enrichMenu(MapMenuSetupEvent event) {
         BlockPos pos = new BlockPos(event.blockPosX, 0, event.blockPosZ);
-        enrichMenu(DiscoveryClusterStore::foreachCropPool, TFCBlockTypes::getCropTexturePath, CartographyReferences.Layers.Fake.CROPS, event, pos);
-        enrichMenu(DiscoveryClusterStore::foreachFruitPool, TFCBlockTypes::getFruitTexturePath, CartographyReferences.Layers.Fake.FRUIT, event, pos);
-        enrichMenu(DiscoveryClusterStore::foreachNuggetPool, TFCBlockTypes::getNuggetTexturePath, CartographyReferences.Layers.Fake.ORES, event, pos);
+        enrichMenu(DiscoveryClusterStore::foreachCropPool, TFCContent::getCropTexturePath, CartographyReferences.Layers.Fake.CROPS, event, pos);
+        enrichMenu(DiscoveryClusterStore::foreachFruitPool, TFCContent::getFruitTexturePath, CartographyReferences.Layers.Fake.FRUIT, event, pos);
+        enrichMenu(DiscoveryClusterStore::foreachNuggetPool, TFCContent::getNuggetTexturePath, CartographyReferences.Layers.Fake.ORES, event, pos);
     }
 
     private static void enrichMenu(BiConsumer<ResourceKey<Level>, BiConsumer<String, DiscoveryDataPool>> foreach, Function<String, ResourceLocation> iconProvider, BlazeRegistry.Key<Layer> layer, MapMenuSetupEvent event, BlockPos pos) {
