@@ -44,14 +44,14 @@ public class DiscoveryHandler {
     }
 
     private static void nugget(ResourceKey<Level> dimension, BlockPos pos, String nugget) {
-        BlazeMapAsync.instance().clientChain.runOnDataThread(() -> DiscoveryClusterStore.getNuggetPool(dimension, nugget).addData(pos, nugget));
+        BlazeMapAsync.instance().clientChain.runOnDataThread(() -> DiscoveryClusterStore.getNuggetPool(dimension, nugget).addData(pos, new DiscoveryState(false)));
     }
 
     private static void fruit(ResourceKey<Level> dimension, BlockPos pos, String fruit) {
-        BlazeMapAsync.instance().clientChain.runOnDataThread(() -> DiscoveryClusterStore.getFruitPool(dimension, fruit).addData(pos, fruit));
+        BlazeMapAsync.instance().clientChain.runOnDataThread(() -> DiscoveryClusterStore.getFruitPool(dimension, fruit).addData(pos, new DiscoveryState(false)));
     }
 
     private static void crop(ResourceKey<Level> dimension, BlockPos pos, String crop) {
-        BlazeMapAsync.instance().clientChain.runOnDataThread(() -> DiscoveryClusterStore.getCropPool(dimension, crop).addData(pos, crop));
+        BlazeMapAsync.instance().clientChain.runOnDataThread(() -> DiscoveryClusterStore.getCropPool(dimension, crop).addData(pos, new DiscoveryState(false)));
     }
 }

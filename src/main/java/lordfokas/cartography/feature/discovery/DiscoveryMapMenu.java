@@ -51,7 +51,10 @@ public class DiscoveryMapMenu {
                         new MenuAction(Cartography.resource("cluster.discovery.waypoint"), BlazeMapReferences.Icons.WAYPOINT, ImageHandler.getColor(icon), new TextComponent("Make Waypoint"), () -> {
                             waypointStore.add(new Waypoint(Cartography.resource("cluster.discovery."+cluster.hashCode()), dimension, pos, type, icon));
                         }),
-                        new MenuAction(Cartography.resource("cluster.discovery.depleted"), new TextComponent("Mark Depleted"), null)
+                        new MenuAction(Cartography.resource("cluster.discovery.depleted"), new TextComponent(cluster.getData().isDepleted() ? "Mark Available" : "Mark Depleted"), () -> {
+                            DiscoveryState state = cluster.getData();
+                            state.setDepleted(!state.isDepleted());
+                        })
                     ));
                 });
             });

@@ -36,6 +36,11 @@ public abstract class ClusterRealm<C, D, K extends Cluster<C, D>> implements Dat
         return null;
     }
 
+    protected void onClusterChanged(K cluster) {
+        consumer.dropCluster(cluster);
+        consumer.pushCluster(cluster);
+    }
+
     public synchronized void add(C coordinate, D data, boolean notify) {
         dataCruncherThread.assertCurrentThread();
         K cluster = make(coordinate, data);

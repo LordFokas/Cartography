@@ -9,10 +9,9 @@ import net.minecraft.resources.ResourceLocation;
 
 import com.eerussianguy.blazemap.api.util.IStorageAccess;
 import com.eerussianguy.blazemap.api.util.MinecraftStreams;
-import lordfokas.cartography.data.DataFlow;
 import lordfokas.cartography.data.SerializableDataPool;
 
-public class DiscoveryDataPool extends SerializableDataPool<BlockPos, String> {
+public class DiscoveryDataPool extends SerializableDataPool<BlockPos, DiscoveryState> {
     private final String type;
     private final DiscoveryClusterRealm clusters;
 
@@ -33,9 +32,9 @@ public class DiscoveryDataPool extends SerializableDataPool<BlockPos, String> {
         int size = stream.readInt();
         if(size == 0) return;
 
-        HashMap<BlockPos, String> data = new HashMap<>();
+        HashMap<BlockPos, DiscoveryState> data = new HashMap<>();
         for(int i = 0; i < size; i++) {
-            data.put(stream.readBlockPos(), type);
+            data.put(stream.readBlockPos(), new DiscoveryState(stream.readBoolean()));
         }
         setData(data);
     }
@@ -46,8 +45,9 @@ public class DiscoveryDataPool extends SerializableDataPool<BlockPos, String> {
         stream.writeInt(size);
         if(size == 0) return;
 
-        for(BlockPos pos : pool.keySet()) {
-            stream.writeBlockPos(pos);
+        for(var entry : pool.entrySet()) {
+            stream.writeBlockPos(entry.getKey());
+            stream.writeBoolean(entry.getValue().isDepleted());
         }
     }
 }

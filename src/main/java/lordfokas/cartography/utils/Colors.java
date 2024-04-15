@@ -31,4 +31,8 @@ public class Colors {
         color = (color >> 1) & 0x7F7F7F;
         return color | alpha;
     }
+
+    public static int withAlpha(int color, byte alpha) {
+        return (alpha << 24) | (color & 0xFFFFFF);
+    }
 }

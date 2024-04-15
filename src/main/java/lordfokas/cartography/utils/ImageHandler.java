@@ -4,6 +4,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.function.Function;
 import javax.annotation.Nonnull;
 
 import net.minecraft.client.Minecraft;
@@ -90,12 +91,18 @@ public class ImageHandler {
 
     @Nonnull
     public static synchronized DynamicLabel getLabel(String text) {
-        return getLabel(text, null);
+        return getLabel(text, null, Colors.NO_TINT);
     }
 
     @Nonnull
     public static synchronized DynamicLabel getLabel(String text, ResourceLocation icon_path) {
-        String key = text.replaceAll("[^a-zA-Z0-9_/.-]", "").toLowerCase(Locale.ROOT);
+        return getLabel(text, icon_path, Colors.NO_TINT);
+    }
+
+    @Nonnull
+    public static synchronized DynamicLabel getLabel(String text, ResourceLocation icon_path, int tint) {
+        String key = text.replaceAll("[^a-zA-Z0-9_/.-]", "").toLowerCase(Locale.ROOT)+"---ft"+tint;
+        final int tint_abgr = Colors.argb2abgr(tint); // *sigh*
         if(LABELS.containsKey(key)) {
             return LABELS.get(key);
         }
@@ -128,13 +135,17 @@ public class ImageHandler {
         }
         copyToBuffer(label, frameEnd, width - w, 0);
 
-        if(icon != null) copyToBuffer(label, icon, 4, 4, ImageHandler::spriteIsOpaque);
-
         int offset = w + icon_width;
         for(NativeImage ch : images) {
             copyToBuffer(label, ch, offset, 6, ImageHandler::spriteIsOpaque);
             offset += ch.getWidth() + 1;
         }
+
+        // Tint all opaque pixels
+        modifyBuffer(label, ImageHandler::spriteIsOpaque, pixel -> pixel & tint_abgr);
+
+        // Icon goes after text to not be affected by tint
+        if(icon != null) copyToBuffer(label, icon, 4, 4, ImageHandler::spriteIsOpaque);
 
         DynamicLabel dynamic = new DynamicLabel(label, Cartography.resource("textures/dynamic/label/" + key));
         LABELS.put(key, dynamic);
@@ -227,6 +238,17 @@ public class ImageHandler {
                 int rgb = sprite.getPixelRGBA(x, y);
                 if(predicate.apply(buffer.getPixelRGBA(bx, by), rgb)) {
                     buffer.setPixelRGBA(bx, by, rgb);
+                }
+            }
+        }
+    }
+
+    private static void modifyBuffer(NativeImage buffer, IPixelTransferPredicate predicate, Function<Integer, Integer> function) {
+        for(int x = 0; x < buffer.getWidth(); x++) {
+            for(int y = 0; y < buffer.getHeight(); y++) {
+                int argb = buffer.getPixelRGBA(x, y);
+                if(predicate.apply(buffer.getPixelRGBA(x, y), argb)) {
+                    buffer.setPixelRGBA(x, y, function.apply(argb));
                 }
             }
         }

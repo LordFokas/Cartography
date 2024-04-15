@@ -25,6 +25,7 @@ public class DiscoveryMarkerRenderer implements ObjectRenderer<DiscoveryMarker> 
     public void render(DiscoveryMarker marker, PoseStack stack, MultiBufferSource buffers, double zoom, SearchTargeting search) {
         VertexConsumer dots = buffers.getBuffer(RenderType.text(DOT));
         int color = ImageHandler.getColor(marker.item);
+        if(marker.depleted) color = Colors.withAlpha(color, (byte) 0x80);
         for(int idx = 0; idx < marker.offsets.length; idx += 2){
             stack.pushPose();
             stack.translate(marker.offsets[idx]-3, marker.offsets[idx+1]-3, 0);
@@ -39,7 +40,7 @@ public class DiscoveryMarkerRenderer implements ObjectRenderer<DiscoveryMarker> 
         } else {
             stack.translate(-8, -8, 2);
             VertexConsumer icon = buffers.getBuffer(RenderType.text(marker.item));
-            RenderHelper.drawQuad(icon, stack.last().pose(), 16, 16, Colors.NO_TINT);
+            RenderHelper.drawQuad(icon, stack.last().pose(), 16, 16, 0x80FFFFFF);
         }
         stack.popPose();
     }

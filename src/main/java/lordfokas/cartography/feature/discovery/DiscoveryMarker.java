@@ -18,9 +18,11 @@ import lordfokas.cartography.utils.Colors;
 public class DiscoveryMarker extends MapLabel {
     final byte[] offsets;
     final ResourceLocation item;
+    final boolean depleted;
 
     public DiscoveryMarker(ResourceLocation id, DiscoveryCluster cluster, ResourceKey<Level> dimension, BlockPos position, BlazeRegistry.Key<Layer> layerID, ResourceLocation item, ResourceLocation icon, int width, int height, Set<String> tags) {
         super(id, dimension, position, layerID, icon, width, height, Colors.NO_TINT, 0, false, tags);
+        this.depleted = cluster.getData().isDepleted();
         this.item = item;
         Collection<BlockPos> dots = cluster.getCoordinates();
         this.offsets = new byte[dots.size() * 2];

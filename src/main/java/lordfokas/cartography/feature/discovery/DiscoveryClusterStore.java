@@ -20,6 +20,7 @@ import lordfokas.cartography.Cartography;
 import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.data.ClusterStore;
 import lordfokas.cartography.data.IClusterConsumer;
+import lordfokas.cartography.utils.Colors;
 import lordfokas.cartography.utils.ImageHandler;
 import lordfokas.cartography.utils.TFCBlockTypes;
 
@@ -62,7 +63,7 @@ public class DiscoveryClusterStore extends ClusterStore {
             .computeIfAbsent(dimension, $ -> new HashMap<>())
             .computeIfAbsent(nugget, $ -> new DiscoveryDataPool(
                 storage(), getClusterNode(ClusterType.NUGGET, nugget),
-                new DiscoveryClusterRealm(BlazeMapAsync.instance().cruncher.getThreadAsserter(), NUGGET_CONSUMER),
+                new DiscoveryClusterRealm(BlazeMapAsync.instance().cruncher.getThreadAsserter(), NUGGET_CONSUMER, nugget),
                 nugget
             ));
     }
@@ -72,7 +73,7 @@ public class DiscoveryClusterStore extends ClusterStore {
             .computeIfAbsent(dimension, $ -> new HashMap<>())
             .computeIfAbsent(fruit, $ -> new DiscoveryDataPool(
                 storage(), getClusterNode(ClusterType.FRUIT, fruit),
-                new DiscoveryClusterRealm(BlazeMapAsync.instance().cruncher.getThreadAsserter(), FRUIT_CONSUMER),
+                new DiscoveryClusterRealm(BlazeMapAsync.instance().cruncher.getThreadAsserter(), FRUIT_CONSUMER, fruit),
                 fruit
             ));
     }
@@ -82,7 +83,7 @@ public class DiscoveryClusterStore extends ClusterStore {
             .computeIfAbsent(dimension, $ -> new HashMap<>())
             .computeIfAbsent(crop, $ -> new DiscoveryDataPool(
                 storage(), getClusterNode(ClusterType.CROP, crop),
-                new DiscoveryClusterRealm(BlazeMapAsync.instance().cruncher.getThreadAsserter(), CROP_CONSUMER),
+                new DiscoveryClusterRealm(BlazeMapAsync.instance().cruncher.getThreadAsserter(), CROP_CONSUMER, crop),
                 crop
             ));
     }
@@ -100,7 +101,7 @@ public class DiscoveryClusterStore extends ClusterStore {
         public void pushCluster(DiscoveryCluster cluster) {
             BlockPos center = cluster.centerOfMass();
             if(center == null) return;
-            String name = cluster.getData();
+            String name = cluster.type;
 
             ResourceLocation item = switch(type) {
                 case "nugget" -> TFCBlockTypes.getNuggetTexturePath(name);
@@ -112,10 +113,11 @@ public class DiscoveryClusterStore extends ClusterStore {
                 Cartography.LOGGER.warn("Unrecognized discovery type: {}", type);
                 return;
             }
+            int tint = cluster.getData().isDepleted() ? 0xFFFF0000 : Colors.NO_TINT;
             ImageHandler.DynamicLabel dynamicLabel = switch(type) {
-                case "nugget" -> ImageHandler.getLabel(pretty(name), TFCBlockTypes.getNuggetTexturePath(name));
-                case "fruit" -> ImageHandler.getLabel(pretty(name), TFCBlockTypes.getFruitTexturePath(name));
-                case "crop" -> ImageHandler.getLabel(pretty(name), TFCBlockTypes.getCropTexturePath(name));
+                case "nugget" -> ImageHandler.getLabel(pretty(name), TFCBlockTypes.getNuggetTexturePath(name), tint);
+                case "fruit" -> ImageHandler.getLabel(pretty(name), TFCBlockTypes.getFruitTexturePath(name), tint);
+                case "crop" -> ImageHandler.getLabel(pretty(name), TFCBlockTypes.getCropTexturePath(name), tint);
                 default -> null;
             };
             Set<String> tags = switch(type){
