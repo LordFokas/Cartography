@@ -9,14 +9,14 @@ import com.eerussianguy.blazemap.api.pipeline.Processor;
 import com.eerussianguy.blazemap.api.util.IDataSource;
 import com.eerussianguy.blazemap.api.util.RegionPos;
 import lordfokas.cartography.CartographyReferences;
-import lordfokas.cartography.feature.mapping.climate.ClimateMD;
+import lordfokas.cartography.feature.mapping.climate.ClimateIsolinesMD;
 
 public class ClimateProcessor extends Processor {
 
     public ClimateProcessor() {
         super(
             CartographyReferences.Processors.CLIMATE,
-            CartographyReferences.MasterData.CLIMATE
+            CartographyReferences.MasterData.CLIMATE_ISO
         );
     }
 
@@ -27,14 +27,14 @@ public class ClimateProcessor extends Processor {
 
     @Override
     public boolean execute(ResourceKey<Level> dimension, RegionPos region, ChunkPos chunk, IDataSource data) {
-        ClimateMD climate = (ClimateMD) data.get(CartographyReferences.MasterData.CLIMATE);
+        ClimateIsolinesMD isolines = (ClimateIsolinesMD) data.get(CartographyReferences.MasterData.CLIMATE_ISO);
 
-        process(ClimateProcessor::temperature, climate, 1, ((mx, my, angle, v) -> {
+        process(ClimateProcessor::temperature, isolines, 1, ((mx, my, angle, v) -> {
             String value = String.valueOf(v);
             ClimateClusterStore.getTemperaturePool(dimension, value).addData(chunk, Isoline.of(chunk, value, "*C", angle, mx, my));
         }));
 
-        process(ClimateProcessor::rainfall, climate, 10, ((mx, my, angle, v) -> {
+        process(ClimateProcessor::rainfall, isolines, 10, ((mx, my, angle, v) -> {
             String value = String.valueOf(v);
             ClimateClusterStore.getRainfallPool(dimension, value).addData(chunk, Isoline.of(chunk, value, "mm", angle, mx, my));
         }));
@@ -42,28 +42,24 @@ public class ClimateProcessor extends Processor {
         return true;
     }
 
-    private void process(Metric metric, ClimateMD climate, int skip, LabelPlacer labels) {
-        int xi = 0, yi = 0, xf = 0, yf = 0;
+    private void process(Metric metric, ClimateIsolinesMD isolines, int skip, LabelPlacer labels) {
+        int xi = 0, zi = 0, xf = 0, zf = 0;
         boolean initial = true, line = false;
 
         for(int x = 0; x < 16; x++) {
-            for(int y = 0; y < 16; y++) {
-                boolean isBorder;
-                float value = metric.get(climate, x, y, 0);
-                isBorder = delta(value, metric.get(climate, x + 1, y, value), skip, false);
-                isBorder = delta(value, metric.get(climate, x - 1, y, value), skip, isBorder);
-                isBorder = delta(value, metric.get(climate, x, y + 1, value), skip, isBorder);
-                isBorder = delta(value, metric.get(climate, x, y - 1, value), skip, isBorder);
+            for(int z = 0; z < 16; z++) {
+                int value = metric.get(isolines, x, z);
+                boolean isBorder = value != ClimateIsolinesMD.NONE && value % skip == 0;
 
                 if(isBorder) {
                     if(initial) {
                         xi = x;
-                        yi = y;
+                        zi = z;
                         initial = false;
                     }
                     else {
                         xf = x;
-                        yf = y;
+                        zf = z;
                         line = true;
                     }
                 }
@@ -71,35 +67,29 @@ public class ClimateProcessor extends Processor {
         }
 
         if(line) {
-            int value = (int) Math.floor(metric.get(climate, xi, yi, 0));
-            int mx = (xi + xf) / 2, my = (yi + yf) / 2;
-            float dx = xf - xi, dy = yf - yi;
-            float angle = (float) ((Math.toDegrees(Math.atan(dy / dx)) + 270) % 360) + 90;
-            labels.put(mx, my, angle, value);
+            int value = metric.get(isolines, xi, zi);
+            int mx = (xi + xf) / 2, mz = (zi + zf) / 2;
+            float dx = xf - xi, dz = zf - zi;
+            float angle = (float) ((Math.toDegrees(Math.atan(dz / dx)) + 270) % 360) + 90;
+            labels.put(mx, mz, angle, value);
         }
     }
 
-    private static float rainfall(ClimateMD climate, int x, int z, float def) {
-        return x >= 0 && z >= 0 && x <= 15 && z <= 15 ? climate.rainfall[x][z] : def;
+    private static int rainfall(ClimateIsolinesMD isolines, int x, int z) {
+        return isolines.rainfall[x][z];
     }
 
-    private static float temperature(ClimateMD climate, int x, int z, float def) {
-        return x >= 0 && z >= 0 && x <= 15 && z <= 15 ? climate.temperature[x][z] : def;
-    }
-
-    private static boolean delta(float pixel, float neighbor, int skip, boolean prev) {
-        if(prev) return true;
-        int value = (int) Math.floor(pixel);
-        return value % skip == 0 && value == Math.ceil(neighbor);
+    private static int temperature(ClimateIsolinesMD isolines, int x, int z) {
+        return isolines.temperature[x][z];
     }
 
     @FunctionalInterface
     private interface Metric {
-        float get(ClimateMD climate, int x, int z, float def);
+        int get(ClimateIsolinesMD isolines, int x, int z);
     }
 
     @FunctionalInterface
     private interface LabelPlacer {
-        void put(int mx, int my, float angle, int value);
+        void put(int mx, int mz, float angle, int value);
     }
 }
