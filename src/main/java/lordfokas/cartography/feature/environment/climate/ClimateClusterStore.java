@@ -2,6 +2,7 @@ package lordfokas.cartography.feature.environment.climate;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Set;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceKey;
@@ -78,6 +79,7 @@ public class ClimateClusterStore extends ClusterStore {
 
             String text = String.format(" %s %s ", isoline.value, isoline.unit);
             ImageHandler.DynamicLabel dynamicLabel = ImageHandler.getLabel(text);
+            boolean isohyet = isoline.unit.equals("mm");
             MapLabel label = new MapLabel(
                 clusterID(cluster, type),
                 dimension,
@@ -89,7 +91,7 @@ public class ClimateClusterStore extends ClusterStore {
                 color,
                 center.angle,
                 true,
-                Collections.EMPTY_SET
+                Set.of(text.trim(), isoline.unit, isohyet ? "rainfall" : "temperature", "isoline", isohyet ? "isohyetal" : "isothermal")
             );
             BlazeMapAsync.instance().clientChain.runOnGameThread(() -> {
                 var labels = labels();
