@@ -50,7 +50,7 @@ public class ClimateIsolinesTransformer extends Transformer<ClimateIsolinesMD> {
     }
 
     private static int delta(float pixel, float neighbor, int prev) {
-        if(prev != 0) return prev;
+        if(prev != ClimateIsolinesMD.NONE) return prev;
         int value = (int) Math.floor(pixel);
         return value == Math.ceil(neighbor) ? value : prev;
     }
