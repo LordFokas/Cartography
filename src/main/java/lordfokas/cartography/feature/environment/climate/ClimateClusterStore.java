@@ -1,6 +1,5 @@
 package lordfokas.cartography.feature.environment.climate;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 
