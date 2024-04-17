@@ -1,5 +1,8 @@
 package lordfokas.cartography.feature.mapping.ground;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 import com.eerussianguy.blazemap.api.BlazeRegistry;
 import com.eerussianguy.blazemap.api.pipeline.DataType;
 import com.eerussianguy.blazemap.api.pipeline.MasterDatum;
@@ -21,7 +24,9 @@ public class GroundCompositionMD extends MasterDatum {
     }
 
     @Override
-    public boolean equals(Object o) {
-        return false;
+    public boolean equalsMD(MasterDatum md) {
+        GroundCompositionMD other = (GroundCompositionMD) md;
+        return Arrays.equals(this.soil, other.soil, (a, b) -> Arrays.compare(a, b, (c, d) -> Objects.equals(c, d) ? 0 : -1))
+            && Arrays.equals(this.rock, other.rock, (a, b) -> Arrays.compare(a, b, (c, d) -> Objects.equals(c, d) ? 0 : -1));
     }
 }

@@ -12,7 +12,7 @@ import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.feature.mapping.ground.GroundCompositionMD;
 import lordfokas.cartography.utils.ProfileCounter;
 
-public class RockLayerProcessor extends Processor {
+public class RockLayerProcessor extends Processor.Direct {
     private static final ThreadLocal<ProfileCounter> COUNTER = ThreadLocal.withInitial(ProfileCounter::new);
 
     public RockLayerProcessor() {
@@ -28,12 +28,11 @@ public class RockLayerProcessor extends Processor {
     }
 
     @Override
-    public boolean execute(ResourceKey<Level> dimension, RegionPos region, ChunkPos chunk, IDataSource data) {
+    public void execute(ResourceKey<Level> dimension, RegionPos region, ChunkPos chunk, IDataSource data) {
         GroundCompositionMD ground = (GroundCompositionMD) data.get(CartographyReferences.MasterData.GROUND_COMPOSITION);
         ProfileCounter counter = COUNTER.get();
         counter.consume(ground.rock);
         String rock = counter.getDominantName();
         RockClusterStore.getDataPool(dimension, rock).addData(chunk, rock);
-        return false;
     }
 }

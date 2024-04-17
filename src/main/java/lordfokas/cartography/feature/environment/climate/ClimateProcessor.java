@@ -11,7 +11,7 @@ import com.eerussianguy.blazemap.api.util.RegionPos;
 import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.feature.mapping.climate.ClimateIsolinesMD;
 
-public class ClimateProcessor extends Processor {
+public class ClimateProcessor extends Processor.Direct {
 
     public ClimateProcessor() {
         super(
@@ -26,7 +26,7 @@ public class ClimateProcessor extends Processor {
     }
 
     @Override
-    public boolean execute(ResourceKey<Level> dimension, RegionPos region, ChunkPos chunk, IDataSource data) {
+    public void execute(ResourceKey<Level> dimension, RegionPos region, ChunkPos chunk, IDataSource data) {
         ClimateIsolinesMD isolines = (ClimateIsolinesMD) data.get(CartographyReferences.MasterData.CLIMATE_ISO);
 
         process(ClimateProcessor::temperature, isolines, 1, ((mx, my, angle, v) -> {
@@ -38,8 +38,6 @@ public class ClimateProcessor extends Processor {
             String value = String.valueOf(v);
             ClimateClusterStore.getRainfallPool(dimension, value).addData(chunk, Isoline.of(chunk, value, "mm", angle, mx, my));
         }));
-
-        return true;
     }
 
     private void process(Metric metric, ClimateIsolinesMD isolines, int skip, LabelPlacer labels) {

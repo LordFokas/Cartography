@@ -1,5 +1,7 @@
 package lordfokas.cartography.feature.mapping.climate;
 
+import java.util.Arrays;
+
 import com.eerussianguy.blazemap.api.BlazeRegistry;
 import com.eerussianguy.blazemap.api.pipeline.DataType;
 import com.eerussianguy.blazemap.api.pipeline.MasterDatum;
@@ -20,7 +22,9 @@ public class ClimateMD extends MasterDatum {
     }
 
     @Override
-    public boolean equals(Object o) {
-        return false;
+    public boolean equalsMD(MasterDatum md) {
+        ClimateMD other = (ClimateMD) md;
+        return Arrays.equals(this.rainfall, other.rainfall, Arrays::compare)
+            && Arrays.equals(this.temperature, other.temperature, Arrays::compare);
     }
 }

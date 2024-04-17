@@ -1,9 +1,6 @@
 package lordfokas.cartography.feature;
 
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -112,6 +109,19 @@ public class TFCContent {
         public Profile(Type type, String name) {
             this.type = type;
             this.name = name;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if(this == o) return true;
+            if(o == null || getClass() != o.getClass()) return false;
+            Profile profile = (Profile) o;
+            return type == profile.type && Objects.equals(name, profile.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(type, name);
         }
     }
 
