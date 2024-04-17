@@ -9,7 +9,7 @@ import com.eerussianguy.blazemap.api.pipeline.Processor;
 import com.eerussianguy.blazemap.api.util.IDataSource;
 import com.eerussianguy.blazemap.api.util.RegionPos;
 import lordfokas.cartography.CartographyReferences;
-import lordfokas.cartography.feature.mapping.ground.GroundCompositionMD;
+import lordfokas.cartography.feature.mapping.surface.SurfaceMD;
 import lordfokas.cartography.utils.ProfileCounter;
 
 public class RockLayerProcessor extends Processor.Direct {
@@ -18,7 +18,7 @@ public class RockLayerProcessor extends Processor.Direct {
     public RockLayerProcessor() {
         super(
             CartographyReferences.Processors.ROCK_LAYER,
-            CartographyReferences.MasterData.GROUND_COMPOSITION
+            CartographyReferences.MasterData.SURFACE
         );
     }
 
@@ -29,9 +29,9 @@ public class RockLayerProcessor extends Processor.Direct {
 
     @Override
     public void execute(ResourceKey<Level> dimension, RegionPos region, ChunkPos chunk, IDataSource data) {
-        GroundCompositionMD ground = (GroundCompositionMD) data.get(CartographyReferences.MasterData.GROUND_COMPOSITION);
+        SurfaceMD surface = (SurfaceMD) data.get(CartographyReferences.MasterData.SURFACE);
         ProfileCounter counter = COUNTER.get();
-        counter.consume(ground.rock);
+        counter.consume(surface.rock);
         String rock = counter.getDominantName();
         RockClusterStore.getDataPool(dimension, rock).addData(chunk, rock);
     }

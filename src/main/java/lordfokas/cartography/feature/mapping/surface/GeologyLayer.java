@@ -1,4 +1,4 @@
-package lordfokas.cartography.feature.mapping.ground;
+package lordfokas.cartography.feature.mapping.surface;
 
 import net.minecraft.resources.ResourceLocation;
 
@@ -18,19 +18,19 @@ public class GeologyLayer extends CartographyLayer {
             CartographyReferences.Layers.GEOLOGY,
             Cartography.lang("layer.geology"),
 
-            CartographyReferences.MasterData.GROUND_COMPOSITION
+            CartographyReferences.MasterData.SURFACE
         );
     }
 
     @Override
     public boolean renderTile(NativeImage tile, TileResolution resolution, IDataSource data, int xGridOffset, int zGridOffset) {
-        GroundCompositionMD ground = (GroundCompositionMD) data.get(CartographyReferences.MasterData.GROUND_COMPOSITION);
+        SurfaceMD surface = (SurfaceMD) data.get(CartographyReferences.MasterData.SURFACE);
         final int xOff = xGridOffset * resolution.chunkWidth;
         final int zOff = zGridOffset * resolution.chunkWidth;
 
         foreachPixel(resolution, (x, z) -> {
             ProfileCounter counter = COUNTERS.get();
-            counter.consume(relevantData(resolution, x, z, ground.rock, TFCContent.Profile.class));
+            counter.consume(relevantData(resolution, x, z, surface.rock, TFCContent.Profile.class));
             TFCContent.Profile rock = counter.getDominantProfile();
 
             if(rock == null) return;

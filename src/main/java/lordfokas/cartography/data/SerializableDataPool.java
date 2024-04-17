@@ -2,6 +2,7 @@ package lordfokas.cartography.data;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -72,6 +73,12 @@ public abstract class SerializableDataPool<C, D> extends DataPool<C, D> {
     @Override
     public void removeData(C coordinate, D data) {
         super.removeData(coordinate, data);
+        markDirty();
+    }
+
+    @Override
+    public synchronized void removeAll(Predicate<C> predicate) {
+        super.removeAll(predicate);
         markDirty();
     }
 }

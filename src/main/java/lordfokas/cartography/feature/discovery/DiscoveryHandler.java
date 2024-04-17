@@ -14,16 +14,16 @@ import lordfokas.cartography.feature.TFCContent;
 
 public class DiscoveryHandler {
     @SubscribeEvent
-    public static void onInteract(PlayerInteractEvent event) {
+    public static void onInteract(PlayerInteractEvent.RightClickBlock event) {
         Level level = event.getWorld();
         if(!level.isClientSide) return;
         BlockPos pos = event.getPos();
         TFCContent.Profile profile = TFCContent.getProfile(level.getBlockState(pos).getBlock());
         if(profile != null && profile.type.classification == TFCContent.Classification.DISCOVERY) {
             switch(profile.type) {
-                case NUGGET -> nugget(level.dimension(), pos, profile.name);
-                case FRUIT -> fruit(level.dimension(), pos, profile.name);
-                case CROP -> crop(level.dimension(), pos, profile.name);
+                case NUGGET -> addNugget(level.dimension(), pos, profile.name);
+                case FRUIT -> addFruit(level.dimension(), pos, profile.name);
+                case CROP -> addCrop(level.dimension(), pos, profile.name);
             }
         }
     }
@@ -36,22 +36,36 @@ public class DiscoveryHandler {
         BlockPos pos = event.getPos();
         TFCContent.Profile profile = TFCContent.getProfile(level.getBlockState(pos).getBlock());
         if(profile != null && profile.type.classification == TFCContent.Classification.DISCOVERY) {
-            switch(profile.type) {
-                case NUGGET -> nugget(mc.level.dimension(), pos, profile.name);
-                case CROP -> crop(mc.level.dimension(), pos, profile.name);
+            if(profile.type == TFCContent.Type.NUGGET) {
+                addNugget(mc.level.dimension(), pos, profile.name);
             }
         }
     }
 
-    private static void nugget(ResourceKey<Level> dimension, BlockPos pos, String nugget) {
+    public static void removeDiscovery(ResourceKey<Level> dimension, BlockPos pos, TFCContent.Profile discovery) {
+        switch(discovery.type) {
+            case CROP -> removeCrop(dimension, pos, discovery.name);
+            case FRUIT -> removeFruit(dimension, pos, discovery.name);
+        }
+    }
+
+    private static void addNugget(ResourceKey<Level> dimension, BlockPos pos, String nugget) {
         BlazeMapAsync.instance().clientChain.runOnDataThread(() -> DiscoveryClusterStore.getNuggetPool(dimension, nugget).addData(pos, new DiscoveryState(false)));
     }
 
-    private static void fruit(ResourceKey<Level> dimension, BlockPos pos, String fruit) {
+    private static void addFruit(ResourceKey<Level> dimension, BlockPos pos, String fruit) {
         BlazeMapAsync.instance().clientChain.runOnDataThread(() -> DiscoveryClusterStore.getFruitPool(dimension, fruit).addData(pos, new DiscoveryState(false)));
     }
 
-    private static void crop(ResourceKey<Level> dimension, BlockPos pos, String crop) {
+    private static void removeFruit(ResourceKey<Level> dimension, BlockPos pos, String fruit) {
+        BlazeMapAsync.instance().clientChain.runOnDataThread(() -> DiscoveryClusterStore.getFruitPool(dimension, fruit).removeAll(c -> c.atY(0).equals(pos)));
+    }
+
+    private static void addCrop(ResourceKey<Level> dimension, BlockPos pos, String crop) {
         BlazeMapAsync.instance().clientChain.runOnDataThread(() -> DiscoveryClusterStore.getCropPool(dimension, crop).addData(pos, new DiscoveryState(false)));
+    }
+
+    private static void removeCrop(ResourceKey<Level> dimension, BlockPos pos, String crop) {
+        BlazeMapAsync.instance().clientChain.runOnDataThread(() -> DiscoveryClusterStore.getCropPool(dimension, crop).removeAll(c -> c.atY(0).equals(pos)));
     }
 }

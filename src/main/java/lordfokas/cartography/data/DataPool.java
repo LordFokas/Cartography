@@ -1,9 +1,7 @@
 package lordfokas.cartography.data;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Predicate;
 
 public class DataPool<C, D> implements DataFlow.IDataConsumer<C, D>, DataFlow.IDataSource<C, D> {
     protected final ArrayList<DataFlow.IDataConsumer<C, D>> consumers = new ArrayList<>(4);
@@ -16,7 +14,7 @@ public class DataPool<C, D> implements DataFlow.IDataConsumer<C, D>, DataFlow.ID
     @Override
     public synchronized void addData(C coordinate, D data) {
         pool.put(coordinate, data);
-        notifyConsumers(DataPool::notifyAdd, coordinate);
+        notifyConsumers(DataPool::notifyAdd, coordinate, data);
     }
 
     @Override
@@ -30,8 +28,14 @@ public class DataPool<C, D> implements DataFlow.IDataConsumer<C, D>, DataFlow.ID
 
     @Override
     public synchronized void removeData(C coordinate, D data) {
-        pool.remove(coordinate);
-        notifyConsumers(DataPool::notifyRemove, coordinate);
+        data = pool.remove(coordinate);
+        notifyConsumers(DataPool::notifyRemove, coordinate, data);
+    }
+
+    public synchronized void removeAll(Predicate<C> predicate) {
+        for(C removed : pool.keySet().stream().filter(predicate).toList()) {
+            removeData(removed, null);
+        }
     }
 
     @Override
@@ -44,8 +48,7 @@ public class DataPool<C, D> implements DataFlow.IDataConsumer<C, D>, DataFlow.ID
         return pool.get(coordinate);
     }
 
-    protected void notifyConsumers(IConsumerNotifier notifier, C coordinate) {
-        D data = pool.get(coordinate);
+    protected void notifyConsumers(IConsumerNotifier notifier, C coordinate, D data) {
         for(DataFlow.IDataConsumer<C, D> consumer : consumers) {
             notifier.notify(consumer, coordinate, data);
         }

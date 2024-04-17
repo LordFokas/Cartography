@@ -15,16 +15,13 @@ import com.eerussianguy.blazemap.api.maps.FakeLayer;
 import com.mojang.logging.LogUtils;
 import lordfokas.cartography.data.ClusterStore;
 import lordfokas.cartography.data.SerializableDataPool;
-import lordfokas.cartography.feature.discovery.DiscoveryClusterStore;
-import lordfokas.cartography.feature.discovery.DiscoveryHandler;
-import lordfokas.cartography.feature.discovery.DiscoveryMapMenu;
-import lordfokas.cartography.feature.discovery.DiscoveryMarkerRenderer;
+import lordfokas.cartography.feature.discovery.*;
 import lordfokas.cartography.feature.environment.climate.ClimateClusterStore;
 import lordfokas.cartography.feature.environment.climate.ClimateProcessor;
 import lordfokas.cartography.feature.environment.rock.RockClusterStore;
 import lordfokas.cartography.feature.environment.rock.RockLayerProcessor;
 import lordfokas.cartography.feature.mapping.climate.*;
-import lordfokas.cartography.feature.mapping.ground.*;
+import lordfokas.cartography.feature.mapping.surface.*;
 import lordfokas.cartography.utils.ImageHandler;
 import org.slf4j.Logger;
 
@@ -57,13 +54,13 @@ public class Cartography {
     public void registerMasterData(MasterDataRegistryEvent evt) {
         evt.registry.register(new ClimateSerializer());
         evt.registry.register(new ClimateIsolinesSerializer());
-        evt.registry.register(new GroundCompositionSerializer());
+        evt.registry.register(new SurfaceSerializer());
     }
 
     @SubscribeEvent
     public void registerCollectors(CollectorRegistryEvent evt) {
         evt.registry.register(new ClimateCollector());
-        evt.registry.register(new GroundCompositionCollector());
+        evt.registry.register(new SurfaceCollector());
     }
 
     @SubscribeEvent
@@ -75,6 +72,7 @@ public class Cartography {
     public void registerProcessors(ProcessorRegistryEvent evt) {
         evt.registry.register(new ClimateProcessor());
         evt.registry.register(new RockLayerProcessor());
+        evt.registry.register(new DiscoveryProcessor());
     }
 
     @SubscribeEvent

@@ -12,13 +12,13 @@ public class CartographyReferences {
     public static final String MOD_ID = "cartography";
 
     public static class MasterData {
-        public static final Key<DataType<MasterDatum>> GROUND_COMPOSITION = new Key<>(MASTER_DATA, MOD_ID, "ground_composition");
+        public static final Key<DataType<MasterDatum>> SURFACE = new Key<>(MASTER_DATA, MOD_ID, "surface");
         public static final Key<DataType<MasterDatum>> CLIMATE = new Key<>(MASTER_DATA, MOD_ID, "climate");
         public static final Key<DataType<MasterDatum>> CLIMATE_ISO = new Key<>(MASTER_DATA, MOD_ID, "climate_iso");
     }
 
     public static class Collectors {
-        public static final Key<Collector<MasterDatum>> GROUND_COMPOSITION = new Key<>(COLLECTORS, MOD_ID, "ground_composition");
+        public static final Key<Collector<MasterDatum>> SURFACE = new Key<>(COLLECTORS, MOD_ID, "surface");
         public static final Key<Collector<MasterDatum>> CLIMATE = new Key<>(COLLECTORS, MOD_ID, "climate");
     }
 
@@ -30,6 +30,7 @@ public class CartographyReferences {
         public static final Key<Processor> TREE_COUNT = new Key<>(PROCESSORS, MOD_ID, "tree_count");
         public static final Key<Processor> ROCK_LAYER = new Key<>(PROCESSORS, MOD_ID, "rock_layer");
         public static final Key<Processor> CLIMATE = new Key<>(PROCESSORS, MOD_ID, "climate");
+        public static final Key<Processor> DISCOVERY = new Key<>(PROCESSORS, MOD_ID, "discovery");
     }
 
     public static class Layers {

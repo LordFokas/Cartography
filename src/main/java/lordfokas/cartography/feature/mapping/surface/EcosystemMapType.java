@@ -1,4 +1,4 @@
-package lordfokas.cartography.feature.mapping.ground;
+package lordfokas.cartography.feature.mapping.surface;
 
 import com.eerussianguy.blazemap.api.BlazeMapReferences;
 import com.eerussianguy.blazemap.api.maps.MapType;
