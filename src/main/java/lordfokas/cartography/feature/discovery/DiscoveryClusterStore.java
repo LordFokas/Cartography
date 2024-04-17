@@ -103,10 +103,11 @@ public class DiscoveryClusterStore extends ClusterStore {
             BlockPos center = cluster.centerOfMass();
             if(center == null) return;
             String name = cluster.type;
+            String suffix = type.equals("crop") ? " x"+cluster.getCoordinates().size() : "";
 
             ResourceLocation item = textureSupplier.apply(name);
             int tint = cluster.getData().isDepleted() ? 0xFFFF0000 : Colors.NO_TINT;
-            ImageHandler.DynamicLabel dynamicLabel = ImageHandler.getLabel(pretty(name), item, tint);
+            ImageHandler.DynamicLabel dynamicLabel = ImageHandler.getLabel(pretty(name) + suffix, item, tint);
             Set<String> tags = tagSupplier.apply(name);
             DiscoveryMarker marker = new DiscoveryMarker(
                 clusterID(cluster, type),
