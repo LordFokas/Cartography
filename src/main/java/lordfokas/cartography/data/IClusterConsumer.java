@@ -2,7 +2,7 @@ package lordfokas.cartography.data;
 
 import java.util.Collection;
 
-public interface IClusterConsumer<K extends Cluster<?, ?>> {
+public interface IClusterConsumer<K> {
     void pushCluster(K cluster);
 
     default void pushClusters(Collection<K> clusters) {

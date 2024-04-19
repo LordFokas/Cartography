@@ -13,28 +13,31 @@ public class SurfaceSerializer implements DataType<SurfaceMD> {
     public void serialize(MinecraftStreams.Output output, SurfaceMD md) throws IOException {
         for(int x = 0; x < 16; x++) {
             for(int z = 0; z < 16; z++) {
-                writeProfile(output, md.rock[x][z]);
+                writeProfile(output, md.tree[x][z]);
+                writeProfile(output, md.find[x][z]);
                 writeProfile(output, md.soil[x][z]);
-                writeProfile(output, md.discoveries[x][z]);
+                writeProfile(output, md.rock[x][z]);
             }
         }
     }
 
     @Override
     public SurfaceMD deserialize(MinecraftStreams.Input input) throws IOException {
+        Profile[][] tree = new Profile[16][16];
+        Profile[][] find = new Profile[16][16];
         Profile[][] rock = new Profile[16][16];
         Profile[][] soil = new Profile[16][16];
-        Profile[][] discoveries = new Profile[16][16];
 
         for(int x = 0; x < 16; x++) {
             for(int z = 0; z < 16; z++) {
-                rock[x][z] = readProfile(input);
+                tree[x][z] = readProfile(input);
+                find[x][z] = readProfile(input);
                 soil[x][z] = readProfile(input);
-                discoveries[x][z] = readProfile(input);
+                rock[x][z] = readProfile(input);
             }
         }
 
-        return new SurfaceMD(soil, rock, discoveries);
+        return new SurfaceMD(tree, find, soil, rock);
     }
 
     private static void writeProfile(MinecraftStreams.Output output, Profile profile) throws IOException {
