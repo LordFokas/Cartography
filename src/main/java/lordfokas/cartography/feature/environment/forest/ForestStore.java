@@ -20,6 +20,8 @@ import com.eerussianguy.blazemap.engine.BlazeMapAsync;
 import lordfokas.cartography.Cartography;
 import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.data.IClusterConsumer;
+import lordfokas.cartography.feature.TFCContent;
+import lordfokas.cartography.utils.ImageHandler;
 
 public class ForestStore {
     private static final Map<ResourceKey<Level>, ForestStore> STORES = new HashMap<>();
@@ -54,11 +56,18 @@ public class ForestStore {
 
         @Override
         public void pushCluster(Forest forest) {
+            ImageHandler.DynamicLabel label = ImageHandler.getLabel(
+                forest.pretty + " x" + forest.size(),
+                TFCContent.getTreeTexturePath(forest.tree)
+            );
             MapLabel marker = new MapLabel(
                 forestID(forest),
                 dimension,
                 new BlockPos((forest.region.x << 9) + 256, 0, (forest.region.z << 9) + 256),
-                CartographyReferences.Layers.Fake.FOREST
+                CartographyReferences.Layers.Fake.FOREST,
+                label.path,
+                label.image.getWidth(),
+                label.image.getHeight()
             );
             BlazeMapAsync.instance().clientChain.runOnGameThread(() -> {
                 if(labels.has(marker)) {

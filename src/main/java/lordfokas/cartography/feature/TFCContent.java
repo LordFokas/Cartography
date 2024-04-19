@@ -86,6 +86,10 @@ public class TFCContent {
         return new ResourceLocation("tfc", "textures/item/food/" + crop + ".png");
     }
 
+    public static ResourceLocation getTreeTexturePath(String tree) {
+        return new ResourceLocation("tfc", "textures/block/wood/sapling/" + tree + ".png");
+    }
+
     public static Set<String> getRockTags(String rock){
         return ROCK_TAGS.get(rock);
     }
