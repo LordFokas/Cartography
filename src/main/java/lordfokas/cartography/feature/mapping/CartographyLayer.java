@@ -9,7 +9,7 @@ import com.eerussianguy.blazemap.api.BlazeRegistry;
 import com.eerussianguy.blazemap.api.maps.Layer;
 import com.eerussianguy.blazemap.api.pipeline.DataType;
 import com.eerussianguy.blazemap.api.pipeline.MasterDatum;
-import lordfokas.cartography.utils.ProfileCounter;
+import lordfokas.cartography.feature.environment.ProfileCounter;
 
 public abstract class CartographyLayer extends Layer {
     protected final ThreadLocal<ProfileCounter> COUNTERS = ThreadLocal.withInitial(ProfileCounter::new);

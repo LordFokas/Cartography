@@ -30,7 +30,7 @@ public class ForestStore {
 
     private final Map<RegionPos, ForestRegion> stores = new HashMap<>();
 
-    public static ForestRegion getStore(ResourceKey<Level> dimension, RegionPos region) {
+    public static synchronized ForestRegion getStore(ResourceKey<Level> dimension, RegionPos region) {
         return STORES.computeIfAbsent(dimension, $ -> new ForestStore()).getRegion(region);
     }
 
@@ -42,7 +42,7 @@ public class ForestStore {
         dimension = event.dimension;
     }
 
-    public ForestRegion getRegion(RegionPos region) {
+    public synchronized ForestRegion getRegion(RegionPos region) {
         return stores.computeIfAbsent(region, r -> new ForestRegion(r, CONSUMER));
     }
 

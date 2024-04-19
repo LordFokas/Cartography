@@ -10,7 +10,7 @@ import com.eerussianguy.blazemap.api.util.IDataSource;
 import com.eerussianguy.blazemap.api.util.RegionPos;
 import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.feature.mapping.surface.SurfaceMD;
-import lordfokas.cartography.utils.ProfileCounter;
+import lordfokas.cartography.feature.environment.ProfileCounter;
 
 public class RockLayerProcessor extends Processor.Direct {
     private static final ThreadLocal<ProfileCounter> COUNTER = ThreadLocal.withInitial(ProfileCounter::new);
