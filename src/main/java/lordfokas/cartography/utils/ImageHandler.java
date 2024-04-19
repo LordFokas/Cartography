@@ -142,7 +142,7 @@ public class ImageHandler {
         }
 
         // Tint all opaque pixels
-        modifyBuffer(label, ImageHandler::spriteIsOpaque, pixel -> pixel & tint_abgr);
+        modifyBuffer(label, ImageHandler::bufferIsOpaque, pixel -> pixel & tint_abgr);
 
         // Icon goes after text to not be affected by tint
         if(icon != null) copyToBuffer(label, icon, 4, 4, ImageHandler::spriteIsOpaque);
@@ -230,24 +230,24 @@ public class ImageHandler {
         copyToBuffer(buffer, sprite, buffer_x, buffer_y, ImageHandler::always);
     }
 
-    private static void copyToBuffer(NativeImage buffer, NativeImage sprite, int buffer_x, int buffer_y, IPixelTransferPredicate predicate) {
+    private static void copyToBuffer(NativeImage buffer, NativeImage sprite, int buffer_x, int buffer_y, IPixelSelectionPredicate predicate) {
         for(int x = 0; x < sprite.getWidth(); x++) {
             for(int y = 0; y < sprite.getHeight(); y++) {
                 int bx = buffer_x + x;
                 int by = buffer_y + y;
                 int rgb = sprite.getPixelRGBA(x, y);
-                if(predicate.apply(buffer.getPixelRGBA(bx, by), rgb)) {
+                if(predicate.test(buffer.getPixelRGBA(bx, by), rgb)) {
                     buffer.setPixelRGBA(bx, by, rgb);
                 }
             }
         }
     }
 
-    private static void modifyBuffer(NativeImage buffer, IPixelTransferPredicate predicate, Function<Integer, Integer> function) {
+    private static void modifyBuffer(NativeImage buffer, IPixelSelectionPredicate predicate, Function<Integer, Integer> function) {
         for(int x = 0; x < buffer.getWidth(); x++) {
             for(int y = 0; y < buffer.getHeight(); y++) {
                 int argb = buffer.getPixelRGBA(x, y);
-                if(predicate.apply(buffer.getPixelRGBA(x, y), argb)) {
+                if(predicate.test(argb, 0)) {
                     buffer.setPixelRGBA(x, y, function.apply(argb));
                 }
             }
@@ -267,11 +267,19 @@ public class ImageHandler {
     }
 
     @FunctionalInterface
-    private interface IPixelTransferPredicate {
-        boolean apply(int buffer, int sprite);
+    private interface IPixelSelectionPredicate {
+        boolean test(int buffer, int sprite);
     }
 
-    private static boolean always(int buffer, int sprite) {return true;}
+    private static boolean always(int buffer, int sprite) {
+        return true;
+    }
 
-    private static boolean spriteIsOpaque(int buffer, int sprite) {return (sprite & 0xFF000000) != 0;}
+    private static boolean spriteIsOpaque(int buffer, int sprite) {
+        return (sprite & 0xFF000000) != 0;
+    }
+
+    private static boolean bufferIsOpaque(int buffer, int sprite) {
+        return (buffer & 0xFF000000) != 0;
+    }
 }
