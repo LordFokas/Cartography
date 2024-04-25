@@ -79,7 +79,7 @@ public class ForestStore {
 
         @Override
         public void dropCluster(Forest forest) {
-            labels.remove(forestID(forest), CartographyReferences.Layers.Fake.FOREST);
+            BlazeMapAsync.instance().clientChain.runOnGameThread(() -> labels.remove(forestID(forest), CartographyReferences.Layers.Fake.FOREST));
         }
     }
 }
