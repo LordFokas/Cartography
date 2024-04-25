@@ -40,7 +40,7 @@ public class SurfaceCollector extends Collector<SurfaceMD> {
                         treeType = profile;
                         continue;
                     }
-                    if(!hasTree && profile.type == TFCContent.Type.LOG && treeType != null && profile.name.equals(treeType.name)) {
+                    if(profile.type == TFCContent.Type.LOG && treeType != null && profile.name.equals(treeType.name)) {
                         trunkHeight++;
                         hasTree = trunkHeight > 2;
                         trunkY = y;
