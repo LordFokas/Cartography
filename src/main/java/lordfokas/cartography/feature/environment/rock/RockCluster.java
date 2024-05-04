@@ -17,7 +17,7 @@ public class RockCluster extends Cluster<ChunkPos, String> {
         if(size < 20) {
             return null;
         }
-        long x = 0, z = 0;
+        int x = 0, z = 0;
         for(ChunkPos pos : getCoordinates()) {
             x += pos.getMinBlockX();
             z += pos.getMinBlockZ();

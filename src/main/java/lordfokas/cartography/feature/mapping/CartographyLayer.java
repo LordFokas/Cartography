@@ -1,6 +1,6 @@
 package lordfokas.cartography.feature.mapping;
 
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -15,12 +15,12 @@ public abstract class CartographyLayer extends Layer {
     protected final ThreadLocal<ProfileCounter> COUNTERS = ThreadLocal.withInitial(ProfileCounter::new);
 
     @SafeVarargs
-    public CartographyLayer(BlazeRegistry.Key<Layer> id, TranslatableComponent name, BlazeRegistry.Key<DataType<MasterDatum>>... inputs) {
+    public CartographyLayer(BlazeRegistry.Key<Layer> id, Component name, BlazeRegistry.Key<DataType<MasterDatum>>... inputs) {
         super(id, name, inputs);
     }
 
     @SafeVarargs
-    public CartographyLayer(BlazeRegistry.Key<Layer> id, TranslatableComponent name, ResourceLocation icon, BlazeRegistry.Key<DataType<MasterDatum>>... inputs) {
+    public CartographyLayer(BlazeRegistry.Key<Layer> id, Component name, ResourceLocation icon, BlazeRegistry.Key<DataType<MasterDatum>>... inputs) {
         super(id, name, icon, inputs);
     }
 

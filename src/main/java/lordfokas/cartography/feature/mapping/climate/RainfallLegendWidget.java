@@ -2,7 +2,8 @@ package lordfokas.cartography.feature.mapping.climate;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -16,7 +17,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import lordfokas.cartography.Cartography;
 import lordfokas.cartography.utils.Colors;
 
-public class RainfallLegendWidget implements Widget {
+public class RainfallLegendWidget implements Renderable {
     private static NativeImage legend;
     private static RenderType type;
 
@@ -34,12 +35,14 @@ public class RainfallLegendWidget implements Widget {
     }
 
     @Override
-    public void render(PoseStack stack, int i, int j, float k) {
+    public void render(GuiGraphics graphics, int i, int j, float k) {
         if(legend == null) {
             getLegend();
         }
 
         int height = legend.getHeight();
+        PoseStack stack = graphics.pose();
+
         stack.translate(-28.0D, (-(height + 8)), 0.0D);
         MultiBufferSource.BufferSource buffers = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
         RenderHelper.fillRect(buffers, stack.last().pose(), 28.0F, (float) (height + 8), -1610612736);
@@ -56,7 +59,7 @@ public class RainfallLegendWidget implements Widget {
             String label = String.valueOf(r);
             stack.pushPose();
             stack.translate(28 - font.width(label), 0.0D, 0.0D);
-            font.drawInBatch(label, 0.0F, 0.0F, Colors.WHITE, false, stack.last().pose(), buffers, false, 0, LightTexture.FULL_BRIGHT);
+            font.drawInBatch(label, 0.0F, 0.0F, Colors.WHITE, false, stack.last().pose(), buffers, Font.DisplayMode.NORMAL, 0, LightTexture.FULL_BRIGHT);
             stack.popPose();
             stack.translate(0.0D, 40D, 0.0D);
         }

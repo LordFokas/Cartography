@@ -212,7 +212,7 @@ public class TFCContent {
         // WATER  ======================================================================================================
         put(Type.WATER, TFCBlocks.SALT_WATER.get(), "salt_water");
         put(Type.WATER, TFCBlocks.SPRING_WATER.get(), "spring_water");
-        put(Type.WATER, Blocks.WATER.delegate.get(), "fresh_water");
+        put(Type.WATER, Blocks.WATER, "fresh_water");
 
         // NUGGETS  ====================================================================================================
         for(Ore ore : Ore.values()) {

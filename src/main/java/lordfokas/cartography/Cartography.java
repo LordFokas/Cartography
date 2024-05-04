@@ -1,6 +1,6 @@
 package lordfokas.cartography;
 
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -113,8 +113,8 @@ public class Cartography {
         evt.announce("tfc");
     }
 
-    public static TranslatableComponent lang(String key) {
-        return new TranslatableComponent(CartographyReferences.MOD_ID + "." + key);
+    public static Component lang(String key) {
+        return Component.translatable(CartographyReferences.MOD_ID + "." + key);
     }
 
     public static ResourceLocation resource(String path) {

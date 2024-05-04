@@ -22,7 +22,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
-version = '0.4.0-alpha4'
+version = '0.5.0-dev'
 group = 'lordfokas.cartography' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "Cartography-${minecraft_version}"
 
@@ -66,6 +66,9 @@ dependencies {
     implementation fg.deobf("_:BlazeMap:${minecraft_version}-${blazemap_version}")
     implementation fg.deobf("_:TerraFirmaCraft-Forge:${minecraft_version}-${tfc_version}")
     implementation fg.deobf("_:Patchouli:${minecraft_version}-${patchouli_version}")
+
+    // For local running only. Comment out before committing
+    // implementation fg.deobf("_:Embeddium:0.3.17+mc${minecraft_version}-all")
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

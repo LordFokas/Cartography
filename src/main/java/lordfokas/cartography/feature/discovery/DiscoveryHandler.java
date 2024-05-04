@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import com.eerussianguy.blazemap.engine.BlazeMapAsync;
@@ -15,7 +15,7 @@ import lordfokas.cartography.feature.TFCContent;
 public class DiscoveryHandler {
     @SubscribeEvent
     public static void onInteract(PlayerInteractEvent.RightClickBlock event) {
-        Level level = event.getWorld();
+        Level level = event.getLevel();
         if(!level.isClientSide) return;
         BlockPos pos = event.getPos();
         TFCContent.Profile profile = TFCContent.getProfile(level.getBlockState(pos).getBlock());
@@ -32,7 +32,7 @@ public class DiscoveryHandler {
     public static void onBreak(BlockEvent.BreakEvent event) {
         Minecraft mc = Minecraft.getInstance();
         if(event.getPlayer() != mc.player) return;
-        LevelAccessor level = event.getWorld();
+        LevelAccessor level = event.getLevel();
         BlockPos pos = event.getPos();
         TFCContent.Profile profile = TFCContent.getProfile(level.getBlockState(pos).getBlock());
         if(profile != null && profile.type.classification == TFCContent.Classification.DISCOVERY) {

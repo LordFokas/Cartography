@@ -5,7 +5,6 @@ import net.minecraft.world.level.Level;
 import com.eerussianguy.blazemap.api.pipeline.Collector;
 import lordfokas.cartography.CartographyReferences;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 
 public class ClimateCollector extends Collector<ClimateMD> {
     public ClimateCollector() {
@@ -17,7 +16,7 @@ public class ClimateCollector extends Collector<ClimateMD> {
         float[][] rainfall = new float[16][16];
         float[][] temperature = new float[16][16];
 
-        ChunkData data = level.getChunkAt(POS.set(minX, 0, minZ)).getCapability(ChunkDataCapability.CAPABILITY).orElse(null);
+        ChunkData data = ChunkData.get(level.getChunkAt(POS.set(minX, 0, minZ)));
         if(data == null) return null;
 
         for(int x = 0; x < 16; ++x) {
