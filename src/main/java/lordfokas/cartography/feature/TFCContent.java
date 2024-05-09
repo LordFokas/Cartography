@@ -31,6 +31,7 @@ public class TFCContent {
     private static final Map<String, Set<String>> ORE_TAGS = new HashMap<>();
     private static final Map<String, Set<String>> CROP_TAGS = new HashMap<>();
     private static final Map<String, Set<String>> FRUIT_TAGS = new HashMap<>();
+    private static final Map<String, Set<String>> TREE_TAGS = new HashMap<>();
 
     public static Profile getProfile(Block block) {
         return TYPES.get(block);
@@ -104,6 +105,10 @@ public class TFCContent {
 
     public static Set<String> getFruitTags(String fruit){
         return FRUIT_TAGS.get(fruit);
+    }
+
+    public static Set<String> getTreeTags(String tree){
+        return TREE_TAGS.get(tree);
     }
 
     public static class Profile {
@@ -211,6 +216,7 @@ public class TFCContent {
             }
             put(Type.LEAVES, TFCBlocks.WOODS.get(wood).get(Wood.BlockType.LEAVES).get(), name);
             put(Type.SAPLING, TFCBlocks.WOODS.get(wood).get(Wood.BlockType.SAPLING).get(), name);
+            TREE_TAGS.put(name, Set.of("tree", "wood", name));
         }
 
         // WATER  ======================================================================================================

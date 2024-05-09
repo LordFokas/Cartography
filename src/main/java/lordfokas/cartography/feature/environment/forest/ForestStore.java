@@ -21,6 +21,7 @@ import lordfokas.cartography.Cartography;
 import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.data.IClusterConsumer;
 import lordfokas.cartography.feature.TFCContent;
+import lordfokas.cartography.utils.Colors;
 import lordfokas.cartography.utils.ImageHandler;
 
 public class ForestStore {
@@ -63,11 +64,15 @@ public class ForestStore {
             MapLabel marker = new MapLabel(
                 forestID(forest),
                 dimension,
-                new BlockPos((forest.region.x << 9) + 256, 0, (forest.region.z << 9) + 256),
+                new ForestMarkerPos(forest),
                 CartographyReferences.Layers.Fake.FOREST,
                 label.path,
                 label.image.getWidth(),
-                label.image.getHeight()
+                label.image.getHeight(),
+                Colors.NO_TINT,
+                0.0F,
+                true,
+                TFCContent.getTreeTags(forest.tree)
             );
             BlazeMapAsync.instance().clientChain.runOnGameThread(() -> {
                 if(labels.has(marker)) {
@@ -80,6 +85,26 @@ public class ForestStore {
         @Override
         public void dropCluster(Forest forest) {
             BlazeMapAsync.instance().clientChain.runOnGameThread(() -> labels.remove(forestID(forest), CartographyReferences.Layers.Fake.FOREST));
+        }
+    }
+
+    private static class ForestMarkerPos extends BlockPos.MutableBlockPos {
+        private final Forest forest;
+
+        private ForestMarkerPos(Forest forest) {
+            this.forest = forest;
+        }
+
+        @Override
+        public int getX() {
+            return (forest.region.x << 9) + 160 + (forest.index & 1) * 192;
+        }
+
+        @Override
+        public int getZ() {
+            int lines = (forest.total + 1) / 2;
+            int line = forest.index / 2;
+            return (forest.region.z << 9) + 256 - (lines * 16) + (line * 32);
         }
     }
 }

@@ -12,6 +12,7 @@ public class Forest {
     public final String key, tree, pretty;
     public final RegionPos region;
     private int size = 0, previousSize = -1;
+    int index, total;
 
     public Forest(String tree, RegionPos region) {
         this.key = region.x + "_" + region.z + "/" + tree;
