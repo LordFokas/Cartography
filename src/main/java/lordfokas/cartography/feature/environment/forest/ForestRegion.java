@@ -33,7 +33,7 @@ public class ForestRegion {
     private void index() {
         int total = forests.size();
         int index = 0;
-        for(Iterator<Forest> it = forests.values().stream().sorted(Comparator.comparingInt(Forest::size)).iterator(); it.hasNext(); ) {
+        for(Iterator<Forest> it = forests.values().stream().sorted((f1, f2) -> f2.size() - f1.size()).iterator(); it.hasNext(); ) {
             Forest forest = it.next();
             forest.total = total;
             forest.index = index++;

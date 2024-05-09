@@ -64,7 +64,7 @@ public class ForestStore {
             MapLabel marker = new MapLabel(
                 forestID(forest),
                 dimension,
-                new ForestMarkerPos(forest),
+                BlockPos.ZERO,
                 CartographyReferences.Layers.Fake.FOREST,
                 label.path,
                 label.image.getWidth(),
@@ -74,6 +74,7 @@ public class ForestStore {
                 true,
                 TFCContent.getTreeTags(forest.tree)
             );
+            marker.setPositionObject(new ForestMarkerPos(forest));
             BlazeMapAsync.instance().clientChain.runOnGameThread(() -> {
                 if(labels.has(marker)) {
                     labels.remove(marker);
@@ -97,14 +98,12 @@ public class ForestStore {
 
         @Override
         public int getX() {
-            return (forest.region.x << 9) + 160 + (forest.index & 1) * 192;
+            return (forest.region.x << 9) + 256;
         }
 
         @Override
         public int getZ() {
-            int lines = (forest.total + 1) / 2;
-            int line = forest.index / 2;
-            return (forest.region.z << 9) + 256 - (lines * 16) + (line * 32);
+            return (forest.region.z << 9) + 256 - (forest.total * 16) + (forest.index * 32);
         }
     }
 }
