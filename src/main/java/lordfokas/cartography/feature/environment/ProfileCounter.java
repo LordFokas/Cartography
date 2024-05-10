@@ -1,4 +1,4 @@
-package lordfokas.cartography.utils;
+package lordfokas.cartography.feature.environment;
 
 import java.util.HashMap;
 import java.util.Map;

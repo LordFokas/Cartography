@@ -27,7 +27,7 @@ public class CartographyReferences {
     }
 
     public static class Processors {
-        public static final Key<Processor> TREE_COUNT = new Key<>(PROCESSORS, MOD_ID, "tree_count");
+        public static final Key<Processor> FOREST = new Key<>(PROCESSORS, MOD_ID, "forest");
         public static final Key<Processor> ROCK_LAYER = new Key<>(PROCESSORS, MOD_ID, "rock_layer");
         public static final Key<Processor> CLIMATE = new Key<>(PROCESSORS, MOD_ID, "climate");
         public static final Key<Processor> DISCOVERY = new Key<>(PROCESSORS, MOD_ID, "discovery");
@@ -44,7 +44,7 @@ public class CartographyReferences {
         public static class Fake {
             public static final Key<Layer> CROPS = new Key<>(LAYERS, MOD_ID, "fake.crops");
             public static final Key<Layer> FRUIT = new Key<>(LAYERS, MOD_ID, "fake.fruit");
-            public static final Key<Layer> TREES = new Key<>(LAYERS, MOD_ID, "fake.trees");
+            public static final Key<Layer> FOREST = new Key<>(LAYERS, MOD_ID, "fake.forest");
             public static final Key<Layer> ROCKS = new Key<>(LAYERS, MOD_ID, "fake.rocks");
             public static final Key<Layer> ORES = new Key<>(LAYERS, MOD_ID, "fake.ores");
         }

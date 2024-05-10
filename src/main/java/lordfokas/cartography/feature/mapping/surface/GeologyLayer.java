@@ -9,7 +9,7 @@ import lordfokas.cartography.Cartography;
 import lordfokas.cartography.CartographyReferences;
 import lordfokas.cartography.feature.mapping.CartographyLayer;
 import lordfokas.cartography.utils.ImageHandler;
-import lordfokas.cartography.utils.ProfileCounter;
+import lordfokas.cartography.feature.environment.ProfileCounter;
 import lordfokas.cartography.feature.TFCContent;
 
 public class GeologyLayer extends CartographyLayer {

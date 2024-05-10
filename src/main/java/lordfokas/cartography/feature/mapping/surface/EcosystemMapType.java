@@ -17,7 +17,7 @@ public class EcosystemMapType extends MapType {
             BlazeMapReferences.Layers.WATER_LEVEL,
             CartographyReferences.Layers.Fake.CROPS,
             CartographyReferences.Layers.Fake.FRUIT,
-            CartographyReferences.Layers.Fake.TREES
+            CartographyReferences.Layers.Fake.FOREST
         );
     }
 }
