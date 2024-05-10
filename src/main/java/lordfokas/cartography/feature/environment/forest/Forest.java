@@ -25,7 +25,7 @@ public class Forest {
         return size;
     }
 
-    private void change(int change) {
+    void change(int change) {
         size += change;
     }
 
