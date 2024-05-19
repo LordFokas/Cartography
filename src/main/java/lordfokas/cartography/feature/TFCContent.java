@@ -27,6 +27,7 @@ public class TFCContent {
     private static final Rock.BlockType[] STONE_TYPES = new Rock.BlockType[] {Rock.BlockType.RAW, Rock.BlockType.HARDENED};
     private static final Wood.BlockType[] LOG_TYPES = new Wood.BlockType[] {Wood.BlockType.LOG, Wood.BlockType.STRIPPED_LOG};
     private static final Map<Block, Profile> TYPES = new HashMap<>();
+    private static final Map<Type, Map<String, Profile>> LOOKUPS = new EnumMap<>(Type.class);
     private static final Map<String, Set<String>> ROCK_TAGS = new HashMap<>();
     private static final Map<String, Set<String>> ORE_TAGS = new HashMap<>();
     private static final Map<String, Set<String>> CROP_TAGS = new HashMap<>();
@@ -115,9 +116,14 @@ public class TFCContent {
         public final Type type;
         public final String name;
 
-        public Profile(Type type, String name) {
+        public static Profile lookup(Type type, String name) {
+            return LOOKUPS.computeIfAbsent(type, t -> new HashMap<>()).get(name);
+        }
+
+        private Profile(Type type, String name) {
             this.type = type;
             this.name = name;
+            LOOKUPS.computeIfAbsent(type, t -> new HashMap<>()).put(name, this);
         }
 
         @Override

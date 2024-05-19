@@ -52,7 +52,7 @@ public class SurfaceSerializer implements DataType<SurfaceMD> {
     private static Profile readProfile(MinecraftStreams.Input input) throws IOException {
         byte id = input.readByte();
         if(id == -1) return null;
-        return new Profile(Type.values()[id], input.readUTF());
+        return Profile.lookup(Type.values()[id], input.readUTF());
     }
 
     @Override
