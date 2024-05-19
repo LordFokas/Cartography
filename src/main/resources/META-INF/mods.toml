@@ -28,7 +28,7 @@ Better mapping for TFC using Blaze Map
 [[dependencies.cartography]]
     modId="blazemap"
     mandatory=true
-    versionRange="[0.5.14-beta,0.6)"
+    versionRange="[0.5.16-beta,0.6)"
     ordering="NONE"
     side="BOTH"
 

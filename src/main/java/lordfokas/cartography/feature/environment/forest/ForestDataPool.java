@@ -20,9 +20,7 @@ public class ForestDataPool extends SerializableDataPool<RegionPos, HashMap<Stri
         HashMap<RegionPos, HashMap<String, Integer>> data = new HashMap<>();
         int regions = stream.readInt();
         for(int r = 0; r < regions; r++) {
-            int x = stream.readInt();
-            int z = stream.readInt();
-            RegionPos region = new RegionPos(x, z);
+            RegionPos region = stream.readRegionPos();
             HashMap<String, Integer> forest = new HashMap<>();
             int trees = stream.readByte();
             for(int t = 0; t < trees; t++) {
@@ -39,9 +37,7 @@ public class ForestDataPool extends SerializableDataPool<RegionPos, HashMap<Stri
     protected void save(MinecraftStreams.Output stream) throws IOException {
         stream.writeInt(pool.size());
         for(var entry : pool.entrySet()) {
-            RegionPos region = entry.getKey();
-            stream.writeInt(region.x);
-            stream.writeInt(region.z);
+            stream.writeRegionPos(entry.getKey());
             HashMap<String, Integer> forests = entry.getValue();
             stream.writeByte(forests.size());
             for(var forest : forests.entrySet()) {
