@@ -23,7 +23,8 @@ public class DiscoveryMarkerRenderer implements ObjectRenderer<DiscoveryMarker> 
     public static final ObjectRenderer<MapLabel> RENDERER = new DefaultObjectRenderer();
 
     @Override
-    public void render(DiscoveryMarker marker, GuiGraphics graphics, MultiBufferSource buffers, double zoom, SearchTargeting search) {
+    public void render(DiscoveryMarker marker, GuiGraphics graphics, double zoom, SearchTargeting search) {
+        var buffers = graphics.bufferSource();
         VertexConsumer dots = buffers.getBuffer(RenderType.text(DOT));
         int color = ImageHandler.getColor(marker.item);
         PoseStack stack = graphics.pose();
@@ -39,7 +40,7 @@ public class DiscoveryMarkerRenderer implements ObjectRenderer<DiscoveryMarker> 
         stack.pushPose();
         if(search == SearchTargeting.HIT) {
             stack.translate(0, 0, 5);
-            RENDERER.render(marker, graphics, buffers, zoom, search);
+            RENDERER.render(marker, graphics, zoom, search);
         } else {
             stack.translate(-8, -8, 2);
             VertexConsumer icon = buffers.getBuffer(RenderType.text(marker.item));
