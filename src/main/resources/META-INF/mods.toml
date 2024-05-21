@@ -20,7 +20,7 @@ Better mapping for TFC using Blaze Map
 [[dependencies.cartography]]
     modId="tfc"
     mandatory=true
-    versionRange="[2.2,)"
+    versionRange="[3.2,4)"
     ordering="NONE"
     side="BOTH"
 
@@ -28,7 +28,7 @@ Better mapping for TFC using Blaze Map
 [[dependencies.cartography]]
     modId="blazemap"
     mandatory=true
-    versionRange="[0.5.16-beta,0.6)"
+    versionRange="[0.7.0-dev,0.8)"
     ordering="NONE"
     side="BOTH"
 
@@ -36,7 +36,7 @@ Better mapping for TFC using Blaze Map
 [[dependencies.cartography]]
     modId="forge"
     mandatory=true
-    versionRange="[40.2,)"
+    versionRange="[47.1,48)"
     ordering="NONE"
     side="BOTH"
 
@@ -44,6 +44,6 @@ Better mapping for TFC using Blaze Map
 [[dependencies.cartography]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.18.2,1.19)"
+    versionRange="[1.20.1,1.20.2)"
     ordering="NONE"
     side="BOTH"

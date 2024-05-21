@@ -30,8 +30,8 @@ public class ImageHandler {
     public static synchronized NativeImage getImage(ResourceLocation texture) {
         return BASE.computeIfAbsent(texture, $ -> {
             try {
-                Resource res = Minecraft.getInstance().getResourceManager().getResource(texture);
-                return NativeImage.read(res.getInputStream());
+                Resource res = Minecraft.getInstance().getResourceManager().getResourceOrThrow(texture);
+                return NativeImage.read(res.open());
             }
             catch(IOException e) {
                 e.printStackTrace();

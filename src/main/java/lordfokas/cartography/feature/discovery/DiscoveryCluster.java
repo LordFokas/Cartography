@@ -21,7 +21,7 @@ public class DiscoveryCluster extends Cluster<BlockPos, DiscoveryState> {
         if(size == 1) {
             return getCoordinates().iterator().next();
         }
-        long x = 0, z = 0;
+        int x = 0, z = 0;
         for(BlockPos pos : getCoordinates()) {
             x += pos.getX();
             z += pos.getZ();

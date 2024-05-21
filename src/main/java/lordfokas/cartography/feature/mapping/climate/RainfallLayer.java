@@ -1,6 +1,6 @@
 package lordfokas.cartography.feature.mapping.climate;
 
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 
 import com.eerussianguy.blazemap.api.maps.TileResolution;
 import com.eerussianguy.blazemap.api.util.ArrayAggregator;
@@ -39,7 +39,7 @@ public class RainfallLayer extends CartographyLayer {
     }
 
     @Override
-    public Widget getLegendWidget() {
+    public Renderable getLegendWidget() {
         return new RainfallLegendWidget();
     }
 

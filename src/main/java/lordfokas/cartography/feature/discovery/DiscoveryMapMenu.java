@@ -4,7 +4,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -47,11 +47,11 @@ public class DiscoveryMapMenu {
             pool.asClustered(clusters -> {
                 clusters.nearbyXZ(pos, 400, cluster -> {
                     ResourceLocation icon = iconProvider.apply(type);
-                    event.root.add(new MenuFolder(Cartography.resource("cluster.discovery."+type), icon, new TextComponent(type),
-                        new MenuAction(Cartography.resource("cluster.discovery.waypoint"), BlazeMapReferences.Icons.WAYPOINT, ImageHandler.getColor(icon), new TextComponent("Make Waypoint"), () -> {
+                    event.root.add(new MenuFolder(Cartography.resource("cluster.discovery."+type), icon, Component.literal(type),
+                        new MenuAction(Cartography.resource("cluster.discovery.waypoint"), BlazeMapReferences.Icons.WAYPOINT, ImageHandler.getColor(icon), Component.literal("Make Waypoint"), () -> {
                             waypointStore.add(new Waypoint(Cartography.resource("cluster.discovery."+cluster.hashCode()), dimension, pos, type, icon));
                         }),
-                        new MenuAction(Cartography.resource("cluster.discovery.depleted"), new TextComponent(cluster.getData().isDepleted() ? "Mark Available" : "Mark Depleted"), () -> {
+                        new MenuAction(Cartography.resource("cluster.discovery.depleted"), Component.literal(cluster.getData().isDepleted() ? "Mark Available" : "Mark Depleted"), () -> {
                             DiscoveryState state = cluster.getData();
                             state.setDepleted(!state.isDepleted());
                         })
