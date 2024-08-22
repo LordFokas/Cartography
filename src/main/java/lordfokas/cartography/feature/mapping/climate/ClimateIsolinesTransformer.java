@@ -42,7 +42,7 @@ public class ClimateIsolinesTransformer extends Transformer<ClimateIsolinesMD> {
             }
         }
 
-        return new ClimateIsolinesMD(temperature_iso, rainfall_iso);
+        return new ClimateIsolinesMD(rainfall_iso, temperature_iso);
     }
 
     private static float value(float[][] values, int x, int z, float def) {
