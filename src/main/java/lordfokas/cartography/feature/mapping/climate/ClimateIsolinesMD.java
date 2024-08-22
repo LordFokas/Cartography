@@ -12,9 +12,9 @@ public class ClimateIsolinesMD extends MasterDatum {
     public final int[][] temperature;
     public final int[][] rainfall;
 
-    public ClimateIsolinesMD(int[][] temperature, int[][] rainfall) {
-        this.temperature = temperature;
+    public ClimateIsolinesMD(int[][] rainfall, int[][] temperature) {
         this.rainfall = rainfall;
+        this.temperature = temperature;
     }
 
     @Override
