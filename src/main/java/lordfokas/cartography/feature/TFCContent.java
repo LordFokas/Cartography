@@ -238,7 +238,11 @@ public class TFCContent {
 
             Item item = TFCItems.GRADED_ORES.get(ore).get(Ore.Grade.NORMAL).get();
             HeatingRecipe recipe = HeatingRecipe.getRecipe(new ItemStack(item));
-            if(recipe == null) continue;
+            if(recipe == null) {
+                ORE_TAGS.put(name, Set.of("ore", name));
+                continue;
+            }
+
             FluidStack fluid = recipe.getDisplayOutputFluid();
             String[] parts = fluid.getTranslationKey().split("\\.");
             String metal = parts[parts.length - 1].replace("cast_", "");
