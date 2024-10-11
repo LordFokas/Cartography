@@ -46,7 +46,7 @@ public class Cartography {
 
         // Initialize specific feature facilities
         MinecraftForge.EVENT_BUS.register(ClimateClusterStore.class);
-        MinecraftForge.EVENT_BUS.register(ForestStore.class);
+        // MinecraftForge.EVENT_BUS.register(ForestStore.class);
         MinecraftForge.EVENT_BUS.register(RockClusterStore.class);
         MinecraftForge.EVENT_BUS.register(DiscoveryHandler.class);
         MinecraftForge.EVENT_BUS.register(DiscoveryClusterStore.class);
@@ -73,7 +73,7 @@ public class Cartography {
 
     @SubscribeEvent
     public void registerProcessors(ProcessorRegistryEvent evt) {
-        evt.registry.register(new ForestProcessor());
+        // evt.registry.register(new ForestProcessor());
         evt.registry.register(new ClimateProcessor());
         evt.registry.register(new RockLayerProcessor());
         evt.registry.register(new DiscoveryProcessor());
@@ -92,7 +92,7 @@ public class Cartography {
         evt.registry.register(new EcosystemLayer());
         evt.registry.register(new FakeLayer(CartographyReferences.Layers.Fake.CROPS, lang("layer.ecosystem.crops"), resource("icons/layers/crops.png")));
         evt.registry.register(new FakeLayer(CartographyReferences.Layers.Fake.FRUIT, lang("layer.ecosystem.fruit"), resource("icons/layers/fruit.png")));
-        evt.registry.register(new FakeLayer(CartographyReferences.Layers.Fake.FOREST, lang("layer.ecosystem.forest"), resource("icons/layers/trees.png")));
+        // evt.registry.register(new FakeLayer(CartographyReferences.Layers.Fake.FOREST, lang("layer.ecosystem.forest"), resource("icons/layers/trees.png")));
 
         evt.registry.register(new GeologyLayer());
         evt.registry.register(new FakeLayer(CartographyReferences.Layers.Fake.ROCKS, lang("layer.geology.rocks"), resource("icons/layers/rocks.png")));
