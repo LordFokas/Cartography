@@ -113,6 +113,7 @@ public class ImageHandler {
         NativeImage icon = null;
         if(icon_path != null) {
             icon = getImage(icon_path);
+            icon = downscaleTo16(icon);
             icon_width = icon.getWidth() + w;
         }
 
@@ -156,11 +157,36 @@ public class ImageHandler {
     public static NativeImage upscale(NativeImage input, int factor) {
         int w = input.getWidth() * factor, h = input.getHeight() * factor;
         NativeImage output = new NativeImage(w, h, false);
-        for(int x = 0; x < w; x++) {
-            for(int y = 0; y < h; y++) {
+        for(int y = 0; y < h; y++) {
+            for(int x = 0; x < w; x++) {
                 output.setPixelRGBA(x, y, input.getPixelRGBA(x / factor, y / factor));
             }
         }
+        return output;
+    }
+
+    /**
+     * This assumes all textures being processed are square.
+     */
+    @Nonnull
+    public static NativeImage downscaleTo16(NativeImage input) {
+        int width = input.getWidth();
+
+        int invScaleFactor = width / 16;
+        if (width % 16 > 0) {
+            invScaleFactor += 1;
+        }
+
+        // float scaleFactor = 1.0f / invScaleFactor;
+
+        NativeImage output = new NativeImage(16, 16, false);
+        for(int y = 0; y < 16; y++) {
+            for(int x = 0; x < 16; x++) {
+                // TODO: Make a nicer colour sampling for downscaling than just "every xth pixel"
+                output.setPixelRGBA(x, y, input.getPixelRGBA(x * invScaleFactor, y * invScaleFactor));
+            }
+        }
+
         return output;
     }
 
@@ -231,8 +257,11 @@ public class ImageHandler {
     }
 
     private static void copyToBuffer(NativeImage buffer, NativeImage sprite, int buffer_x, int buffer_y, IPixelSelectionPredicate predicate) {
-        for(int x = 0; x < sprite.getWidth(); x++) {
-            for(int y = 0; y < sprite.getHeight(); y++) {
+        int width = sprite.getWidth();
+        int height = sprite.getHeight();
+
+        for(int y = 0; y < height; y++) {
+            for(int x = 0; x < width; x++) {
                 int bx = buffer_x + x;
                 int by = buffer_y + y;
                 int rgb = sprite.getPixelRGBA(x, y);
