@@ -22,7 +22,7 @@ public class ClimateCollector extends Collector<ClimateMD> {
         for(int x = 0; x < 16; ++x) {
             for(int z = 0; z < 16; ++z) {
                 rainfall[x][z] = data.getRainfall(x, z);
-                temperature[x][z] = data.getAverageTemp(z, x); // FIXME: next TFC release, reverse this back to normal.
+                temperature[x][z] = data.getAverageTemp(x, z);
             }
         }
 
