@@ -41,7 +41,7 @@ public class DiscoveryHandler {
         // This will not work on the dedicated server
         if (FMLEnvironment.dist == Dist.CLIENT) {
             Minecraft mc = Minecraft.getInstance();
-            if(player.getUUID() != mc.player.getUUID()) return;
+            if(mc.player == null || player.getUUID() != mc.player.getUUID()) return;
         }
 
         Level level = player.getLevel();
