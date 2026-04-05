@@ -64,7 +64,12 @@ public class TFCContent {
         return switch(profile.type) {
             case ORE, STONE -> new ResourceLocation("tfc", "textures/block/rock/raw/" + profile.name + ".png");
             case GRAVEL -> new ResourceLocation("tfc", "textures/block/rock/gravel/" + profile.name + ".png");
-            case DIRT -> new ResourceLocation("tfc", "textures/block/dirt/" + profile.name + ".png");
+            case DIRT -> {
+                String path = "peat".equals(profile.name)
+                        ? "textures/block/peat.png"
+                        : "textures/block/dirt/" + profile.name + ".png";
+                yield new ResourceLocation("tfc", path);
+            }
             case CLAY -> new ResourceLocation("tfc", "textures/block/clay/" + profile.name + ".png");
             case SAND -> new ResourceLocation("tfc", "textures/block/sand/" + profile.name + ".png");
             case SAPLING -> new ResourceLocation("tfc", "textures/block/wood/sapling/" + profile.name + ".png");

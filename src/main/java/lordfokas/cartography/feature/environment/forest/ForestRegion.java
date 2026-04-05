@@ -29,7 +29,17 @@ public class ForestRegion {
         for(var entry : data.entrySet()) {
             Forest forest = getForest(entry.getKey());
             forest.change(entry.getValue());
+            index();
+            for(Forest f : forests.values()) {consumer.pushCluster(f);}
             consumer.pushCluster(forest);
+        }
+    }
+
+    public void pushAll() {
+        synchronized (forests) {
+            for (Forest forest : forests.values()) {
+                consumer.pushCluster(forest);
+            }
         }
     }
 
