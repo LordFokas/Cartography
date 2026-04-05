@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -48,6 +49,24 @@ public class ForestStore {
         dimensionStorage = event.dimensionStorage;
         dimension = event.dimension;
         reloadForests();
+        pushAllStores();
+    }
+
+    @SubscribeEvent
+    public static void onClientLogin(ClientPlayerNetworkEvent.LoggingIn event) {
+        reloadForests();
+
+        if (labels != null) {
+            pushAllStores();
+        }
+    }
+
+    private static void pushAllStores() {
+        for (ForestStore store : STORES.values()) {
+            for (ForestRegion region : store.regions.values()) {
+                region.pushAll();
+            }
+        }
     }
 
     private static void reloadForests() {
