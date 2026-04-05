@@ -2,6 +2,7 @@ package lordfokas.cartography.feature.environment.forest;
 
 import java.util.Objects;
 
+import com.eerussianguy.blazemap.api.pipeline.PipelineType;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -45,4 +46,7 @@ public class ForestProcessor extends Processor.Differential {
             }
         });
     }
+    @Override
+    public boolean shouldExecuteIn(ResourceKey<Level> dimension, PipelineType pipeline) {
+        return pipeline.isClient; }
 }
