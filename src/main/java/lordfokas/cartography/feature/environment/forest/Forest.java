@@ -64,7 +64,7 @@ public class Forest {
 
         void end() {
             forests.values().forEach(forest -> {
-                if(forest.size() == 0) {
+                if(forest.size() < 1) {
                     consumer.dropCluster(forest);
                 } else if(forest.hasChanged()) {
                     consumer.dropCluster(forest);
